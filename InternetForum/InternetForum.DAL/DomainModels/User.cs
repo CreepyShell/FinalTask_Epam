@@ -11,9 +11,10 @@ namespace InternetForum.DAL.DomainModels
         [MinLength(3)]
         [MaxLength(20)]
         public string UserName { get; set; }
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        [MaxLength(200)]
+        public string Bio { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public DateTime RegisteredAt { get; set; }
         public DateTime? BirthDay { get; set; }
         public virtual ICollection<Post> Posts { get; set; }

@@ -12,11 +12,13 @@ namespace InternetForum.DAL.DomainModels
         [Required]
         [MinLength(3)]
         [MaxLength(50)]
-        public string Topic { get; set; }
+        public string Header { get; set; }
         [MaxLength(150)]
         public string Text { get; set; }
+        public PostTopic PostTopic { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<PostReaction> Reactions { get; set; }
+        [Required]
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
