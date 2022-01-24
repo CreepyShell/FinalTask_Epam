@@ -41,6 +41,10 @@ namespace InternetForum.DAL.DbExtentions
                 .HasOne(c => c.User)
                 .WithMany(u => u.CommentReactions)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<User>()
+                .HasIndex(u => u.UserName)
+                .IsUnique();
         }
     }
 }

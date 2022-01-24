@@ -30,12 +30,15 @@ namespace InternetForum.WebAPI
             services.AddDbContext<UsersDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("UserManagerConnection")));
 
+            
             services.AddIdentity<AuthUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 4;
             })
                 .AddEntityFrameworkStores<UsersDbContext>();
+
+            services.AddJwtAuthentication("");
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -49,6 +52,7 @@ namespace InternetForum.WebAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

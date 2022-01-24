@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\InternetForum.DAL\InternetForum.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
