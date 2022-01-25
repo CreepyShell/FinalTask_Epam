@@ -1,4 +1,4 @@
-﻿using InternetForum.Administration.DAL;
+﻿using InternetForum.Administration.DAL.IdentityModels;
 using InternetForum.DAL.Interfaces.RepositoryInterfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
@@ -13,6 +13,7 @@ namespace InternetForum.DAL.Interfaces
         IPostReactionRepository PostReactionRepository { get; set; }
         ICommentReactionRepository CommentReactionRepository { get; set; }
         UserManager<AuthUser> UserManager { get; set; }
+        RoleManager<IdentityRole> RoleManager { get; set; }
         Task<int> SaveChangesAsync();
     }
 }

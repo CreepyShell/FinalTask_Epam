@@ -7,7 +7,7 @@ namespace InternetForum.DAL
 {
     public class ForumDbContext : DbContext, IForumDb
     {
-        public ForumDbContext(DbContextOptions options) : base(options)
+        public ForumDbContext(DbContextOptions<ForumDbContext> options) : base(options)
         {
 
         }

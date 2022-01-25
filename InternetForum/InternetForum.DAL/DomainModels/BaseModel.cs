@@ -5,6 +5,7 @@ namespace InternetForum.DAL.DomainModels
     public class BaseModel
     {
         [Required]
-        public int Id { get; set; }
+        [MinLength(1)]
+        public string Id { get; set; }
     }
 }

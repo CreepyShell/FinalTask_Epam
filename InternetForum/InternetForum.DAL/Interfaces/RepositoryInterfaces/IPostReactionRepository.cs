@@ -7,6 +7,6 @@ namespace InternetForum.DAL.Interfaces.RepositoryInterfaces
     public interface IPostReactionRepository : IBaseRepository<PostReaction>
     {
         Task<PostReaction> UpdateAsync(PostReaction reaction);
-        Task<IEnumerable<PostReaction>> GetPostReactionsByPostId(int postId);
+        Task<IEnumerable<PostReaction>> GetPostReactionsByPostId(string postId);
     }
 }

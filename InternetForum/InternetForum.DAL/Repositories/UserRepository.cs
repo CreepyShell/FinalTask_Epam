@@ -1,4 +1,5 @@
 ﻿using InternetForum.DAL.DomainModels;
+using InternetForum.DAL.Interfaces;
 using InternetForum.DAL.Interfaces.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace InternetForum.DAL.Repositories
 {
-    class UserRepostory : BaseGenericRepository<User>, IUserRepository
+    public class UserRepository : BaseGenericRepository<User>, IUserRepository
     {
-        public UserRepostory(ForumDbContext context) : base(context)
+        public UserRepository(IForumDb context) : base(context)
         {
 
         }

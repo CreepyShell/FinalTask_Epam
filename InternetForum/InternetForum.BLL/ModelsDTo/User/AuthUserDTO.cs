@@ -1,4 +1,4 @@
-﻿namespace InternetForum.BLL.ModelsDTo
+﻿namespace InternetForum.BLL.ModelsDTo.User
 {
     public class AuthUserDTO
     {

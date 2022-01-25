@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 
-namespace InternetForum.Administration.DAL
+namespace InternetForum.Administration.DAL.IdentityModels
 {
     public class AuthUser : IdentityUser
     {

@@ -8,7 +8,7 @@ namespace InternetForum.DAL.DomainModels
     {
         public User User { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         [Required]
         [MinLength(3)]
         [MaxLength(50)]

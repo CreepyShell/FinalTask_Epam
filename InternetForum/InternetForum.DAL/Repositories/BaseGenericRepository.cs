@@ -1,4 +1,5 @@
 ﻿using InternetForum.DAL.DomainModels;
+using InternetForum.DAL.Interfaces;
 using InternetForum.DAL.Interfaces.RepositoryInterfaces;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ namespace InternetForum.DAL.Repositories
         where T : BaseModel
     {
         protected ForumDbContext _context;
-        public BaseGenericRepository(ForumDbContext context)
+        public BaseGenericRepository(IForumDb context)
         {
-            _context = context;
+            _context = (ForumDbContext) context;
         }
         public async Task CreateAsync(T entity)
         {
@@ -37,7 +38,7 @@ namespace InternetForum.DAL.Repositories
             return true;
         }
 
-        public async Task<bool> DeleteByIdAsync(int id)
+        public async Task<bool> DeleteByIdAsync(string id)
         {
             T entity = await _context.FindAsync(typeof(T), id) as T;
             if (entity == null)
@@ -57,7 +58,7 @@ namespace InternetForum.DAL.Repositories
             return await _context.FindAsync(typeof(T)) as IEnumerable<T>;
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(string id)
         {
             T entity = await _context.FindAsync(typeof(T), id) as T;
             if (entity == null)

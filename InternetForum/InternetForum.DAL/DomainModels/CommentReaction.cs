@@ -6,11 +6,13 @@ namespace InternetForum.DAL.DomainModels
     public class CommentReaction : BaseModel
     {
         [Required]
-        public int CommentId { get; set; }
+        public string CommentId { get; set; }
+        [Required]
         public Comment Comment { get; set; }
+        [Required]
         public User User { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         [Required]
         public bool IsLiked { get; set; }
         public DateTime ReactedAt { get; set; }

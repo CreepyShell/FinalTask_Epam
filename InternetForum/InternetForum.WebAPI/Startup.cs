@@ -8,6 +8,10 @@ using InternetForum.DAL;
 using InternetForum.DAL.Interfaces;
 using InternetForum.Administration.DAL;
 using Microsoft.AspNetCore.Identity;
+using InternetForum.BLL.Helpers;
+using InternetForum.Administration.DAL.IdentityModels;
+using System;
+using Microsoft.Extensions.Options;
 
 namespace InternetForum.WebAPI
 {
@@ -34,11 +38,21 @@ namespace InternetForum.WebAPI
             services.AddIdentity<AuthUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 4;
+                options.Password.RequiredLength = 4;            
             })
-                .AddEntityFrameworkStores<UsersDbContext>();
+                .AddEntityFrameworkStores<UsersDbContext>()
+                .AddTokenProvider("Provider", typeof(DataProtectorTokenProvider<AuthUser>));
 
-            services.AddJwtAuthentication("");
+            services.Configure<DataProtectionTokenProviderOptions>(opt => opt.TokenLifespan = TimeSpan.FromDays(2));
+
+            JwtSettings settings = Configuration.GetSection("JwtSection").Get<JwtSettings>();
+
+            services.Configure<JwtSettings>(Configuration.GetSection("JwtSection"));
+            services.RegisterRepositories();
+            services.RegisterAutoMapper();
+            services.RegisterServices();
+
+            services.AddJwtAuthentication(settings.JwtKey, settings.Audience, settings.Issuer);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

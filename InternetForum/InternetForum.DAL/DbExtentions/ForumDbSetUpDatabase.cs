@@ -7,10 +7,6 @@ namespace InternetForum.DAL.DbExtentions
     {
         public static void SetUpDataBase(this ModelBuilder builder)
         {
-            builder.Entity<Comment>()
-                 .HasOne(c => c.User)
-                 .WithMany(u => u.Comments)
-                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<Comment>()
                  .HasOne(c => c.Post)
@@ -28,7 +24,7 @@ namespace InternetForum.DAL.DbExtentions
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<PostReaction>()
-                .HasOne(p => p.User)
+                .HasOne(pr => pr.User)
                 .WithMany(u => u.PostReactions)
                 .OnDelete(DeleteBehavior.NoAction);
 
@@ -45,6 +41,19 @@ namespace InternetForum.DAL.DbExtentions
             builder.Entity<User>()
                 .HasIndex(u => u.UserName)
                 .IsUnique();
+
+            builder.Entity<User>()
+                .HasMany(u => u.Comments)
+                .WithOne(c => c.User)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<User>()
+                .HasMany(u => u.CommentReactions)
+                .WithOne(c => c.User)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

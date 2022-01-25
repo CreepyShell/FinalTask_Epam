@@ -21,13 +21,11 @@ namespace InternetForum.DAL.Migrations
 
             modelBuilder.Entity("InternetForum.DAL.DomainModels.Comment", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("CommentId")
-                        .HasColumnType("int");
+                    b.Property<string>("CommentId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CommentText")
                         .IsRequired()
@@ -37,11 +35,13 @@ namespace InternetForum.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
+                    b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -54,57 +54,56 @@ namespace InternetForum.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = "1",
                             CommentText = "My last summer holidays was the best",
-                            CreatedAt = new DateTime(2022, 1, 20, 15, 28, 59, 683, DateTimeKind.Local).AddTicks(8783),
-                            PostId = 1,
-                            UserId = 1
+                            CreatedAt = new DateTime(2022, 1, 24, 23, 6, 50, 226, DateTimeKind.Local).AddTicks(8995),
+                            PostId = "1",
+                            UserId = "1s"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = "2",
                             CommentText = "My last winter holidays was the best",
-                            CreatedAt = new DateTime(2022, 4, 21, 14, 28, 59, 684, DateTimeKind.Local).AddTicks(1201),
-                            PostId = 2,
-                            UserId = 2
+                            CreatedAt = new DateTime(2022, 4, 25, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(9840),
+                            PostId = "2",
+                            UserId = "2"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = "3",
                             CommentText = "My last autumn holidays was the best",
-                            CreatedAt = new DateTime(2022, 7, 20, 14, 28, 59, 684, DateTimeKind.Local).AddTicks(1285),
-                            PostId = 3,
-                            UserId = 3
+                            CreatedAt = new DateTime(2022, 7, 24, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(9884),
+                            PostId = "3",
+                            UserId = "3"
                         },
                         new
                         {
-                            Id = 4,
-                            CommentId = 1,
+                            Id = "4",
+                            CommentId = "1",
                             CommentText = "My last summer holidays was the best too. Thank you!",
-                            CreatedAt = new DateTime(2022, 1, 20, 15, 28, 59, 684, DateTimeKind.Local).AddTicks(1297),
-                            PostId = 1,
-                            UserId = 5
+                            CreatedAt = new DateTime(2022, 1, 24, 23, 6, 50, 226, DateTimeKind.Local).AddTicks(9889),
+                            PostId = "1",
+                            UserId = "5"
                         },
                         new
                         {
-                            Id = 5,
-                            CommentId = 2,
+                            Id = "5",
+                            CommentId = "2",
                             CommentText = "My last winter holidays was the best too. It was good time",
-                            CreatedAt = new DateTime(2022, 4, 21, 14, 28, 59, 684, DateTimeKind.Local).AddTicks(1308),
-                            PostId = 2,
-                            UserId = 4
+                            CreatedAt = new DateTime(2022, 4, 25, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(9893),
+                            PostId = "2",
+                            UserId = "4"
                         });
                 });
 
             modelBuilder.Entity("InternetForum.DAL.DomainModels.CommentReaction", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
+                    b.Property<string>("CommentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");
@@ -112,8 +111,9 @@ namespace InternetForum.DAL.Migrations
                     b.Property<DateTime>("ReactedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -126,36 +126,34 @@ namespace InternetForum.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            CommentId = 1,
+                            Id = "1",
+                            CommentId = "1",
                             IsLiked = true,
-                            ReactedAt = new DateTime(2022, 1, 20, 16, 28, 59, 684, DateTimeKind.Local).AddTicks(9035),
-                            UserId = 5
+                            ReactedAt = new DateTime(2022, 1, 25, 0, 6, 50, 227, DateTimeKind.Local).AddTicks(3110),
+                            UserId = "5"
                         },
                         new
                         {
-                            Id = 2,
-                            CommentId = 2,
+                            Id = "2",
+                            CommentId = "2",
                             IsLiked = true,
-                            ReactedAt = new DateTime(2022, 4, 22, 14, 28, 59, 684, DateTimeKind.Local).AddTicks(9975),
-                            UserId = 4
+                            ReactedAt = new DateTime(2022, 4, 26, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(3452),
+                            UserId = "4"
                         },
                         new
                         {
-                            Id = 3,
-                            CommentId = 3,
+                            Id = "3",
+                            CommentId = "3",
                             IsLiked = false,
-                            ReactedAt = new DateTime(2022, 7, 20, 14, 28, 59, 685, DateTimeKind.Local).AddTicks(20),
-                            UserId = 1
+                            ReactedAt = new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(3476),
+                            UserId = "1s"
                         });
                 });
 
             modelBuilder.Entity("InternetForum.DAL.DomainModels.Post", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -175,8 +173,9 @@ namespace InternetForum.DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -187,52 +186,52 @@ namespace InternetForum.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            CreatedAt = new DateTime(2022, 1, 20, 14, 28, 59, 676, DateTimeKind.Local).AddTicks(3811),
+                            Id = "1",
+                            CreatedAt = new DateTime(2022, 1, 24, 22, 6, 50, 223, DateTimeKind.Local).AddTicks(5139),
                             Header = "Summer holidays",
                             PostTopic = 3,
                             Text = "Tell about your best summer holidays",
-                            UpdatedAt = new DateTime(2022, 1, 20, 14, 38, 59, 683, DateTimeKind.Local).AddTicks(1060),
-                            UserId = 1
+                            UpdatedAt = new DateTime(2022, 1, 24, 22, 16, 50, 226, DateTimeKind.Local).AddTicks(5685),
+                            UserId = "1s"
                         },
                         new
                         {
-                            Id = 2,
-                            CreatedAt = new DateTime(2022, 4, 20, 14, 28, 59, 683, DateTimeKind.Local).AddTicks(5292),
+                            Id = "2",
+                            CreatedAt = new DateTime(2022, 4, 24, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(7412),
                             Header = "Winter holidays",
                             PostTopic = 3,
                             Text = "Tell about your best winter holidays",
-                            UserId = 3
+                            UserId = "3"
                         },
                         new
                         {
-                            Id = 3,
-                            CreatedAt = new DateTime(2022, 7, 19, 14, 28, 59, 683, DateTimeKind.Local).AddTicks(5502),
+                            Id = "3",
+                            CreatedAt = new DateTime(2022, 7, 23, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(7506),
                             Header = "Autumn holidays",
                             PostTopic = 3,
                             Text = "Tell about your best Autumn holidays",
-                            UserId = 5
+                            UserId = "5"
                         });
                 });
 
             modelBuilder.Entity("InternetForum.DAL.DomainModels.PostReaction", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
+                    b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("ReactedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -245,151 +244,164 @@ namespace InternetForum.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = "1",
                             IsLiked = true,
-                            PostId = 1,
-                            ReactedAt = new DateTime(2022, 1, 20, 15, 28, 59, 684, DateTimeKind.Local).AddTicks(4709),
-                            UserId = 1
+                            PostId = "1",
+                            ReactedAt = new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1242),
+                            UserId = "1s"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = "2",
                             IsLiked = false,
-                            PostId = 1,
-                            ReactedAt = new DateTime(2022, 1, 20, 15, 28, 59, 684, DateTimeKind.Local).AddTicks(5584),
-                            UserId = 2
+                            PostId = "1",
+                            ReactedAt = new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1607),
+                            UserId = "2"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = "3",
                             IsLiked = true,
-                            PostId = 2,
-                            ReactedAt = new DateTime(2022, 4, 21, 14, 28, 59, 684, DateTimeKind.Local).AddTicks(5629),
-                            UserId = 3
+                            PostId = "2",
+                            ReactedAt = new DateTime(2022, 4, 25, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1628),
+                            UserId = "3"
                         },
                         new
                         {
-                            Id = 4,
+                            Id = "4",
                             IsLiked = true,
-                            PostId = 3,
-                            ReactedAt = new DateTime(2022, 7, 20, 14, 28, 59, 684, DateTimeKind.Local).AddTicks(5638),
-                            UserId = 3
+                            PostId = "3",
+                            ReactedAt = new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1632),
+                            UserId = "3"
                         },
                         new
                         {
-                            Id = 5,
+                            Id = "5",
                             IsLiked = false,
-                            PostId = 3,
-                            ReactedAt = new DateTime(2022, 7, 20, 14, 28, 59, 684, DateTimeKind.Local).AddTicks(5645),
-                            UserId = 4
+                            PostId = "3",
+                            ReactedAt = new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1718),
+                            UserId = "4"
                         },
                         new
                         {
-                            Id = 6,
+                            Id = "6",
                             IsLiked = true,
-                            PostId = 2,
-                            ReactedAt = new DateTime(2022, 4, 11, 14, 28, 59, 684, DateTimeKind.Local).AddTicks(5652),
-                            UserId = 4
+                            PostId = "2",
+                            ReactedAt = new DateTime(2022, 4, 15, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1724),
+                            UserId = "4"
                         },
                         new
                         {
-                            Id = 7,
+                            Id = "7",
                             IsLiked = false,
-                            PostId = 1,
-                            ReactedAt = new DateTime(2022, 1, 20, 15, 28, 59, 684, DateTimeKind.Local).AddTicks(5660),
-                            UserId = 5
+                            PostId = "1",
+                            ReactedAt = new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1728),
+                            UserId = "5"
                         },
                         new
                         {
-                            Id = 8,
+                            Id = "8",
                             IsLiked = true,
-                            PostId = 1,
-                            ReactedAt = new DateTime(2022, 1, 20, 15, 28, 59, 684, DateTimeKind.Local).AddTicks(5666),
-                            UserId = 4
+                            PostId = "1",
+                            ReactedAt = new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1732),
+                            UserId = "4"
                         },
                         new
                         {
-                            Id = 9,
+                            Id = "9",
                             IsLiked = false,
-                            PostId = 3,
-                            ReactedAt = new DateTime(2022, 7, 20, 14, 28, 59, 684, DateTimeKind.Local).AddTicks(5673),
-                            UserId = 5
+                            PostId = "3",
+                            ReactedAt = new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1736),
+                            UserId = "5"
                         },
                         new
                         {
-                            Id = 10,
+                            Id = "10",
                             IsLiked = false,
-                            PostId = 2,
-                            ReactedAt = new DateTime(2022, 4, 21, 14, 28, 59, 684, DateTimeKind.Local).AddTicks(5681),
-                            UserId = 2
+                            PostId = "2",
+                            ReactedAt = new DateTime(2022, 4, 25, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1740),
+                            UserId = "2"
                         });
                 });
 
             modelBuilder.Entity("InternetForum.DAL.DomainModels.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("Age")
+                        .HasColumnType("int");
 
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Bio")
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
                     b.Property<DateTime?>("BirthDay")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(35)")
+                        .HasMaxLength(35);
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(35)")
+                        .HasMaxLength(35);
 
                     b.Property<DateTime>("RegisteredAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = "1s",
+                            Bio = "Electrical Engineer",
                             BirthDay = new DateTime(1990, 5, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "anton@gmail.com",
+                            FirstName = "Anton",
+                            LastName = "Gerashenko",
                             RegisteredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "anton_1990"
                         },
                         new
                         {
-                            Id = 2,
-                            Email = "dmitro_kovalcuk@gmail.com",
+                            Id = "2",
+                            Bio = "18 years",
+                            FirstName = "Dmitro",
                             RegisteredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "dmidro"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = "3",
                             BirthDay = new DateTime(2000, 10, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "My_mail84@gmail.com",
                             RegisteredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "user1984"
                         },
                         new
                         {
-                            Id = 4,
-                            Email = "GoodLuck11@gmail.com",
+                            Id = "4",
+                            Bio = "The best chef in Iceland",
+                            FirstName = "bad",
                             RegisteredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "Have_A_Nice_Day"
                         },
                         new
                         {
-                            Id = 5,
+                            Id = "5",
                             BirthDay = new DateTime(1999, 8, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "t_mike2002_11@gmail.com",
                             RegisteredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "mike_2002"
                         });

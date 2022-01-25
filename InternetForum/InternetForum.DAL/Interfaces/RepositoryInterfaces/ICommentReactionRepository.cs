@@ -7,6 +7,6 @@ namespace InternetForum.DAL.Interfaces.RepositoryInterfaces
     public interface ICommentReactionRepository : IBaseRepository<CommentReaction>
     {
         Task<CommentReaction> UpdateAsync(CommentReaction reaction);
-        Task<IEnumerable<CommentReaction>> GetCommentReactionsByCommentId(int commentId);
+        Task<IEnumerable<CommentReaction>> GetCommentReactionsByCommentId(string commentId);
     }
 }

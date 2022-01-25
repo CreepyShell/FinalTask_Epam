@@ -1,4 +1,4 @@
-﻿using InternetForum.Administration.DAL;
+﻿using InternetForum.Administration.DAL.IdentityModels;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -34,11 +34,12 @@ namespace InternetForum.BLL.Helpers
                 {
                     new Claim(ClaimTypes.Name, authUser.UserName),
                     new Claim(ClaimTypes.Email, authUser.Email),
-                    new Claim(ClaimTypes.NameIdentifier, authUser.CodeWords),
                     new Claim(JwtRegisteredClaimNames.Jti, authUser.Id)
                 }),
-                Expires = DateTime.Now.AddDays(settings.ExpirationDays),
-                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.Aes256CbcHmacSha512)
+                Expires = DateTime.Now.AddDays(settings.ExpirationMinutes),
+                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256),
+                Issuer = settings.Issuer,
+                Audience = settings.Audience
             };
             if (roles.Any())
             {
@@ -48,5 +49,9 @@ namespace InternetForum.BLL.Helpers
 
             return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
         }
+
+        public static bool VerifyPassword(string password, string passwordHash, string codeWords) => 
+            string.Equals(HashPassword(password, Encoding.UTF8.GetBytes(codeWords)), passwordHash);
+
     }
 }

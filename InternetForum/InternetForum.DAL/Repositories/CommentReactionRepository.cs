@@ -1,4 +1,5 @@
 ﻿using InternetForum.DAL.DomainModels;
+using InternetForum.DAL.Interfaces;
 using InternetForum.DAL.Interfaces.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,11 +11,11 @@ namespace InternetForum.DAL.Repositories
 {
     public class CommentReactionRepository : BaseGenericRepository<CommentReaction>, ICommentReactionRepository
     {
-        public CommentReactionRepository(ForumDbContext context) : base(context)
+        public CommentReactionRepository(IForumDb context) : base(context)
         {
         }
 
-        public async Task<IEnumerable<CommentReaction>> GetCommentReactionsByCommentId(int commentId)
+        public async Task<IEnumerable<CommentReaction>> GetCommentReactionsByCommentId(string commentId)
         {
             return await _context.CommentReactions.Where(cr => cr.CommentId == commentId).ToListAsync();
         }

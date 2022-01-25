@@ -1,4 +1,5 @@
 ﻿using InternetForum.DAL.DomainModels;
+using InternetForum.DAL.Interfaces;
 using InternetForum.DAL.Interfaces.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +10,7 @@ namespace InternetForum.DAL.Repositories
 {
     public class PostRepository : BaseGenericRepository<Post>, IPostRepository
     {
-        public PostRepository(ForumDbContext context) : base(context)
+        public PostRepository(IForumDb context) : base(context)
         {
         }
 

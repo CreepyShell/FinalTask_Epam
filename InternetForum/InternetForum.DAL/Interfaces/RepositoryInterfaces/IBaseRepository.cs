@@ -9,10 +9,10 @@ namespace InternetForum.DAL.Interfaces.RepositoryInterfaces
         where T : BaseModel
     {
         Task CreateAsync(T entity);
-        Task<bool> DeleteByIdAsync(int id);
+        Task<bool> DeleteByIdAsync(string id);
         Task<bool> DeleteAsync(T entity);
         Task<IEnumerable<T>> GetAllAsync();
-        Task<T> GetByIdAsync(int id);
+        Task<T> GetByIdAsync(string id);
         Task<int> SaveChanesAsync();
     }
 }

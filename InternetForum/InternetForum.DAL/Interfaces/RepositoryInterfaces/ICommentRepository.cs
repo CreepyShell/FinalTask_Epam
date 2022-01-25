@@ -7,6 +7,6 @@ namespace InternetForum.DAL.Interfaces.RepositoryInterfaces
     public interface ICommentRepository : IBaseRepository<Comment>
     {
         Task<Comment> UpdatePostAsync(Comment newComment);
-        Task<IEnumerable<Comment>> GetAnswersToCommentByIdAsync(int commentId);
+        Task<IEnumerable<Comment>> GetAnswersToCommentByIdAsync(string commentId);
     }
 }

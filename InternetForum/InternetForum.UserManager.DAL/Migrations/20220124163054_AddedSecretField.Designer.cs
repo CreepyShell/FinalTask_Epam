@@ -4,14 +4,16 @@ using InternetForum.Administration.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InternetForum.Administration.DAL.Migrations
 {
     [DbContext(typeof(UsersDbContext))]
-    partial class UsersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220124163054_AddedSecretField")]
+    partial class AddedSecretField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace InternetForum.Administration.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("InternetForum.Administration.DAL.IdentityModels.AuthUser", b =>
+            modelBuilder.Entity("InternetForum.Administration.DAL.AuthUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -92,13 +94,13 @@ namespace InternetForum.Administration.DAL.Migrations
                             Id = "1",
                             AccessFailedCount = 0,
                             CodeWords = "good_summer_hollidays",
-                            ConcurrencyStamp = "2d0265a0-184b-43bf-971e-c8d2ac1a0fa3",
+                            ConcurrencyStamp = "b40843b8-40a9-49cd-8a2f-5db10046f5f3",
                             Email = "anton@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             PasswordHash = "1111",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b31079ba-97eb-456d-a19b-eeab926b7843",
+                            SecurityStamp = "6d56b440-5ed7-4be2-87c1-ab45180fe8af",
                             TwoFactorEnabled = false,
                             UserName = "anton_1990"
                         },
@@ -106,13 +108,13 @@ namespace InternetForum.Administration.DAL.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6d5cb195-144a-45b7-a18c-8771c63b1ab6",
+                            ConcurrencyStamp = "88130f5b-a4b6-4463-962f-86e8dd7e1b32",
                             Email = "dmitro_kovalcuk@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             PasswordHash = "1111",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1cb5cd70-5cc7-44f7-9cfc-a1fca7c47927",
+                            SecurityStamp = "7f570f29-e6c3-47ff-8bf8-9bb0a6667fb1",
                             TwoFactorEnabled = false,
                             UserName = "dmidro"
                         },
@@ -121,13 +123,13 @@ namespace InternetForum.Administration.DAL.Migrations
                             Id = "3",
                             AccessFailedCount = 0,
                             CodeWords = "Whiski",
-                            ConcurrencyStamp = "29dca4bc-672d-45d5-8aed-edb0103fd167",
+                            ConcurrencyStamp = "e3bbf73b-afad-49d8-aeeb-41fa33b60ed1",
                             Email = "My_mail84@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             PasswordHash = "1111",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "45e18131-2e55-4488-91a7-834d7cea85c2",
+                            SecurityStamp = "10f5c4ea-0c49-4191-ac47-4b171803fc44",
                             TwoFactorEnabled = false,
                             UserName = "user1984"
                         },
@@ -135,13 +137,13 @@ namespace InternetForum.Administration.DAL.Migrations
                         {
                             Id = "4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1f5feb18-2979-4f35-a2b2-ac5aaeee7394",
+                            ConcurrencyStamp = "2f4ab56f-ab0a-4267-8a00-f8ddcb51e0cb",
                             Email = "GoodLuck11@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             PasswordHash = "1111",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "697fe423-eb93-43d7-93f0-066d7699f81a",
+                            SecurityStamp = "761c65c9-8c5f-4d67-8798-d540d13a5427",
                             TwoFactorEnabled = false,
                             UserName = "Have_A_Nice_Day"
                         },
@@ -150,51 +152,25 @@ namespace InternetForum.Administration.DAL.Migrations
                             Id = "5",
                             AccessFailedCount = 0,
                             CodeWords = "Veni, vidi, vici",
-                            ConcurrencyStamp = "343b5ecd-806e-4285-81a8-01ae6be58b9b",
+                            ConcurrencyStamp = "8c23bd64-c5b0-4d3b-9eda-0bb903d094ee",
                             Email = "t_mike2002_11@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             PasswordHash = "1111",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "00fbf031-8adc-4dab-8bae-a1cef38b959f",
+                            SecurityStamp = "904d3c03-2bbd-4cad-b82f-1b56498ae872",
                             TwoFactorEnabled = false,
                             UserName = "mike_2002"
                         });
                 });
 
-            modelBuilder.Entity("InternetForum.Administration.DAL.IdentityModels.IdentityUserRefreshToken", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -214,7 +190,31 @@ namespace InternetForum.Administration.DAL.Migrations
 
                     b.ToTable("AspNetRoles");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole<string>");
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            ConcurrencyStamp = "f8d777bf-7bbf-40c1-9d79-013de0d77f55",
+                            Name = "Administrator"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            ConcurrencyStamp = "0ad2019b-68ad-4eb8-ba74-2c509e0d2e0a",
+                            Name = "User"
+                        },
+                        new
+                        {
+                            Id = "3",
+                            ConcurrencyStamp = "6edc0587-d584-4846-86fc-1d2f825f8abe",
+                            Name = "BannedUser"
+                        },
+                        new
+                        {
+                            Id = "4",
+                            ConcurrencyStamp = "f6a524a5-7a07-4585-a911-716ad293a220",
+                            Name = "PremiumUser"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -329,51 +329,28 @@ namespace InternetForum.Administration.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole<string>");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasDiscriminator().HasValue("IdentityRole");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = "1",
-                            ConcurrencyStamp = "b4e7af9c-2807-4a5b-affa-7c59fcf3b173",
-                            Name = "Administrator"
-                        },
-                        new
-                        {
-                            Id = "2",
-                            ConcurrencyStamp = "8e9a50d2-165d-462e-ba6a-dba7334c79cb",
-                            Name = "User"
-                        },
-                        new
-                        {
-                            Id = "3",
-                            ConcurrencyStamp = "5948b03c-d04f-493a-8ed5-24fffa93e29c",
-                            Name = "BannedUser"
-                        },
-                        new
-                        {
-                            Id = "4",
-                            ConcurrencyStamp = "b69776a1-c3f2-4caf-916f-f5623a74c1b6",
-                            Name = "PremiumUser"
-                        });
-                });
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
 
-            modelBuilder.Entity("InternetForum.Administration.DAL.IdentityModels.IdentityUserRefreshToken", b =>
-                {
-                    b.HasOne("InternetForum.Administration.DAL.IdentityModels.AuthUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<string>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -382,7 +359,7 @@ namespace InternetForum.Administration.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("InternetForum.Administration.DAL.IdentityModels.AuthUser", null)
+                    b.HasOne("InternetForum.Administration.DAL.AuthUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -391,7 +368,7 @@ namespace InternetForum.Administration.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("InternetForum.Administration.DAL.IdentityModels.AuthUser", null)
+                    b.HasOne("InternetForum.Administration.DAL.AuthUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -400,13 +377,22 @@ namespace InternetForum.Administration.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<string>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("InternetForum.Administration.DAL.IdentityModels.AuthUser", null)
+                    b.HasOne("InternetForum.Administration.DAL.AuthUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("InternetForum.Administration.DAL.AuthUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
