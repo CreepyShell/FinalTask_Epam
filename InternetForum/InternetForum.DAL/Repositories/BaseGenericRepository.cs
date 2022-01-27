@@ -1,6 +1,7 @@
 ﻿using InternetForum.DAL.DomainModels;
 using InternetForum.DAL.Interfaces;
 using InternetForum.DAL.Interfaces.RepositoryInterfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,8 +18,8 @@ namespace InternetForum.DAL.Repositories
         }
         public async Task CreateAsync(T entity)
         {
-            if (entity == null)
-                throw new ArgumentNullException("entity", "enitity is null");
+            if (entity == null || string.IsNullOrEmpty(entity.Id))
+                throw new ArgumentNullException("entity", "enitity is null or entity id is null");
 
             if (await _context.FindAsync(typeof(T), entity.Id) is T)
                 throw new ArgumentException("entity with this id is already exists");
@@ -50,23 +51,28 @@ namespace InternetForum.DAL.Repositories
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
+        protected virtual void Dispose(bool dispose)
+        {
+            if(dispose)
+            {
+                _context.Dispose();
+            }
+        }
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _context.FindAsync(typeof(T)) as IEnumerable<T>;
+            return await _context.Set<T>().ToListAsync();
         }
 
         public async Task<T> GetByIdAsync(string id)
         {
             T entity = await _context.FindAsync(typeof(T), id) as T;
-            if (entity == null)
-                throw new ArgumentException("did not find enity with this id");
             return entity;
 
         }
-
 
         public async Task<int> SaveChanesAsync()
         {

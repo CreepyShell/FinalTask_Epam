@@ -8,5 +8,9 @@ namespace InternetForum.DAL.Interfaces.RepositoryInterfaces
     {
         Task<User> UpdateUserAsync(User updatedUser);
         Task<User> GetUserByUsernameAsync(string username);
+        Task<IEnumerable<User>> GetUserWithComments();
+        Task<IEnumerable<User>> GetUserWithPosts();
+        Task<IEnumerable<User>> GetUserWithQuestionnaires();
+        Task<IEnumerable<User>> GetUsersWithReacions();
     }
 }

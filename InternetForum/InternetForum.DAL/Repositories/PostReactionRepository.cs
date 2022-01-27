@@ -23,12 +23,13 @@ namespace InternetForum.DAL.Repositories
 
         public async Task<PostReaction> UpdateAsync(PostReaction reaction)
         {
-            PostReaction postReaction = await _context.PostReactions.FirstOrDefaultAsync(pr => pr.Id == reaction.Id);
+            PostReaction postReaction = await _context.PostReactions.AsNoTracking().FirstOrDefaultAsync(pr => pr.Id == reaction.Id);
             if (postReaction == null)
                 throw new ArgumentException("did not find post with this id");
-            _context.PostReactions.Attach(reaction);
-            _context.Entry(reaction).State = EntityState.Modified;
-            return reaction;
+            postReaction = reaction;
+            _context.PostReactions.Attach(postReaction);
+            _context.Entry(postReaction).State = EntityState.Modified;
+            return postReaction;
         }
     }
 }

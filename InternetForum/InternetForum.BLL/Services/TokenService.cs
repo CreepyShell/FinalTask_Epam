@@ -24,19 +24,21 @@ namespace InternetForum.BLL.Services
             Token token = new Token()
             {
                 RefreshToken = await _unitOfWork.UserManager.GenerateUserTokenAsync(authUser, "Provider", "RefreshToken"),
-                AccessToken = SecurityHelper.GenerateJwtToken(authUser, jwtSettings, new string[] { "User" })
+                AccessToken = SecurityHelper.GenerateJwtToken(authUser, jwtSettings, await _unitOfWork.UserManager.GetRolesAsync(authUser))
             };
             await _unitOfWork.UserManager.SetAuthenticationTokenAsync(authUser, "Provider", "RefreshToken", token.RefreshToken);
             return token;
         }
 
-        public async Task<Token> RefreshTokenAsync(string userName, JwtSettings settings)
+        public async Task<Token> RefreshTokenAsync(string userName, string oldRefreshToken, JwtSettings settings)
         {
             AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(userName);
             if (authUser == null)
                 throw new ArgumentException("Did not find user with this username");
 
             string refreshToken = await _unitOfWork.UserManager.GetAuthenticationTokenAsync(authUser, "Provider", "RefreshToken");
+            if (!refreshToken.Equals(oldRefreshToken))
+                throw new TokenException("Invalid refresh token");
             if (string.IsNullOrEmpty(refreshToken))
                 throw new TokenException("something went wrong, this user do not have a token");
 

@@ -1,8 +1,10 @@
 ﻿using InternetForum.DAL.Interfaces;
 using AutoMapper;
+using System;
+
 namespace InternetForum.BLL.Services
 {
-    public class BaseService
+    public class BaseService : IDisposable
     {
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IMapper _mapper;
@@ -10,6 +12,19 @@ namespace InternetForum.BLL.Services
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _unitOfWork.Dispose();
+            }
         }
     }
 }

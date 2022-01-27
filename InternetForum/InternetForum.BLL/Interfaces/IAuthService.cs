@@ -8,6 +8,6 @@ namespace InternetForum.BLL.Interfaces
     {
         Task<UserDTO> Register(AuthUserDTO register, JwtSettings settings);
         Task<UserDTO> LogIn(AuthUserDTO logInUser, JwtSettings settings);
-        Task<bool> AssignUserToRole(string userName, string role);
+        Task LogOut(UserDTO logInUser);
     }
 }

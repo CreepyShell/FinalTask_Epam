@@ -17,7 +17,9 @@ namespace InternetForum.WebAPI
     {
         public static void AddJwtAuthentication(this IServiceCollection services, string secretKey, string audience, string issuer)
         {
-            services.AddAuthentication(options =>
+            services.
+                AddAuthorization().
+                AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -42,6 +44,7 @@ namespace InternetForum.WebAPI
 
                     ValidateIssuer = true,
                     ValidIssuer = issuer
+
                 };
             });
         }
@@ -53,13 +56,23 @@ namespace InternetForum.WebAPI
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IPostReactionRepository, PostReactionRepository>();
             services.AddScoped<ICommentReactionRepository, CommentReactionRepository>();
+            services.AddScoped<IQuestionnaireRepository, QuestionnaireRepository>();
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<IAnswerRepository, AnswerRepository>();
+            services.AddScoped<IAnswerUserRepository, AnswerUserRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
         public static void RegisterServices(this IServiceCollection services)
         {
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IReactionService, ReactionService>();
+
+            services.AddScoped<IPostService, PostService>();
         }
 
         public static void RegisterAutoMapper(this IServiceCollection services)
@@ -67,6 +80,12 @@ namespace InternetForum.WebAPI
             services.AddAutoMapper(conf =>
             {
                 conf.AddProfile<UserProfile>();
+                conf.AddProfile<PostProfile>();
+                conf.AddProfile<CommentProfile>();
+                conf.AddProfile<ReactionProfile>();
+                conf.AddProfile<QuestionnaireProfile>();
+                conf.AddProfile<QuestionProfile>();
+                conf.AddProfile<AnswerProfile>();
             });
         }
     }

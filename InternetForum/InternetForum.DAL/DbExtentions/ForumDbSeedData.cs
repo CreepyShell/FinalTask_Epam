@@ -12,7 +12,7 @@ namespace InternetForum.DAL.DbExtentions
             {
                 new User()
                 {
-                    Id = "1s",
+                    Id = "1",
                     UserName = "anton_1990",
                     BirthDay = new DateTime(1990, 5, 4),
                     FirstName = "Anton",
@@ -56,7 +56,7 @@ namespace InternetForum.DAL.DbExtentions
                     Header = "Summer holidays",
                     PostTopic = PostTopic.Activities,
                     Text = "Tell about your best summer holidays",
-                    UserId = "1s"
+                    UserId = "1"
                 },
                 new Post()
                 {
@@ -82,7 +82,7 @@ namespace InternetForum.DAL.DbExtentions
                 new Comment()
                 {
                     Id = "1",
-                    UserId = "1s",
+                    UserId = "1",
                     PostId = "1",
                     CreatedAt = DateTime.Now.AddHours(1),
                     CommentText = "My last summer holidays was the best",
@@ -110,7 +110,7 @@ namespace InternetForum.DAL.DbExtentions
                 {
                     Id = "4",
                     UserId = "5",
-                    PostId = "1",                   
+                    PostId = "1",
                     CreatedAt = DateTime.Now.AddHours(1),
                     CommentText = "My last summer holidays was the best too. Thank you!",
                     CommentId = "1"
@@ -132,7 +132,7 @@ namespace InternetForum.DAL.DbExtentions
                     Id = "1",
                     IsLiked = true,
                     PostId = "1",
-                    UserId = "1s",
+                    UserId = "1",
                     ReactedAt = DateTime.Now.AddHours(1)
                 },
                 new PostReaction()
@@ -207,7 +207,7 @@ namespace InternetForum.DAL.DbExtentions
                     UserId = "2",
                     ReactedAt = DateTime.Now.AddDays(91)
                 },
-            }) ;
+            });
 
             builder.Entity<CommentReaction>().HasData(new CommentReaction[3] {
                 new CommentReaction()
@@ -231,8 +231,105 @@ namespace InternetForum.DAL.DbExtentions
                      Id = "3",
                     CommentId = "3",
                     IsLiked = false,
-                    UserId = "1s",
+                    UserId = "1",
                     ReactedAt = DateTime.Now.AddDays(181)
+                }
+            });
+
+            builder.Entity<Questionnaire>().HasData(new Questionnaire[1] {
+                new Questionnaire()
+                {
+                    AuthorId = "1",
+                    ClosedAt = null,
+                    Id = "1",
+                    OpenAt = DateTime.Now,
+                    Title = "Best Time Of Year"
+                }
+            });
+
+            builder.Entity<Question>().HasData(new Question[3]
+            {
+                new Question()
+                {
+                    Id = "1",
+                    IsAllowedMultiple = false,
+                    QuestionnaireId = "1",
+                    Text = "Is Summer the best time of year?",
+                    IsRequired = true
+                },
+                new Question()
+                {
+                    Id = "2",
+                    IsAllowedMultiple = true,
+                    QuestionnaireId = "1",
+                    Text = "What you best time of year?",
+                    IsRequired = true
+                },
+                new Question()
+                {
+                    Id = "3",
+                    IsAllowedMultiple = true,
+                    QuestionnaireId = "1",
+                    Text = "What is your favorite activity?",
+                    IsRequired = false
+                }
+            });
+
+            builder.Entity<Answer>().HasData(new Answer[5]
+            {
+                new Answer()
+                {
+                    Id = "1",
+                    QuestionId = "1",
+                    Text = "Yes"
+                },
+                new Answer()
+                {
+                    Id = "2",
+                    QuestionId = "1",
+                    Text = "No"
+                },
+                new Answer()
+                {
+                    Id = "3",
+                    QuestionId = "2",
+                    Text = "Winter"
+                },
+                new Answer()
+                {
+                     Id = "4",
+                    QuestionId = "2",
+                    Text = "Summer"
+                },
+                new Answer()
+                {
+                     Id = "5",
+                    QuestionId = "3",
+                    Text = "Sleeping"
+                },
+            });
+
+            builder.Entity<AnswerUser>().HasData(new AnswerUser[4]
+            {
+                new AnswerUser()
+                {
+                    AnswerId = "1",
+                    UserId = "1"
+                },
+                new AnswerUser()
+                {
+                    AnswerId = "3",
+                    UserId = "1"
+                },
+                new AnswerUser()
+                {
+                    AnswerId = "4",
+                    UserId = "1"
+                },
+                new AnswerUser()
+                {
+                     AnswerId = "5",
+                    UserId = "1"
                 }
             });
         }

@@ -34,9 +34,9 @@ namespace InternetForum.BLL.Helpers
                 {
                     new Claim(ClaimTypes.Name, authUser.UserName),
                     new Claim(ClaimTypes.Email, authUser.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, authUser.Id)
+                    new Claim(ClaimTypes.NameIdentifier, authUser.Id)
                 }),
-                Expires = DateTime.Now.AddDays(settings.ExpirationMinutes),
+                Expires = DateTime.Now.AddMinutes(settings.ExpirationMinutes),
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256),
                 Issuer = settings.Issuer,
                 Audience = settings.Audience

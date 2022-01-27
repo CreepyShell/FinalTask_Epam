@@ -54,6 +54,36 @@ namespace InternetForum.DAL.DbExtentions
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            builder.Entity<User>()
+                .HasMany(u => u.Answers)
+                .WithOne(c => c.User)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<User>()
+                .HasMany(u => u.Questionnaires)
+                .WithOne(c => c.Author)
+                .HasForeignKey(c => c.AuthorId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Answer>()
+               .HasMany(a => a.Users)
+               .WithOne(a => a.Answer)
+               .HasForeignKey(c => c.AnswerId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Questionnaire>()
+                .HasMany(q => q.Questions)
+                .WithOne(q => q.Questionnaire)
+                .HasForeignKey(q => q.QuestionnaireId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<AnswerUser>()
+                .HasKey(au => new { 
+                    A = au.AnswerId,
+                    U = au.UserId
+                });
+
         }
     }
 }

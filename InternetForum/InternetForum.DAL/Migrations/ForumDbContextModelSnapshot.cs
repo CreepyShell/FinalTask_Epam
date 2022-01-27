@@ -19,6 +19,96 @@ namespace InternetForum.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("InternetForum.DAL.DomainModels.Answer", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("QuestionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            QuestionId = "1",
+                            Text = "Yes"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            QuestionId = "1",
+                            Text = "No"
+                        },
+                        new
+                        {
+                            Id = "3",
+                            QuestionId = "2",
+                            Text = "Winter"
+                        },
+                        new
+                        {
+                            Id = "4",
+                            QuestionId = "2",
+                            Text = "Summer"
+                        },
+                        new
+                        {
+                            Id = "5",
+                            QuestionId = "3",
+                            Text = "Sleeping"
+                        });
+                });
+
+            modelBuilder.Entity("InternetForum.DAL.DomainModels.AnswerUser", b =>
+                {
+                    b.Property<string>("AnswerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AnswerId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AnswerUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            AnswerId = "1",
+                            UserId = "1s"
+                        },
+                        new
+                        {
+                            AnswerId = "3",
+                            UserId = "1s"
+                        },
+                        new
+                        {
+                            AnswerId = "4",
+                            UserId = "1s"
+                        },
+                        new
+                        {
+                            AnswerId = "5",
+                            UserId = "1s"
+                        });
+                });
+
             modelBuilder.Entity("InternetForum.DAL.DomainModels.Comment", b =>
                 {
                     b.Property<string>("Id")
@@ -56,7 +146,7 @@ namespace InternetForum.DAL.Migrations
                         {
                             Id = "1",
                             CommentText = "My last summer holidays was the best",
-                            CreatedAt = new DateTime(2022, 1, 24, 23, 6, 50, 226, DateTimeKind.Local).AddTicks(8995),
+                            CreatedAt = new DateTime(2022, 1, 25, 22, 39, 21, 215, DateTimeKind.Local).AddTicks(9118),
                             PostId = "1",
                             UserId = "1s"
                         },
@@ -64,7 +154,7 @@ namespace InternetForum.DAL.Migrations
                         {
                             Id = "2",
                             CommentText = "My last winter holidays was the best",
-                            CreatedAt = new DateTime(2022, 4, 25, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(9840),
+                            CreatedAt = new DateTime(2022, 4, 26, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(639),
                             PostId = "2",
                             UserId = "2"
                         },
@@ -72,7 +162,7 @@ namespace InternetForum.DAL.Migrations
                         {
                             Id = "3",
                             CommentText = "My last autumn holidays was the best",
-                            CreatedAt = new DateTime(2022, 7, 24, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(9884),
+                            CreatedAt = new DateTime(2022, 7, 25, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(723),
                             PostId = "3",
                             UserId = "3"
                         },
@@ -81,7 +171,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "4",
                             CommentId = "1",
                             CommentText = "My last summer holidays was the best too. Thank you!",
-                            CreatedAt = new DateTime(2022, 1, 24, 23, 6, 50, 226, DateTimeKind.Local).AddTicks(9889),
+                            CreatedAt = new DateTime(2022, 1, 25, 22, 39, 21, 216, DateTimeKind.Local).AddTicks(731),
                             PostId = "1",
                             UserId = "5"
                         },
@@ -90,7 +180,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "5",
                             CommentId = "2",
                             CommentText = "My last winter holidays was the best too. It was good time",
-                            CreatedAt = new DateTime(2022, 4, 25, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(9893),
+                            CreatedAt = new DateTime(2022, 4, 26, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(739),
                             PostId = "2",
                             UserId = "4"
                         });
@@ -129,7 +219,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "1",
                             CommentId = "1",
                             IsLiked = true,
-                            ReactedAt = new DateTime(2022, 1, 25, 0, 6, 50, 227, DateTimeKind.Local).AddTicks(3110),
+                            ReactedAt = new DateTime(2022, 1, 25, 23, 39, 21, 216, DateTimeKind.Local).AddTicks(5508),
                             UserId = "5"
                         },
                         new
@@ -137,7 +227,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "2",
                             CommentId = "2",
                             IsLiked = true,
-                            ReactedAt = new DateTime(2022, 4, 26, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(3452),
+                            ReactedAt = new DateTime(2022, 4, 27, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(6070),
                             UserId = "4"
                         },
                         new
@@ -145,7 +235,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "3",
                             CommentId = "3",
                             IsLiked = false,
-                            ReactedAt = new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(3476),
+                            ReactedAt = new DateTime(2022, 7, 25, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(6108),
                             UserId = "1s"
                         });
                 });
@@ -187,17 +277,17 @@ namespace InternetForum.DAL.Migrations
                         new
                         {
                             Id = "1",
-                            CreatedAt = new DateTime(2022, 1, 24, 22, 6, 50, 223, DateTimeKind.Local).AddTicks(5139),
+                            CreatedAt = new DateTime(2022, 1, 25, 21, 39, 21, 209, DateTimeKind.Local).AddTicks(9002),
                             Header = "Summer holidays",
                             PostTopic = 3,
                             Text = "Tell about your best summer holidays",
-                            UpdatedAt = new DateTime(2022, 1, 24, 22, 16, 50, 226, DateTimeKind.Local).AddTicks(5685),
+                            UpdatedAt = new DateTime(2022, 1, 25, 21, 49, 21, 215, DateTimeKind.Local).AddTicks(4160),
                             UserId = "1s"
                         },
                         new
                         {
                             Id = "2",
-                            CreatedAt = new DateTime(2022, 4, 24, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(7412),
+                            CreatedAt = new DateTime(2022, 4, 25, 21, 39, 21, 215, DateTimeKind.Local).AddTicks(6780),
                             Header = "Winter holidays",
                             PostTopic = 3,
                             Text = "Tell about your best winter holidays",
@@ -206,7 +296,7 @@ namespace InternetForum.DAL.Migrations
                         new
                         {
                             Id = "3",
-                            CreatedAt = new DateTime(2022, 7, 23, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(7506),
+                            CreatedAt = new DateTime(2022, 7, 24, 21, 39, 21, 215, DateTimeKind.Local).AddTicks(6934),
                             Header = "Autumn holidays",
                             PostTopic = 3,
                             Text = "Tell about your best Autumn holidays",
@@ -247,7 +337,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "1",
                             IsLiked = true,
                             PostId = "1",
-                            ReactedAt = new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1242),
+                            ReactedAt = new DateTime(2022, 1, 25, 22, 39, 21, 216, DateTimeKind.Local).AddTicks(2770),
                             UserId = "1s"
                         },
                         new
@@ -255,7 +345,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "2",
                             IsLiked = false,
                             PostId = "1",
-                            ReactedAt = new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1607),
+                            ReactedAt = new DateTime(2022, 1, 25, 22, 39, 21, 216, DateTimeKind.Local).AddTicks(3313),
                             UserId = "2"
                         },
                         new
@@ -263,7 +353,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "3",
                             IsLiked = true,
                             PostId = "2",
-                            ReactedAt = new DateTime(2022, 4, 25, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1628),
+                            ReactedAt = new DateTime(2022, 4, 26, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(3346),
                             UserId = "3"
                         },
                         new
@@ -271,7 +361,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "4",
                             IsLiked = true,
                             PostId = "3",
-                            ReactedAt = new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1632),
+                            ReactedAt = new DateTime(2022, 7, 25, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(3353),
                             UserId = "3"
                         },
                         new
@@ -279,7 +369,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "5",
                             IsLiked = false,
                             PostId = "3",
-                            ReactedAt = new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1718),
+                            ReactedAt = new DateTime(2022, 7, 25, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(3359),
                             UserId = "4"
                         },
                         new
@@ -287,7 +377,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "6",
                             IsLiked = true,
                             PostId = "2",
-                            ReactedAt = new DateTime(2022, 4, 15, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1724),
+                            ReactedAt = new DateTime(2022, 4, 16, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(3364),
                             UserId = "4"
                         },
                         new
@@ -295,7 +385,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "7",
                             IsLiked = false,
                             PostId = "1",
-                            ReactedAt = new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1728),
+                            ReactedAt = new DateTime(2022, 1, 25, 22, 39, 21, 216, DateTimeKind.Local).AddTicks(3370),
                             UserId = "5"
                         },
                         new
@@ -303,7 +393,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "8",
                             IsLiked = true,
                             PostId = "1",
-                            ReactedAt = new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1732),
+                            ReactedAt = new DateTime(2022, 1, 25, 22, 39, 21, 216, DateTimeKind.Local).AddTicks(3375),
                             UserId = "4"
                         },
                         new
@@ -311,7 +401,7 @@ namespace InternetForum.DAL.Migrations
                             Id = "9",
                             IsLiked = false,
                             PostId = "3",
-                            ReactedAt = new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1736),
+                            ReactedAt = new DateTime(2022, 7, 25, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(3381),
                             UserId = "5"
                         },
                         new
@@ -319,8 +409,97 @@ namespace InternetForum.DAL.Migrations
                             Id = "10",
                             IsLiked = false,
                             PostId = "2",
-                            ReactedAt = new DateTime(2022, 4, 25, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1740),
+                            ReactedAt = new DateTime(2022, 4, 26, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(3387),
                             UserId = "2"
+                        });
+                });
+
+            modelBuilder.Entity("InternetForum.DAL.DomainModels.Question", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsAllowedMultiple")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("QuestionnaireId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionnaireId");
+
+                    b.ToTable("Questions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            IsAllowedMultiple = false,
+                            IsRequired = true,
+                            QuestionnaireId = "1",
+                            Text = "Is Summer the best time of year?"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            IsAllowedMultiple = true,
+                            IsRequired = true,
+                            QuestionnaireId = "1",
+                            Text = "What you best time of year?"
+                        },
+                        new
+                        {
+                            Id = "3",
+                            IsAllowedMultiple = true,
+                            IsRequired = false,
+                            QuestionnaireId = "1",
+                            Text = "What is your favorite activity?"
+                        });
+                });
+
+            modelBuilder.Entity("InternetForum.DAL.DomainModels.Questionnaire", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("ClosedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("OpenAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("Questionnaires");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            AuthorId = "1s",
+                            OpenAt = new DateTime(2022, 1, 25, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(8178),
+                            Title = "Best Time Of Year"
                         });
                 });
 
@@ -407,6 +586,30 @@ namespace InternetForum.DAL.Migrations
                         });
                 });
 
+            modelBuilder.Entity("InternetForum.DAL.DomainModels.Answer", b =>
+                {
+                    b.HasOne("InternetForum.DAL.DomainModels.Question", "Question")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("InternetForum.DAL.DomainModels.AnswerUser", b =>
+                {
+                    b.HasOne("InternetForum.DAL.DomainModels.Answer", "Answer")
+                        .WithMany("Users")
+                        .HasForeignKey("AnswerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InternetForum.DAL.DomainModels.User", "User")
+                        .WithMany("Answers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("InternetForum.DAL.DomainModels.Comment", b =>
                 {
                     b.HasOne("InternetForum.DAL.DomainModels.Post", "Post")
@@ -457,6 +660,24 @@ namespace InternetForum.DAL.Migrations
                     b.HasOne("InternetForum.DAL.DomainModels.User", "User")
                         .WithMany("PostReactions")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("InternetForum.DAL.DomainModels.Question", b =>
+                {
+                    b.HasOne("InternetForum.DAL.DomainModels.Questionnaire", "Questionnaire")
+                        .WithMany("Questions")
+                        .HasForeignKey("QuestionnaireId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("InternetForum.DAL.DomainModels.Questionnaire", b =>
+                {
+                    b.HasOne("InternetForum.DAL.DomainModels.User", "Author")
+                        .WithMany("Questionnaires")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });

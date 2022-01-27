@@ -43,7 +43,7 @@ namespace InternetForum.WebAPI
                 .AddEntityFrameworkStores<UsersDbContext>()
                 .AddTokenProvider("Provider", typeof(DataProtectorTokenProvider<AuthUser>));
 
-            services.Configure<DataProtectionTokenProviderOptions>(opt => opt.TokenLifespan = TimeSpan.FromDays(2));
+            services.Configure<DataProtectionTokenProviderOptions>(opt => { opt.TokenLifespan = TimeSpan.FromDays(1); });
 
             JwtSettings settings = Configuration.GetSection("JwtSection").Get<JwtSettings>();
 

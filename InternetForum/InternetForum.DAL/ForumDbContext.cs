@@ -16,6 +16,10 @@ namespace InternetForum.DAL
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostReaction> PostReactions { get; set; }
         public DbSet<CommentReaction> CommentReactions { get; set; }
+        public DbSet<Questionnaire> Questionnaires { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<AnswerUser> AnswerUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -20,14 +20,25 @@ namespace InternetForum.DAL.Repositories
             return await _context.Comments.Where(c => c.CommentId == commentId).ToListAsync();
         }
 
+        public async Task<IEnumerable<Comment>> GetCommentsByUserIdAsync(string userId)
+        {
+            return await _context.Comments.Where(c => c.UserId == userId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Comment>> GetCommentsWithReactions()
+        {
+            return await _context.Comments.Include(c => c.Reactions).ToListAsync();
+        }
+
         public async Task<Comment> UpdatePostAsync(Comment newComment)
         {
-            Comment comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == newComment.Id);
+            Comment comment = await _context.Comments.AsNoTracking().FirstOrDefaultAsync(c => c.Id == newComment.Id);
             if (comment == null)
                 throw new ArgumentException("did not find comment with this id");
-            _context.Comments.Attach(newComment);
-            _context.Entry(newComment).State = EntityState.Modified;
-            return newComment;
+            comment = newComment;
+            _context.Comments.Attach(comment);
+            _context.Entry(comment).State = EntityState.Modified;
+            return comment;
         }
     }
 }

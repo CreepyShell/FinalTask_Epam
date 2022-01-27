@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace InternetForum.BLL.Interfaces
 {
     public interface ICrud<T>
     {
-        void AddEntityAsync(T entity);
-        T UpdateAsync(T newEntity);
-        T GetByIdAsync(int id);
-        IEnumerable<T> GetAllAsync();
-        bool DeleteAsync(int id);
+        Task<T> AddEntityAsync(T entity);
+        Task<T> UpdateAsync(T newEntity);
+        Task<T> GetByIdAsync(string id);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<bool> DeleteAsync(string id);
     }
 }

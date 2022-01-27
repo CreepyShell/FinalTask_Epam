@@ -35,5 +35,14 @@ namespace InternetForum.WebAPI.Controllers
         {
             return await _authService.LogIn(authUser, _jwtSettings);
         }
+
+        [Authorize]
+        [HttpPut]
+        [Route("logOut")]
+        public async Task<IActionResult> LogOut([FromBody] UserDTO user)
+        {
+            await _authService.LogOut(user);
+            return Ok("Log outed");
+        }
     }
 }

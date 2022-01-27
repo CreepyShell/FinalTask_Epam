@@ -13,6 +13,10 @@
     <Compile Remove="Migrations\20220124195737_Init.Designer.cs" />
     <Compile Remove="Migrations\20220124195957_Init.cs" />
     <Compile Remove="Migrations\20220124195957_Init.Designer.cs" />
+    <Compile Remove="Migrations\20220125193438_AddedQuestionnaire.cs" />
+    <Compile Remove="Migrations\20220125193438_AddedQuestionnaire.Designer.cs" />
+    <Compile Remove="Migrations\20220125193757_AddedQuestionnaire.cs" />
+    <Compile Remove="Migrations\20220125193757_AddedQuestionnaire.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

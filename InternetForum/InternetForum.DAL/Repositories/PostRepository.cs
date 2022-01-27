@@ -4,6 +4,7 @@ using InternetForum.DAL.Interfaces.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace InternetForum.DAL.Repositories
@@ -12,6 +13,11 @@ namespace InternetForum.DAL.Repositories
     {
         public PostRepository(IForumDb context) : base(context)
         {
+        }
+
+        public async Task<IEnumerable<Post>> GetPostsByUserIdAsync(string userId)
+        {
+            return await _context.Posts.Where(p => p.UserId == userId).ToListAsync();
         }
 
         public async Task<IEnumerable<Post>> GetPostsWithCommentsAsync()
@@ -26,12 +32,14 @@ namespace InternetForum.DAL.Repositories
 
         public async Task<Post> UpdatePostAsync(Post newPost)
         {
-            Post post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == newPost.Id);
+            Post post = await _context.Posts.AsNoTracking().FirstOrDefaultAsync(p => p.Id == newPost.Id);
             if (post == null)
                 throw new ArgumentException("did not find post with this id");
-            _context.Posts.Attach(newPost);
-            _context.Entry(newPost).State = EntityState.Modified;
-            return newPost;
+            post = newPost;
+            _context.Posts.Attach(post);
+            _context.Entry(post).State = EntityState.Modified;
+
+            return post;
         }
     }
 }
