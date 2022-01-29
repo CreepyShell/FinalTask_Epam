@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace InternetForum.DAL.Repositories
@@ -45,14 +44,18 @@ namespace InternetForum.DAL.Repositories
 
         public async Task<bool> RemoveUserAnswerAsync(string userId, string answerId)
         {
-            if (await _context.AnswerUsers.FirstOrDefaultAsync(au => au.AnswerId == answerId && au.UserId == userId) == null)
-                throw new ArgumentException("this user answer does not exist");
-
-            AnswerUser answerUser = new AnswerUser() { AnswerId = answerId, UserId = userId };
+            AnswerUser answerUser = await _context.AnswerUsers.FirstOrDefaultAsync(au => au.AnswerId == answerId && au.UserId == userId);
+            if (answerUser == null)
+                return false;
 
             _context.AnswerUsers.Remove(answerUser);
 
             return true;
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
         }
     }
 }

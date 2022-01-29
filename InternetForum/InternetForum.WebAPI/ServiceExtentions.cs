@@ -68,9 +68,13 @@ namespace InternetForum.WebAPI
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ITokenService, TokenService>();
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IReactionService, ReactionService>();
+            services.AddScoped<IQuestionnaireService, QuestionnaireService>();
+            services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<IAnswerService, AnswerService>();
 
             services.AddScoped<IPostService, PostService>();
         }

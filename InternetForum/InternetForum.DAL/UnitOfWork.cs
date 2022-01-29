@@ -53,7 +53,7 @@ namespace InternetForum.DAL
 
         public async Task<int> SaveChangesAsync()            
         {
-            return await PostRepository.SaveChanesAsync();
+            return await PostRepository.SaveChangesAsync();
         }
     }
 }

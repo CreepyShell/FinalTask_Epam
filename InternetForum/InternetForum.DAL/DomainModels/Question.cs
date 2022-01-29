@@ -10,7 +10,7 @@ namespace InternetForum.DAL.DomainModels
         public string QuestionnaireId { get; set; }
         [Required]
         [MinLength(3)]
-        [MaxLength(50)]
+        [MaxLength(40)]
         public string Text{ get; set; }
         [Required]
         public bool IsAllowedMultiple { get; set; }

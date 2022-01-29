@@ -14,5 +14,6 @@ namespace InternetForum.BLL.ModelsDTo.User
         public string Email { get; set; }
         public DateTime RegisteredAt { get; set; }
         public DateTime? BirthDay { get; set; }
+        public string[] PostIds { get; set; }
     }
 }

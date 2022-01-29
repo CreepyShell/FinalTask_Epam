@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using InternetForum.BLL.ModelsDTo;
-using InternetForum.DAL.DomainModels;
 
 namespace InternetForum.BLL.ModelsDTOValidators
 {
@@ -8,7 +7,10 @@ namespace InternetForum.BLL.ModelsDTOValidators
     {
         public QuestionValidator()
         {
-
+            RuleFor(q => q.IsAllowedMultiple).NotEmpty();
+            RuleFor(q => q.IsRequired).NotEmpty();
+            RuleFor(q => q.QuestionnaireId).NotEmpty();
+            RuleFor(q => q.Text).MinimumLength(3).WithMessage("Length of question text must be more than 3").MaximumLength(40).WithMessage("Length of question text must be less than 40");
         }
     }
 }

@@ -61,7 +61,7 @@ namespace InternetForum.BLL.Services
         public async Task<bool> DeleteAsync(string id)
         {
             bool rez = await _unitOfWork.CommentRepository.DeleteByIdAsync(id);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.CommentRepository.SaveChangesAsync();
             return rez;
         }
 
@@ -108,6 +108,6 @@ namespace InternetForum.BLL.Services
             return _mapper.Map<CommentDTO>(comment);
         }
 
-        private async Task<bool> CheckIsValidCommentId(string commentId) => (await _unitOfWork.CommentRepository.GetByIdAsync(commentId)) != null;
+        private async Task<bool> CheckIsValidCommentId(string commentId) => string.IsNullOrEmpty(commentId) || (await _unitOfWork.CommentRepository.GetByIdAsync(commentId)) != null;
     }
 }

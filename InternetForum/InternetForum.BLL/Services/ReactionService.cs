@@ -43,21 +43,25 @@ namespace InternetForum.BLL.Services
         {
             await ValidateReaction(reaction);
 
-            CommentReaction commentReaction = await _unitOfWork.CommentReactionRepository.GetByIdAsync(reaction.Id);
+            CommentReaction commentReaction = (await _unitOfWork.CommentReactionRepository.GetAllAsync()).FirstOrDefault(r => r.UserId == reaction.UserId && r.CommentId == reaction.CommentId);
             if (commentReaction == null)
             {
-                await _unitOfWork.PostReactionRepository.CreateAsync(_mapper.Map<PostReaction>(reaction));
-                await _unitOfWork.SaveChangesAsync();
+                if (string.IsNullOrEmpty(reaction.Id) || (await _unitOfWork.CommentReactionRepository.GetByIdAsync(reaction.Id)) != null)
+                    reaction.Id = Guid.NewGuid().ToString();
+                reaction.ReactedAt = DateTime.Now;
+                await _unitOfWork.CommentReactionRepository.CreateAsync(_mapper.Map<CommentReaction>(reaction));
+                await _unitOfWork.CommentReactionRepository.SaveChangesAsync();
                 return _mapper.Map<ReactionDTO>(await _unitOfWork.CommentReactionRepository.GetByIdAsync(reaction.Id));
             }
             if (commentReaction.IsLiked == reaction.IsLike)
             {
                 await _unitOfWork.CommentReactionRepository.DeleteAsync(commentReaction);
-                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommentReactionRepository.SaveChangesAsync();
                 return null;
             }
             commentReaction.IsLiked = !reaction.IsLike;
             await _unitOfWork.CommentReactionRepository.UpdateAsync(commentReaction);
+            await _unitOfWork.CommentReactionRepository.SaveChangesAsync();
             return _mapper.Map<ReactionDTO>(commentReaction);
         }
 
@@ -65,21 +69,25 @@ namespace InternetForum.BLL.Services
         {
             await ValidateReaction(reaction);
 
-            PostReaction postReaction = await _unitOfWork.PostReactionRepository.GetByIdAsync(reaction.Id);
+            PostReaction postReaction = (await _unitOfWork.PostReactionRepository.GetAllAsync()).FirstOrDefault(r => r.UserId == reaction.UserId && r.PostId == reaction.PostId);
             if (postReaction == null)
             {
+                if (string.IsNullOrEmpty(reaction.Id) || (await _unitOfWork.PostReactionRepository.GetByIdAsync(reaction.Id)) != null)
+                    reaction.Id = Guid.NewGuid().ToString();
+                reaction.ReactedAt = DateTime.Now;
                 await _unitOfWork.PostReactionRepository.CreateAsync(_mapper.Map<PostReaction>(reaction));
-                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.PostReactionRepository.SaveChangesAsync();
                 return _mapper.Map<ReactionDTO>(await _unitOfWork.PostReactionRepository.GetByIdAsync(reaction.Id));
             }
             if (postReaction.IsLiked == reaction.IsLike)
             {
                 await _unitOfWork.PostReactionRepository.DeleteAsync(postReaction);
-                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.PostReactionRepository.SaveChangesAsync();
                 return null;
             }
             postReaction.IsLiked = !reaction.IsLike;
             await _unitOfWork.PostReactionRepository.UpdateAsync(postReaction);
+            await _unitOfWork.PostReactionRepository.SaveChangesAsync();
             return _mapper.Map<ReactionDTO>(postReaction);
         }
 

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using InternetForum.BLL.ModelsDTo;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace InternetForum.BLL.Interfaces
 {
-    class IQuestionService
+    public interface IQuestionService : ICrud<QuestionDTO>
     {
+        Task<IEnumerable<QuestionDTO>> GetQuestionsWithAnswers();
+        Task<IEnumerable<QuestionDTO>> GetQuestionsByQuestionnaire(string questionnaireId);
     }
 }

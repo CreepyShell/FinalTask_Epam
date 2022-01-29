@@ -19,12 +19,16 @@ namespace InternetForum.BLL.MapperSettings
                 .ForMember(dest => dest.BirthDay, src => src.MapFrom(u => u.Item2.BirthDay))
                 .ForMember(dest => dest.Email, src => src.MapFrom(u => u.Item1.Email))
                 .ForMember(dest => dest.RegisteredAt, src => src.MapFrom(u => u.Item2.RegisteredAt))
+                .ForMember(dest => dest.PostIds, src => src.MapFrom(u => u.Item2.Posts.Select(p => p.Id)))
                 .ForMember(dest => dest.FullName, src => src.MapFrom(u => u.Item2.FirstName + " " + u.Item2.FirstName));
 
             CreateMap<UserDTO, User>()
                 .ForMember(dest => dest.FirstName, src => src.MapFrom(u => ParseFullName(u.FullName, 0)))
                 .ForMember(dest => dest.LastName, src => src.MapFrom(u => ParseFullName(u.FullName, 1)));
-            
+
+            CreateMap<User, UserDTO>()
+               .ForMember(dest => dest.FullName, src => src.MapFrom(u => u.FirstName + " " + u.LastName));
+
         }
         private string ParseFullName(string s, int index) => new string(s.Split(' ').ElementAtOrDefault(index));
     }

@@ -28,8 +28,7 @@ namespace InternetForum.WebAPI.Controllers
         [Route("refresh")]
         public async Task<ActionResult<Token>> RefreshToken([FromHeader] string accessToken,[FromHeader] string refreshToken)
         {
-            string userName = JwtHelper.GetUserNameFromAccessToken(accessToken, _jwtSettings);
-            return await _tokenService.RefreshTokenAsync(userName, refreshToken, _jwtSettings);
+            return await _tokenService.RefreshTokenAsync(accessToken, refreshToken, _jwtSettings);
         }
 
         [HttpPost]

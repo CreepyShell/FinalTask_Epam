@@ -9,5 +9,6 @@ namespace InternetForum.BLL.Interfaces
         Task<UserDTO> Register(AuthUserDTO register, JwtSettings settings);
         Task<UserDTO> LogIn(AuthUserDTO logInUser, JwtSettings settings);
         Task LogOut(UserDTO logInUser);
+        Task<bool> UpdateCodeWord(UserDTO user, string newCodeWord);
     }
 }

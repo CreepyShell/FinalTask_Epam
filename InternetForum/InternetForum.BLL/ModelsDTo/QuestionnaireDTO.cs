@@ -9,5 +9,6 @@ namespace InternetForum.BLL.ModelsDTo
         public string Title { get; set; }
         public DateTime OpenAt { get; set; }
         public DateTime? ClosedAt { get; set; }
+        public string[] QuestionIds { get; set; }
     }
 }

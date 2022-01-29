@@ -13,5 +13,7 @@ namespace InternetForum.BLL.ModelsDTo
         public string Header { get; set; }
         public string Text { get; set; }
         public string PostTopic { get; set; }
+        public string CommentIds { get; set; }
+        public string[] ReactionIds { get; set; }
     }
 }

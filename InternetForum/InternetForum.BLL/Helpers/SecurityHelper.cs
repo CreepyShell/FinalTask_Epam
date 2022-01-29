@@ -34,12 +34,14 @@ namespace InternetForum.BLL.Helpers
                 {
                     new Claim(ClaimTypes.Name, authUser.UserName),
                     new Claim(ClaimTypes.Email, authUser.Email),
-                    new Claim(ClaimTypes.NameIdentifier, authUser.Id)
+                    new Claim(ClaimTypes.NameIdentifier, authUser.Id),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
                 Expires = DateTime.Now.AddMinutes(settings.ExpirationMinutes),
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256),
                 Issuer = settings.Issuer,
-                Audience = settings.Audience
+                Audience = settings.Audience,
+                IssuedAt = DateTime.Now
             };
             if (roles.Any())
             {

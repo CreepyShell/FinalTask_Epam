@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using InternetForum.BLL.ModelsDTo;
+using InternetForum.DAL.Interfaces;
 
 namespace InternetForum.BLL.ModelsDTOValidators
 {

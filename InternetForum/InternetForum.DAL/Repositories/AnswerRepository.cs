@@ -20,6 +20,11 @@ namespace InternetForum.DAL.Repositories
             return await _context.Answers.Where(a => a.QuestionId == questionId).ToListAsync();
         }
 
+        public async Task<IEnumerable<Answer>> GetAnswersWithUserAnswersAsync()
+        {
+            return await _context.Answers.Include(a => a.Users).ToListAsync();
+        }
+
         public async Task<Answer> UpdateAnswerAsync(Answer newAnswer)
         {
             Answer answer = await _context.Answers.AsNoTracking().FirstOrDefaultAsync(a => a.Id == newAnswer.Id);

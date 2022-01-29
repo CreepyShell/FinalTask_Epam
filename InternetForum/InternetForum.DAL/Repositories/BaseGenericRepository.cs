@@ -32,10 +32,11 @@ namespace InternetForum.DAL.Repositories
             if (entity == null)
                 throw new ArgumentNullException("entity", "enitity is null");
 
-            if (!(await _context.FindAsync(typeof(T), entity.Id) is T))
+            T removedEntity = await _context.FindAsync(typeof(T), entity.Id) as T;
+            if (removedEntity == null)
                 return false;
 
-            _context.Remove(entity);
+            _context.Remove(removedEntity);
             return true;
         }
 
@@ -74,7 +75,7 @@ namespace InternetForum.DAL.Repositories
 
         }
 
-        public async Task<int> SaveChanesAsync()
+        public async Task<int> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync();
         }

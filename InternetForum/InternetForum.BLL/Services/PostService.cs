@@ -41,7 +41,7 @@ namespace InternetForum.BLL.Services
         public async Task<bool> DeleteAsync(string id)
         {
             bool rez = await _unitOfWork.PostRepository.DeleteByIdAsync(id);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.PostRepository.SaveChangesAsync();
             return rez;
         }
 

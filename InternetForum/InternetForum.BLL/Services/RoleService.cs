@@ -39,7 +39,7 @@ namespace InternetForum.BLL.Services
 
             AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(userName);
             if (authUser == null)
-                throw new UserAuthException("did not find user with this username or email");
+                throw new ArgumentNullException("did not find user with this username or email");
 
             bool IsInRole = (await _unitOfWork.UserManager.GetRolesAsync(authUser)).Contains(role);
             if (IsInRole)
@@ -64,7 +64,7 @@ namespace InternetForum.BLL.Services
 
             AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(username);
             if (authUser == null)
-                throw new UserAuthException("did not find user with this username or email");
+                throw new ArgumentNullException("did not find user with this username or email");
 
             return await _unitOfWork.UserManager.IsInRoleAsync(authUser, role);
         }

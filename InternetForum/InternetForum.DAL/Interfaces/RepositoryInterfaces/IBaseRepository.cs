@@ -13,6 +13,6 @@ namespace InternetForum.DAL.Interfaces.RepositoryInterfaces
         Task<bool> DeleteAsync(T entity);
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(string id);
-        Task<int> SaveChanesAsync();
+        Task<int> SaveChangesAsync();
     }
 }

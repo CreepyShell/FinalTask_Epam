@@ -6,7 +6,8 @@ namespace InternetForum.BLL.Interfaces
 {
     public interface IQuestionnaireService : ICrud<QuestionnaireDTO>
     {
-        Task<IEnumerable<QuestionnaireDTO>> GetQuestionnaireWithMostQuestions(int count);
-        Task<IEnumerable<QuestionnaireDTO>> GetQuestionnaireWithLessQuestions(int count);
+        Task<IEnumerable<QuestionnaireDTO>> GetQuestionnairesWithMostQuestions(int count);
+        Task<IEnumerable<QuestionnaireDTO>> GetQuestionnairesWithLessQuestions(int count);
+        Task<IEnumerable<QuestionnaireDTO>> GetQuestionnairesByUserId(string userId);
     }
 }

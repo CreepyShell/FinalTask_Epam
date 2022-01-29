@@ -65,6 +65,9 @@ namespace InternetForum.BLL.Services
 
         public async Task<UserDTO> Register(AuthUserDTO register, JwtSettings jwtSettings)
         {
+            if (register == null)
+                throw new ArgumentNullException("register", "register entity is null");
+
             validations = new AuthUserValidator(true);
             var rez = await validations.ValidateAsync(register);
             if (!rez.IsValid)
@@ -82,7 +85,6 @@ namespace InternetForum.BLL.Services
                 UserName = register.Username,
                 CodeWords = codeWord
             });
-
             AuthUser authUser = await _unitOfWork.UserManager.FindByEmailAsync(register.Email);
             await _unitOfWork.UserManager.AddToRoleAsync(authUser, "User");
 
@@ -92,8 +94,24 @@ namespace InternetForum.BLL.Services
             UserDTO user = _mapper.Map<UserDTO>((authUser, userModel));
             user.Token = await _tokenService.GenerateTokenAsync(authUser.UserName, jwtSettings);
 
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.UserRepostory.SaveChangesAsync();
             return user;
+        }
+
+        public async Task<bool> UpdateCodeWord(UserDTO user, string newCodeWord)
+        {
+            if (user == null)
+                throw new ArgumentNullException("user", "user is null");
+
+            if (string.IsNullOrEmpty(newCodeWord) || newCodeWord.Length < 5)
+                throw new UserAuthException("new code word is empty or length less than 5");
+
+            AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(user.UserName);
+            if (authUser == null)
+                throw new ArgumentException("did not find user with this username");
+
+            authUser.CodeWords = newCodeWord;
+            return (await _unitOfWork.UserManager.UpdateAsync(authUser)).Succeeded;
         }
 
         private async Task ValidatePassword(string pass)

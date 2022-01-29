@@ -8,11 +8,15 @@ namespace InternetForum.BLL.MapperSettings
     {
         public ReactionProfile()
         {
-            CreateMap<ReactionDTO, CommentReaction>();
-            CreateMap<CommentReaction, ReactionDTO>();
+            CreateMap<ReactionDTO, CommentReaction>()
+                .ForMember(dest => dest.IsLiked, src => src.MapFrom(c => c.IsLike));
+            CreateMap<CommentReaction, ReactionDTO>()
+                  .ForMember(dest => dest.IsLike, src => src.MapFrom(c => c.IsLiked));
 
-            CreateMap<ReactionDTO, PostReaction>();
-            CreateMap<PostReaction, ReactionDTO>();
+            CreateMap<ReactionDTO, PostReaction>()
+                .ForMember(dest => dest.IsLiked, src => src.MapFrom(c => c.IsLike));
+            CreateMap<PostReaction, ReactionDTO>()
+                .ForMember(dest => dest.IsLike, src => src.MapFrom(c => c.IsLiked));
         }
     }
 }

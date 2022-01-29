@@ -11,5 +11,6 @@ namespace InternetForum.DAL.Interfaces.RepositoryInterfaces
         Task<IEnumerable<AnswerUser>> GetAllAsync();
         Task<IEnumerable<AnswerUser>> GetByUserIdAsync(string userId);
         Task<IEnumerable<AnswerUser>> GetByAnswerIdAsync(string answerId);
+        Task<int> SaveChangesAsync();
     }
 }

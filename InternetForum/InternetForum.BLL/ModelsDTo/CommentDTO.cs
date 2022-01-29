@@ -10,5 +10,6 @@ namespace InternetForum.BLL.ModelsDTo
         public string UserId { get; set; }
         public DateTime CreatedAt { get; set; }
         public string CommentText { get; set; }
+        public string[] ReactionIds { get; set; }
     }
 }

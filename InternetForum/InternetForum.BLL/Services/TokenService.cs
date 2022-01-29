@@ -30,8 +30,9 @@ namespace InternetForum.BLL.Services
             return token;
         }
 
-        public async Task<Token> RefreshTokenAsync(string userName, string oldRefreshToken, JwtSettings settings)
+        public async Task<Token> RefreshTokenAsync(string oldAccessToken, string oldRefreshToken, JwtSettings settings)
         {
+            string userName = JwtHelper.GetUserNameFromAccessToken(oldAccessToken, settings);
             AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(userName);
             if (authUser == null)
                 throw new ArgumentException("Did not find user with this username");

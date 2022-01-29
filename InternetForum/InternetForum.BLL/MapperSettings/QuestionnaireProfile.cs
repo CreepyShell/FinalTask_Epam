@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InternetForum.BLL.ModelsDTo;
 using InternetForum.DAL.DomainModels;
+using System.Linq;
 
 namespace InternetForum.BLL.MapperSettings
 {
@@ -8,7 +9,8 @@ namespace InternetForum.BLL.MapperSettings
     {
         public QuestionnaireProfile()
         {
-            CreateMap<Questionnaire, QuestionnaireDTO>();
+            CreateMap<Questionnaire, QuestionnaireDTO>()
+                .ForMember(q => q.QuestionIds, src => src.MapFrom(q => q.Questions.Select(q => q.Id)));
 
             CreateMap<QuestionnaireDTO, Questionnaire>();
         }
