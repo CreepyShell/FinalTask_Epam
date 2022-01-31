@@ -27,7 +27,7 @@ namespace InternetForum.BLL.Services
 
             ValidationResult rez = await _validator.ValidateAsync(entity);
             if (!rez.IsValid)
-                throw new ArgumentException("Questionnaire entity is invalid");
+                throw new InvalidOperationException("Questionnaire entity is invalid");
 
             if (string.IsNullOrEmpty(entity.Id))
                 entity.Id = Guid.NewGuid().ToString();
@@ -86,7 +86,7 @@ namespace InternetForum.BLL.Services
 
             ValidationResult rez = await _validator.ValidateAsync(newEntity);
             if (!rez.IsValid)
-                throw new ArgumentException("Post entity is invalid");
+                throw new InvalidOperationException("Post entity is invalid");
 
             Questionnaire questionnaire = await _unitOfWork.QuestionnaireRepository.UpdateQuestionnaireAsync(_mapper.Map<Questionnaire>(newEntity));
             await _unitOfWork.SaveChangesAsync();

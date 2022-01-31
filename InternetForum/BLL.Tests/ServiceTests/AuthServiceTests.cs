@@ -56,6 +56,7 @@ namespace BLL.Tests.ServiceTests
 
         [Theory]
         [InlineData("test","1234","")]
+        [InlineData("test username", "1234", "test@gmail.com")]
         [InlineData("test", "", "test@gmail.com")]
         [InlineData("", "1234", "test@gmail.com")]
         [InlineData("", "1234", "test@gmaisdfll.csdfom")]

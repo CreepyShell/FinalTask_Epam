@@ -28,7 +28,7 @@ namespace InternetForum.BLL.Services
 
             ValidationResult rez = await _validator.ValidateAsync(entity);
             if (!rez.IsValid)
-                throw new ArgumentException("Answer entity is invalid");
+                throw new InvalidOperationException("Answer entity is invalid");
 
             if (string.IsNullOrEmpty(entity.Id))
                 entity.Id = Guid.NewGuid().ToString();
@@ -114,8 +114,10 @@ namespace InternetForum.BLL.Services
                 throw new ArgumentNullException("Answer", "post can not be null");
 
             Answer answer = await _unitOfWork.AnswerRepository.GetByIdAsync(newEntity.Id);
-            if (answer == null || answer.Text.Length > 20) 
-                throw new ArgumentException("did not find answer with this id or answer text is incorect");
+            if (answer == null) 
+                throw new ArgumentException("did not find answer with this id");
+            if (answer.Text.Length > 20)
+                throw new InvalidOperationException("answer text is more than 20 symbols");
             answer.Text = newEntity.Text;
 
             Answer updatedAnswer = await _unitOfWork.AnswerRepository.UpdateAnswerAsync(answer);

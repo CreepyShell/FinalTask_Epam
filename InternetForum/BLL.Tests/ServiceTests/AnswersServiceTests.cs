@@ -72,7 +72,7 @@ namespace BLL.Tests.ServiceTests
         [Theory]
         [InlineData("", "text")]
         [InlineData("2", "logggggggggggggggttttttttteeeeeeeeexxxxxxt")]
-        public async Task AddInvalidAnswer_ThenThrowArgumentExceptionAddedInDb(string questionId, string text)
+        public async Task AddInvalidAnswer_ThenThrowInvalidOperationExceptionAddedInDb(string questionId, string text)
         {
             AnswerDTO answerDTO = new AnswerDTO()
             {
@@ -80,7 +80,7 @@ namespace BLL.Tests.ServiceTests
                 Text = text,
             };
 
-            await Assert.ThrowsAsync<ArgumentException>(async () => await answerService.AddEntityAsync(answerDTO));
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await answerService.AddEntityAsync(answerDTO));
         }
         [Fact]
         public async Task CheckWasUserAnswered_ReturnTrue()
@@ -172,7 +172,7 @@ namespace BLL.Tests.ServiceTests
 
             Assert.NotNull(updatedAnswer);
             Assert.Equal(answer.Id, updatedAnswer.Id);
-            Assert.Equal(answer.Text, (await answerRepository.GetByIdAsync(answer.Id)).Text);           
+            Assert.Equal(answer.Text, (await answerRepository.GetByIdAsync(answer.Id)).Text);
         }
         protected virtual void Dispose(bool disposing)
         {

@@ -27,7 +27,7 @@ namespace InternetForum.BLL.Services
 
             ValidationResult rez = await _validator.ValidateAsync(entity);
             if (!rez.IsValid)
-                throw new ArgumentException("Post entity is invalid");
+                throw new InvalidOperationException($"Post entity is invalid:{string.Join(',', rez.Errors)}");
 
             if (string.IsNullOrEmpty(entity.Id))
                 entity.Id = Guid.NewGuid().ToString();
@@ -83,8 +83,7 @@ namespace InternetForum.BLL.Services
         {
             IEnumerable<Post> posts = await _unitOfWork.PostRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<PostDTO>>
-                (posts.OrderByDescending(p => p.Reactions.Count())
-                .Where(p => startTime.CompareTo(p.CreatedAt) < 0 && endTime.CompareTo(p.CreatedAt) > 0)
+                (posts.Where(p => startTime.CompareTo(p.CreatedAt) < 0 && endTime.CompareTo(p.CreatedAt) > 0)
                 .ToList());
         }
 
@@ -93,9 +92,13 @@ namespace InternetForum.BLL.Services
             if (newEntity == null)
                 throw new ArgumentNullException("entity", "post can not be null");
 
+            PostDTO existEntity = (await GetAllAsync()).FirstOrDefault(c => c.Id == newEntity.Id);
+            if (existEntity == null)
+                throw new ArgumentException("did not find user with this id");
+
             ValidationResult rez = await _validator.ValidateAsync(newEntity);
-            if (!rez.IsValid)
-                throw new ArgumentException("Post entity is invalid");
+            if (!rez.IsValid || newEntity.UserId != existEntity.UserId) 
+                throw new InvalidOperationException($"Post entity is invalid:{string.Join(',', rez.Errors)} or tried to change userId");
 
             newEntity.UpdatedAt = DateTime.Now;
             Post post = await _unitOfWork.PostRepository.UpdatePostAsync(_mapper.Map<Post>(newEntity));

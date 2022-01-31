@@ -58,7 +58,7 @@ namespace BLL.Tests.ServiceTests
         [InlineData("text", "", "1","1")]
         [InlineData("text", "1", "","1")]
         [InlineData("text", "1", "1", "-1")]
-        public async Task AddInValidCommentAsync_ThanThrowNewArgumentException(string commentText, string userId, string postId, string commentId)
+        public async Task AddInValidCommentAsync_ThanThrowInvalidOperationException(string commentText, string userId, string postId, string commentId)
         {
             CommentDTO comment = new CommentDTO()
             {
@@ -67,7 +67,7 @@ namespace BLL.Tests.ServiceTests
                 UserId = postId
             };
 
-            await Assert.ThrowsAsync<ArgumentException>(async() => await commentService.CreateCommetToCommentAsync(comment, commentId));
+            await Assert.ThrowsAsync<InvalidOperationException>(async() => await commentService.CreateCommetToCommentAsync(comment, commentId));
         }
         [Fact]
         public async Task DeleteComment_CommentDeleted()
@@ -97,21 +97,21 @@ namespace BLL.Tests.ServiceTests
         }
 
         [Theory]
-        [InlineData("1", "0")]
-        [InlineData("-1", "1")]
-        [InlineData("-1", "-1")]
-        public async Task UpdateCommentAsync_WhenInvalidValue_ThrowArgumentException(string id, string commentId)
+        [InlineData("1", "0","1")]
+        [InlineData("0", "1", "1")]
+        [InlineData("1", "1", "0")]
+        public async Task UpdateCommentAsync_WhenInvalidValue_ThrowInvalidOperationException(string postId, string userId, string commentId)
         {
             CommentDTO comment = new CommentDTO()
             {
-                Id = id,
+                Id = "1",
                 CommentText = "comment text updated",
-                PostId = "1",
-                UserId = "1",
+                PostId = postId,
+                UserId = userId,
                 CommentId = commentId
             };
 
-            await Assert.ThrowsAsync<ArgumentException>(async () => await commentService.UpdateAsync(comment));
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await commentService.UpdateAsync(comment));
         }
         [Fact]
         public async Task GetMostPopularComment_ReturnComments()

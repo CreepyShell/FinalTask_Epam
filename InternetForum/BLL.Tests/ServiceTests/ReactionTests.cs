@@ -143,7 +143,7 @@ namespace BLL.Tests.ServiceTests
             Assert.NotEqual(reaction.IsLike, deletedReaction.IsLike);
         }
         [Fact]
-        public async Task React_WhenInvalidReaction_ThrowArgumentException()
+        public async Task React_WhenInvalidReaction_ThrowInvalidOperationException()
         {
             ReactionDTO reaction1 = new ReactionDTO()
             {
@@ -160,10 +160,10 @@ namespace BLL.Tests.ServiceTests
                 ReactedAt = DateTime.Now
             };
 
-            await Assert.ThrowsAsync<ArgumentException>(() => reactionService.ReactToPost(reaction1));
-            await Assert.ThrowsAsync<ArgumentException>(() => reactionService.ReactToComment(reaction1));
-            await Assert.ThrowsAsync<ArgumentException>(() => reactionService.ReactToPost(reaction2));
-            await Assert.ThrowsAsync<ArgumentException>(() => reactionService.ReactToComment(reaction2));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => reactionService.ReactToPost(reaction1));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => reactionService.ReactToComment(reaction1));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => reactionService.ReactToPost(reaction2));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => reactionService.ReactToComment(reaction2));
         }
 
         protected virtual void Dispose(bool disposing)

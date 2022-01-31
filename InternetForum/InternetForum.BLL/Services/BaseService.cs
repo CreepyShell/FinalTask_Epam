@@ -4,7 +4,7 @@ using System;
 
 namespace InternetForum.BLL.Services
 {
-    public class BaseService : IDisposable
+    public abstract class BaseService : IDisposable
     {
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IMapper _mapper;

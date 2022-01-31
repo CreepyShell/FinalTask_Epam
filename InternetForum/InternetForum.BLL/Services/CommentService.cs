@@ -27,7 +27,7 @@ namespace InternetForum.BLL.Services
 
             ValidationResult rez = await _validator.ValidateAsync(entity);
             if (!rez.IsValid || !string.IsNullOrEmpty(entity.CommentId))
-                throw new ArgumentException("Post entity is invalid");
+                throw new InvalidOperationException("Post entity is invalid");
 
             return await CreateCommentAsync(entity);
         }
@@ -50,10 +50,10 @@ namespace InternetForum.BLL.Services
 
             ValidationResult rez = await _validator.ValidateAsync(comment);
             if (!rez.IsValid || string.IsNullOrEmpty(comment.CommentId))
-                throw new ArgumentException("Post entity is invalid");
+                throw new InvalidOperationException("Post entity is invalid");
 
             if (await CheckIsValidCommentId(commentId))
-                throw new ArgumentException("comment id is invalid");
+                throw new InvalidOperationException("comment id is invalid");
 
             return await CreateCommentAsync(comment);
         }
@@ -99,15 +99,21 @@ namespace InternetForum.BLL.Services
             if (newEntity == null)
                 throw new ArgumentNullException("entity", "post can not be null");
 
+            CommentDTO existComment = (await GetAllAsync()).FirstOrDefault(c => c.Id == newEntity.Id);
+            if (existComment == null)
+                throw new ArgumentException("did not find entity with this id");
+
+            if (newEntity.PostId != existComment.PostId || newEntity.UserId != existComment.UserId || newEntity.CommentId != existComment.CommentId)
+                throw new InvalidOperationException("You are trying to change postid, commentid or userid, it is invalid");
+
             ValidationResult rez = await _validator.ValidateAsync(newEntity);
-            if (!rez.IsValid || !await CheckIsValidCommentId(newEntity.CommentId))
-                throw new ArgumentException("Post entity is invalid");
+            if (!rez.IsValid)
+                throw new InvalidOperationException($"Post entity is invalid:{string.Join(',', rez.Errors)}");
 
             Comment comment = await _unitOfWork.CommentRepository.UpdatePostAsync(_mapper.Map<Comment>(newEntity));
             await _unitOfWork.SaveChangesAsync();
             return _mapper.Map<CommentDTO>(comment);
         }
-
         private async Task<bool> CheckIsValidCommentId(string commentId) => string.IsNullOrEmpty(commentId) || (await _unitOfWork.CommentRepository.GetByIdAsync(commentId)) != null;
     }
 }

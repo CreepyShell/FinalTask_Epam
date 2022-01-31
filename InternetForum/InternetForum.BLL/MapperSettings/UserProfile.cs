@@ -11,7 +11,7 @@ namespace InternetForum.BLL.MapperSettings
         public UserProfile()
         {
             CreateMap<(AuthUser, User), UserDTO>()
-                .ForMember(dest => dest.Id, src => src.MapFrom(u => u.Item1.Id))
+                .ForMember(dest => dest.Id, src => src.MapFrom(u => string.IsNullOrEmpty(u.Item1.Id) ? u.Item2.Id : u.Item1.Id))
                 .ForMember(dest => dest.UserName, src => src.MapFrom(u => u.Item1.UserName))
                 .ForMember(dest => dest.Age, src => src.MapFrom(u => u.Item2.Age))
                 .ForMember(dest => dest.Avatar, src => src.MapFrom(u => u.Item2.Avatar))
@@ -27,8 +27,7 @@ namespace InternetForum.BLL.MapperSettings
                 .ForMember(dest => dest.LastName, src => src.MapFrom(u => ParseFullName(u.FullName, 1)));
 
             CreateMap<User, UserDTO>()
-               .ForMember(dest => dest.FullName, src => src.MapFrom(u => u.FirstName + " " + u.LastName));
-
+                .ForMember(dest => dest.FullName, src => src.MapFrom(u => u.FirstName + " " + u.FirstName));
         }
         private string ParseFullName(string s, int index) => new string(s.Split(' ').ElementAtOrDefault(index));
     }

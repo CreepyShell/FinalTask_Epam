@@ -98,7 +98,7 @@ namespace InternetForum.BLL.Services
 
             var rez = await _validator.ValidateAsync(reaction);
             if (!rez.IsValid)
-                throw new ArgumentException($"Invalid reaction entity:{string.Join(',', rez.Errors)}");
+                throw new InvalidOperationException($"Invalid reaction entity:{string.Join(',', rez.Errors)}");
         }
     }
 }

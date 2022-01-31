@@ -65,12 +65,12 @@ namespace InternetForum.DAL.Repositories
         }
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _context.Set<T>().ToListAsync();
+            return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
 
         public async Task<T> GetByIdAsync(string id)
         {
-            T entity = await _context.FindAsync(typeof(T), id) as T;
+            T entity = (await _context.FindAsync(typeof(T), id)) as T;
             return entity;
 
         }

@@ -2,7 +2,7 @@
 {
     public enum PostTopic : int
     {
-        Peoples,
+        Peoples = 1,
         Studing,
         Films,
         Activities,

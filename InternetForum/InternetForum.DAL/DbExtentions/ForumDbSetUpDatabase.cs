@@ -7,40 +7,16 @@ namespace InternetForum.DAL.DbExtentions
     {
         public static void SetUpDataBase(this ModelBuilder builder)
         {
-
-            builder.Entity<Comment>()
-                 .HasOne(c => c.Post)
-                 .WithMany(p => p.Comments)
-                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<Post>()
-                .HasOne(p => p.User)
-                .WithMany(u => u.Posts)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<PostReaction>()
-                .HasOne(p => p.Post)
-                .WithMany(p => p.Reactions)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<PostReaction>()
-                .HasOne(pr => pr.User)
-                .WithMany(u => u.PostReactions)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder.Entity<CommentReaction>()
-               .HasOne(c => c.Comment)
-               .WithMany(c => c.Reactions)
-               .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<CommentReaction>()
-                .HasOne(c => c.User)
-                .WithMany(u => u.CommentReactions)
-                .OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<AnswerUser>()
+                .HasKey(au => new
+                {
+                    A = au.AnswerId,
+                    U = au.UserId
+                });
 
             builder.Entity<User>()
                 .HasIndex(u => u.UserName)
-                .IsUnique();
+                .IsUnique(true);
 
             builder.Entity<User>()
                 .HasMany(u => u.Comments)
@@ -66,24 +42,56 @@ namespace InternetForum.DAL.DbExtentions
                 .HasForeignKey(c => c.AuthorId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            builder.Entity<User>()
+               .HasMany(u => u.Posts)
+               .WithOne(p => p.User)
+               .HasForeignKey(p => p.UserId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<User>()
+              .HasMany(u => u.PostReactions)
+              .WithOne(p => p.User)
+              .HasForeignKey(p => p.UserId)
+              .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Comment>()
+                 .HasOne(c => c.Post)
+                 .WithMany(p => p.Comments)
+                 .HasForeignKey(c => c.PostId)
+                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PostReaction>()
+                .HasOne(p => p.Post)
+                .WithMany(p => p.Reactions)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<CommentReaction>()
+               .HasOne(c => c.Comment)
+               .WithMany(c => c.Reactions)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<CommentReaction>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.CommentReactions)
+                .OnDelete(DeleteBehavior.NoAction);
+
             builder.Entity<Answer>()
                .HasMany(a => a.Users)
                .WithOne(a => a.Answer)
                .HasForeignKey(c => c.AnswerId)
                .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Question>()
+                .HasMany(q => q.Answers)
+                .WithOne(a => a.Question)
+                .HasForeignKey(a => a.QuestionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<Questionnaire>()
                 .HasMany(q => q.Questions)
                 .WithOne(q => q.Questionnaire)
                 .HasForeignKey(q => q.QuestionnaireId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<AnswerUser>()
-                .HasKey(au => new { 
-                    A = au.AnswerId,
-                    U = au.UserId
-                });
-
         }
     }
 }

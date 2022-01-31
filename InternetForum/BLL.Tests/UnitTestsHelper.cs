@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BLL.Tests
@@ -20,6 +21,9 @@ namespace BLL.Tests
 
             return new ForumDbContext(options);
         }
+
+        public static string GetLongString(string str, int count) => string.Concat(Enumerable.Repeat(str, count));
+
         public static Mock<UserManager<AuthUser>> MockUserManager(AuthUser authUser)
         {
             var store = new Mock<IUserStore<AuthUser>>();

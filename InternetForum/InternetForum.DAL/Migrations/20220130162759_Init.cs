@@ -14,7 +14,7 @@ namespace InternetForum.DAL.Migrations
                     Id = table.Column<string>(nullable: false),
                     Avatar = table.Column<string>(nullable: true),
                     Age = table.Column<int>(nullable: true),
-                    UserName = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(maxLength: 30, nullable: false),
                     Bio = table.Column<string>(maxLength: 200, nullable: true),
                     FirstName = table.Column<string>(maxLength: 35, nullable: true),
                     LastName = table.Column<string>(maxLength: 35, nullable: true),
@@ -45,8 +45,7 @@ namespace InternetForum.DAL.Migrations
                         name: "FK_Posts_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -54,7 +53,7 @@ namespace InternetForum.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    CommentText = table.Column<string>(maxLength: 100, nullable: false),
+                    CommentText = table.Column<string>(maxLength: 140, nullable: false),
                     PostId = table.Column<string>(nullable: false),
                     CommentId = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
@@ -133,7 +132,7 @@ namespace InternetForum.DAL.Migrations
                 columns: new[] { "Id", "Age", "Avatar", "Bio", "BirthDay", "FirstName", "LastName", "RegisteredAt", "UserName" },
                 values: new object[,]
                 {
-                    { "1s", null, null, "Electrical Engineer", new DateTime(1990, 5, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anton", "Gerashenko", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "anton_1990" },
+                    { "1", null, null, "Electrical Engineer", new DateTime(1990, 5, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "Anton", "Gerashenko", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "anton_1990" },
                     { "2", null, null, "18 years", null, "Dmitro", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "dmidro" },
                     { "3", null, null, null, new DateTime(2000, 10, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "user1984" },
                     { "4", null, null, "The best chef in Iceland", null, "bad", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Have_A_Nice_Day" },
@@ -143,28 +142,29 @@ namespace InternetForum.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "CreatedAt", "Header", "PostTopic", "Text", "UpdatedAt", "UserId" },
-                values: new object[] { "1", new DateTime(2022, 1, 24, 22, 6, 50, 223, DateTimeKind.Local).AddTicks(5139), "Summer holidays", 3, "Tell about your best summer holidays", new DateTime(2022, 1, 24, 22, 16, 50, 226, DateTimeKind.Local).AddTicks(5685), "1s" });
+                values: new object[] { "1", new DateTime(2022, 1, 30, 18, 27, 58, 782, DateTimeKind.Local).AddTicks(4332), "Summer holidays", 4, "Tell about your best summer holidays", new DateTime(2022, 1, 30, 18, 37, 58, 785, DateTimeKind.Local).AddTicks(8825), "1" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "CreatedAt", "Header", "PostTopic", "Text", "UpdatedAt", "UserId" },
-                values: new object[] { "2", new DateTime(2022, 4, 24, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(7412), "Winter holidays", 3, "Tell about your best winter holidays", null, "3" });
+                values: new object[] { "2", new DateTime(2022, 4, 30, 18, 27, 58, 786, DateTimeKind.Local).AddTicks(605), "Winter holidays", 4, "Tell about your best winter holidays", null, "3" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "CreatedAt", "Header", "PostTopic", "Text", "UpdatedAt", "UserId" },
-                values: new object[] { "3", new DateTime(2022, 7, 23, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(7506), "Autumn holidays", 3, "Tell about your best Autumn holidays", null, "5" });
+                values: new object[] { "3", new DateTime(2022, 7, 29, 18, 27, 58, 786, DateTimeKind.Local).AddTicks(688), "Autumn holidays", 4, "Tell about your best Autumn holidays", null, "5" });
 
             migrationBuilder.InsertData(
                 table: "Comments",
                 columns: new[] { "Id", "CommentId", "CommentText", "CreatedAt", "PostId", "UserId" },
                 values: new object[,]
                 {
-                    { "1", null, "My last summer holidays was the best", new DateTime(2022, 1, 24, 23, 6, 50, 226, DateTimeKind.Local).AddTicks(8995), "1", "1s" },
-                    { "4", "1", "My last summer holidays was the best too. Thank you!", new DateTime(2022, 1, 24, 23, 6, 50, 226, DateTimeKind.Local).AddTicks(9889), "1", "5" },
-                    { "2", null, "My last winter holidays was the best", new DateTime(2022, 4, 25, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(9840), "2", "2" },
-                    { "5", "2", "My last winter holidays was the best too. It was good time", new DateTime(2022, 4, 25, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(9893), "2", "4" },
-                    { "3", null, "My last autumn holidays was the best", new DateTime(2022, 7, 24, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(9884), "3", "3" }
+                    { "1", null, "My last summer holidays was the best", new DateTime(2022, 1, 30, 19, 27, 58, 786, DateTimeKind.Local).AddTicks(6537), "1", "1" },
+                    { "4", "1", "My last summer holidays was the best too. Thank you!", new DateTime(2022, 1, 30, 19, 27, 58, 786, DateTimeKind.Local).AddTicks(7538), "1", "5" },
+                    { "2", null, "My last winter holidays was the best", new DateTime(2022, 5, 1, 18, 27, 58, 786, DateTimeKind.Local).AddTicks(7491), "2", "2" },
+                    { "5", "2", "My last winter holidays was the best too. It was good time", new DateTime(2022, 5, 1, 18, 27, 58, 786, DateTimeKind.Local).AddTicks(7543), "2", "4" },
+                    { "6", null, "My last winter holidays was the best too. It was the best time", new DateTime(2022, 5, 1, 18, 27, 58, 786, DateTimeKind.Local).AddTicks(7548), "2", "1" },
+                    { "3", null, "My last autumn holidays was the best", new DateTime(2022, 7, 30, 18, 27, 58, 786, DateTimeKind.Local).AddTicks(7533), "3", "3" }
                 });
 
             migrationBuilder.InsertData(
@@ -172,32 +172,32 @@ namespace InternetForum.DAL.Migrations
                 columns: new[] { "Id", "IsLiked", "PostId", "ReactedAt", "UserId" },
                 values: new object[,]
                 {
-                    { "1", true, "1", new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1242), "1s" },
-                    { "2", false, "1", new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1607), "2" },
-                    { "7", false, "1", new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1728), "5" },
-                    { "8", true, "1", new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1732), "4" },
-                    { "3", true, "2", new DateTime(2022, 4, 25, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1628), "3" },
-                    { "6", true, "2", new DateTime(2022, 4, 15, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1724), "4" },
-                    { "10", false, "2", new DateTime(2022, 4, 25, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1740), "2" },
-                    { "4", true, "3", new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1632), "3" },
-                    { "5", false, "3", new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1718), "4" },
-                    { "9", false, "3", new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1736), "5" }
+                    { "1", true, "1", new DateTime(2022, 1, 30, 19, 27, 58, 787, DateTimeKind.Local).AddTicks(3904), "1" },
+                    { "2", false, "1", new DateTime(2022, 1, 30, 19, 27, 58, 787, DateTimeKind.Local).AddTicks(4290), "2" },
+                    { "7", false, "1", new DateTime(2022, 1, 30, 19, 27, 58, 787, DateTimeKind.Local).AddTicks(4332), "5" },
+                    { "8", true, "1", new DateTime(2022, 1, 30, 19, 27, 58, 787, DateTimeKind.Local).AddTicks(4337), "4" },
+                    { "3", true, "2", new DateTime(2022, 5, 1, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(4314), "3" },
+                    { "6", true, "2", new DateTime(2022, 4, 21, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(4328), "4" },
+                    { "10", false, "2", new DateTime(2022, 5, 1, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(4346), "2" },
+                    { "4", true, "3", new DateTime(2022, 7, 30, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(4319), "3" },
+                    { "5", false, "3", new DateTime(2022, 7, 30, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(4323), "4" },
+                    { "9", false, "3", new DateTime(2022, 7, 30, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(4342), "5" }
                 });
 
             migrationBuilder.InsertData(
                 table: "CommentReactions",
                 columns: new[] { "Id", "CommentId", "IsLiked", "ReactedAt", "UserId" },
-                values: new object[] { "1", "1", true, new DateTime(2022, 1, 25, 0, 6, 50, 227, DateTimeKind.Local).AddTicks(3110), "5" });
+                values: new object[] { "1", "1", true, new DateTime(2022, 1, 30, 20, 27, 58, 787, DateTimeKind.Local).AddTicks(8125), "5" });
 
             migrationBuilder.InsertData(
                 table: "CommentReactions",
                 columns: new[] { "Id", "CommentId", "IsLiked", "ReactedAt", "UserId" },
-                values: new object[] { "2", "2", true, new DateTime(2022, 4, 26, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(3452), "4" });
+                values: new object[] { "2", "2", true, new DateTime(2022, 5, 2, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(8504), "4" });
 
             migrationBuilder.InsertData(
                 table: "CommentReactions",
                 columns: new[] { "Id", "CommentId", "IsLiked", "ReactedAt", "UserId" },
-                values: new object[] { "3", "3", false, new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(3476), "1s" });
+                values: new object[] { "3", "3", false, new DateTime(2022, 7, 30, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(8528), "1" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommentReactions_CommentId",
@@ -238,8 +238,7 @@ namespace InternetForum.DAL.Migrations
                 name: "IX_Users_UserName",
                 table: "Users",
                 column: "UserName",
-                unique: true,
-                filter: "[UserName] IS NOT NULL");
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace InternetForum.DAL.Migrations
 {
-    public partial class AddedQuestionnaire : Migration
+    public partial class AddedQuestionnaires : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace InternetForum.DAL.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     AuthorId = table.Column<string>(nullable: false),
-                    Title = table.Column<string>(maxLength: 30, nullable: false),
+                    Title = table.Column<string>(maxLength: 50, nullable: false),
                     OpenAt = table.Column<DateTime>(nullable: false),
                     ClosedAt = table.Column<DateTime>(nullable: true)
                 },
@@ -33,7 +33,7 @@ namespace InternetForum.DAL.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     QuestionnaireId = table.Column<string>(nullable: false),
-                    Text = table.Column<string>(maxLength: 50, nullable: false),
+                    Text = table.Column<string>(maxLength: 40, nullable: false),
                     IsAllowedMultiple = table.Column<bool>(nullable: false),
                     IsRequired = table.Column<bool>(nullable: false)
                 },
@@ -96,152 +96,159 @@ namespace InternetForum.DAL.Migrations
                 keyColumn: "Id",
                 keyValue: "1",
                 column: "ReactedAt",
-                value: new DateTime(2022, 1, 25, 23, 39, 21, 216, DateTimeKind.Local).AddTicks(5508));
+                value: new DateTime(2022, 1, 30, 20, 36, 45, 549, DateTimeKind.Local).AddTicks(4791));
 
             migrationBuilder.UpdateData(
                 table: "CommentReactions",
                 keyColumn: "Id",
                 keyValue: "2",
                 column: "ReactedAt",
-                value: new DateTime(2022, 4, 27, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(6070));
+                value: new DateTime(2022, 5, 2, 18, 36, 45, 549, DateTimeKind.Local).AddTicks(5236));
 
             migrationBuilder.UpdateData(
                 table: "CommentReactions",
                 keyColumn: "Id",
                 keyValue: "3",
                 column: "ReactedAt",
-                value: new DateTime(2022, 7, 25, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(6108));
+                value: new DateTime(2022, 7, 30, 18, 36, 45, 549, DateTimeKind.Local).AddTicks(5259));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "Id",
                 keyValue: "1",
                 column: "CreatedAt",
-                value: new DateTime(2022, 1, 25, 22, 39, 21, 215, DateTimeKind.Local).AddTicks(9118));
+                value: new DateTime(2022, 1, 30, 19, 36, 45, 547, DateTimeKind.Local).AddTicks(6190));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "Id",
                 keyValue: "2",
                 column: "CreatedAt",
-                value: new DateTime(2022, 4, 26, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(639));
+                value: new DateTime(2022, 5, 1, 18, 36, 45, 547, DateTimeKind.Local).AddTicks(7837));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "Id",
                 keyValue: "3",
                 column: "CreatedAt",
-                value: new DateTime(2022, 7, 25, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(723));
+                value: new DateTime(2022, 7, 30, 18, 36, 45, 547, DateTimeKind.Local).AddTicks(7908));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "Id",
                 keyValue: "4",
                 column: "CreatedAt",
-                value: new DateTime(2022, 1, 25, 22, 39, 21, 216, DateTimeKind.Local).AddTicks(731));
+                value: new DateTime(2022, 1, 30, 19, 36, 45, 547, DateTimeKind.Local).AddTicks(7916));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "Id",
                 keyValue: "5",
                 column: "CreatedAt",
-                value: new DateTime(2022, 4, 26, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(739));
+                value: new DateTime(2022, 5, 1, 18, 36, 45, 547, DateTimeKind.Local).AddTicks(7929));
+
+            migrationBuilder.UpdateData(
+                table: "Comments",
+                keyColumn: "Id",
+                keyValue: "6",
+                column: "CreatedAt",
+                value: new DateTime(2022, 5, 1, 18, 36, 45, 547, DateTimeKind.Local).AddTicks(7941));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "1",
                 column: "ReactedAt",
-                value: new DateTime(2022, 1, 25, 22, 39, 21, 216, DateTimeKind.Local).AddTicks(2770));
+                value: new DateTime(2022, 1, 30, 19, 36, 45, 548, DateTimeKind.Local).AddTicks(8176));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "10",
                 column: "ReactedAt",
-                value: new DateTime(2022, 4, 26, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(3387));
+                value: new DateTime(2022, 5, 1, 18, 36, 45, 548, DateTimeKind.Local).AddTicks(8695));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "2",
                 column: "ReactedAt",
-                value: new DateTime(2022, 1, 25, 22, 39, 21, 216, DateTimeKind.Local).AddTicks(3313));
+                value: new DateTime(2022, 1, 30, 19, 36, 45, 548, DateTimeKind.Local).AddTicks(8613));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "3",
                 column: "ReactedAt",
-                value: new DateTime(2022, 4, 26, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(3346));
+                value: new DateTime(2022, 5, 1, 18, 36, 45, 548, DateTimeKind.Local).AddTicks(8639));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "4",
                 column: "ReactedAt",
-                value: new DateTime(2022, 7, 25, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(3353));
+                value: new DateTime(2022, 7, 30, 18, 36, 45, 548, DateTimeKind.Local).AddTicks(8643));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "5",
                 column: "ReactedAt",
-                value: new DateTime(2022, 7, 25, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(3359));
+                value: new DateTime(2022, 7, 30, 18, 36, 45, 548, DateTimeKind.Local).AddTicks(8648));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "6",
                 column: "ReactedAt",
-                value: new DateTime(2022, 4, 16, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(3364));
+                value: new DateTime(2022, 4, 21, 18, 36, 45, 548, DateTimeKind.Local).AddTicks(8653));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "7",
                 column: "ReactedAt",
-                value: new DateTime(2022, 1, 25, 22, 39, 21, 216, DateTimeKind.Local).AddTicks(3370));
+                value: new DateTime(2022, 1, 30, 19, 36, 45, 548, DateTimeKind.Local).AddTicks(8682));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "8",
                 column: "ReactedAt",
-                value: new DateTime(2022, 1, 25, 22, 39, 21, 216, DateTimeKind.Local).AddTicks(3375));
+                value: new DateTime(2022, 1, 30, 19, 36, 45, 548, DateTimeKind.Local).AddTicks(8686));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "9",
                 column: "ReactedAt",
-                value: new DateTime(2022, 7, 25, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(3381));
+                value: new DateTime(2022, 7, 30, 18, 36, 45, 548, DateTimeKind.Local).AddTicks(8691));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: "1",
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2022, 1, 25, 21, 39, 21, 209, DateTimeKind.Local).AddTicks(9002), new DateTime(2022, 1, 25, 21, 49, 21, 215, DateTimeKind.Local).AddTicks(4160) });
+                values: new object[] { new DateTime(2022, 1, 30, 18, 36, 45, 541, DateTimeKind.Local).AddTicks(9155), new DateTime(2022, 1, 30, 18, 46, 45, 546, DateTimeKind.Local).AddTicks(2278) });
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: "2",
                 column: "CreatedAt",
-                value: new DateTime(2022, 4, 25, 21, 39, 21, 215, DateTimeKind.Local).AddTicks(6780));
+                value: new DateTime(2022, 4, 30, 18, 36, 45, 546, DateTimeKind.Local).AddTicks(5429));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: "3",
                 column: "CreatedAt",
-                value: new DateTime(2022, 7, 24, 21, 39, 21, 215, DateTimeKind.Local).AddTicks(6934));
+                value: new DateTime(2022, 7, 29, 18, 36, 45, 546, DateTimeKind.Local).AddTicks(5622));
 
             migrationBuilder.InsertData(
                 table: "Questionnaires",
                 columns: new[] { "Id", "AuthorId", "ClosedAt", "OpenAt", "Title" },
-                values: new object[] { "1", "1s", null, new DateTime(2022, 1, 25, 21, 39, 21, 216, DateTimeKind.Local).AddTicks(8178), "Best Time Of Year" });
+                values: new object[] { "1", "1", null, new DateTime(2022, 1, 30, 18, 36, 45, 549, DateTimeKind.Local).AddTicks(8063), "Best Time Of Year" });
 
             migrationBuilder.InsertData(
                 table: "Questions",
@@ -275,10 +282,12 @@ namespace InternetForum.DAL.Migrations
                 columns: new[] { "AnswerId", "UserId" },
                 values: new object[,]
                 {
-                    { "1", "1s" },
-                    { "3", "1s" },
-                    { "4", "1s" },
-                    { "5", "1s" }
+                    { "1", "1" },
+                    { "1", "2" },
+                    { "1", "3" },
+                    { "3", "1" },
+                    { "4", "1" },
+                    { "5", "1" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -321,147 +330,154 @@ namespace InternetForum.DAL.Migrations
                 keyColumn: "Id",
                 keyValue: "1",
                 column: "ReactedAt",
-                value: new DateTime(2022, 1, 25, 0, 6, 50, 227, DateTimeKind.Local).AddTicks(3110));
+                value: new DateTime(2022, 1, 30, 20, 27, 58, 787, DateTimeKind.Local).AddTicks(8125));
 
             migrationBuilder.UpdateData(
                 table: "CommentReactions",
                 keyColumn: "Id",
                 keyValue: "2",
                 column: "ReactedAt",
-                value: new DateTime(2022, 4, 26, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(3452));
+                value: new DateTime(2022, 5, 2, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(8504));
 
             migrationBuilder.UpdateData(
                 table: "CommentReactions",
                 keyColumn: "Id",
                 keyValue: "3",
                 column: "ReactedAt",
-                value: new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(3476));
+                value: new DateTime(2022, 7, 30, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(8528));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "Id",
                 keyValue: "1",
                 column: "CreatedAt",
-                value: new DateTime(2022, 1, 24, 23, 6, 50, 226, DateTimeKind.Local).AddTicks(8995));
+                value: new DateTime(2022, 1, 30, 19, 27, 58, 786, DateTimeKind.Local).AddTicks(6537));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "Id",
                 keyValue: "2",
                 column: "CreatedAt",
-                value: new DateTime(2022, 4, 25, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(9840));
+                value: new DateTime(2022, 5, 1, 18, 27, 58, 786, DateTimeKind.Local).AddTicks(7491));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "Id",
                 keyValue: "3",
                 column: "CreatedAt",
-                value: new DateTime(2022, 7, 24, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(9884));
+                value: new DateTime(2022, 7, 30, 18, 27, 58, 786, DateTimeKind.Local).AddTicks(7533));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "Id",
                 keyValue: "4",
                 column: "CreatedAt",
-                value: new DateTime(2022, 1, 24, 23, 6, 50, 226, DateTimeKind.Local).AddTicks(9889));
+                value: new DateTime(2022, 1, 30, 19, 27, 58, 786, DateTimeKind.Local).AddTicks(7538));
 
             migrationBuilder.UpdateData(
                 table: "Comments",
                 keyColumn: "Id",
                 keyValue: "5",
                 column: "CreatedAt",
-                value: new DateTime(2022, 4, 25, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(9893));
+                value: new DateTime(2022, 5, 1, 18, 27, 58, 786, DateTimeKind.Local).AddTicks(7543));
+
+            migrationBuilder.UpdateData(
+                table: "Comments",
+                keyColumn: "Id",
+                keyValue: "6",
+                column: "CreatedAt",
+                value: new DateTime(2022, 5, 1, 18, 27, 58, 786, DateTimeKind.Local).AddTicks(7548));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "1",
                 column: "ReactedAt",
-                value: new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1242));
+                value: new DateTime(2022, 1, 30, 19, 27, 58, 787, DateTimeKind.Local).AddTicks(3904));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "10",
                 column: "ReactedAt",
-                value: new DateTime(2022, 4, 25, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1740));
+                value: new DateTime(2022, 5, 1, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(4346));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "2",
                 column: "ReactedAt",
-                value: new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1607));
+                value: new DateTime(2022, 1, 30, 19, 27, 58, 787, DateTimeKind.Local).AddTicks(4290));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "3",
                 column: "ReactedAt",
-                value: new DateTime(2022, 4, 25, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1628));
+                value: new DateTime(2022, 5, 1, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(4314));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "4",
                 column: "ReactedAt",
-                value: new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1632));
+                value: new DateTime(2022, 7, 30, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(4319));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "5",
                 column: "ReactedAt",
-                value: new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1718));
+                value: new DateTime(2022, 7, 30, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(4323));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "6",
                 column: "ReactedAt",
-                value: new DateTime(2022, 4, 15, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1724));
+                value: new DateTime(2022, 4, 21, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(4328));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "7",
                 column: "ReactedAt",
-                value: new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1728));
+                value: new DateTime(2022, 1, 30, 19, 27, 58, 787, DateTimeKind.Local).AddTicks(4332));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "8",
                 column: "ReactedAt",
-                value: new DateTime(2022, 1, 24, 23, 6, 50, 227, DateTimeKind.Local).AddTicks(1732));
+                value: new DateTime(2022, 1, 30, 19, 27, 58, 787, DateTimeKind.Local).AddTicks(4337));
 
             migrationBuilder.UpdateData(
                 table: "PostReactions",
                 keyColumn: "Id",
                 keyValue: "9",
                 column: "ReactedAt",
-                value: new DateTime(2022, 7, 24, 22, 6, 50, 227, DateTimeKind.Local).AddTicks(1736));
+                value: new DateTime(2022, 7, 30, 18, 27, 58, 787, DateTimeKind.Local).AddTicks(4342));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: "1",
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2022, 1, 24, 22, 6, 50, 223, DateTimeKind.Local).AddTicks(5139), new DateTime(2022, 1, 24, 22, 16, 50, 226, DateTimeKind.Local).AddTicks(5685) });
+                values: new object[] { new DateTime(2022, 1, 30, 18, 27, 58, 782, DateTimeKind.Local).AddTicks(4332), new DateTime(2022, 1, 30, 18, 37, 58, 785, DateTimeKind.Local).AddTicks(8825) });
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: "2",
                 column: "CreatedAt",
-                value: new DateTime(2022, 4, 24, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(7412));
+                value: new DateTime(2022, 4, 30, 18, 27, 58, 786, DateTimeKind.Local).AddTicks(605));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: "3",
                 column: "CreatedAt",
-                value: new DateTime(2022, 7, 23, 22, 6, 50, 226, DateTimeKind.Local).AddTicks(7506));
+                value: new DateTime(2022, 7, 29, 18, 27, 58, 786, DateTimeKind.Local).AddTicks(688));
         }
     }
 }

@@ -23,8 +23,9 @@ namespace InternetForum.DAL
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.SeedDataForumDb();
             builder.SetUpDataBase();
+            builder.SeedDataForumDb();
+            base.OnModelCreating(builder);
         }
     }
 }

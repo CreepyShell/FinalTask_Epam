@@ -2,6 +2,7 @@ using InternetForum.DAL;
 using InternetForum.DAL.DbExtentions;
 using InternetForum.DAL.DomainModels;
 using InternetForum.DAL.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -62,7 +63,7 @@ namespace RepositoryTesting
         [Fact]
         public async Task DeleteEntityById_ThanEntityDeletesFromDb()
         {
-            string id = "2";
+            string id = "5";
             
             bool rezult = await _userRepository.DeleteByIdAsync(id);
             await _userRepository.SaveChangesAsync();
@@ -104,6 +105,37 @@ namespace RepositoryTesting
             Assert.False(rez2);
         }
 
+        [Fact]
+        public async Task UpdateUser_ThenUserUpdated()
+        {
+            User user = new User()
+            {
+                Id = "1",
+                UserName = DataForSeeding.GetUsersValues().First().UserName,
+                Avatar ="new ava",
+                Bio = "new bio"
+            };
+
+            User updatedUser = await _userRepository.UpdateUserAsync(user);
+
+            Assert.NotNull(updatedUser);
+            Assert.Equal(user.Avatar, (await _context.Users.FindAsync(user.Id)).Avatar);
+            Assert.Equal(user.Bio, updatedUser.Bio);
+        }
+
+        [Fact]
+        public async Task RemoveUserAndUserDataAsync_ThenDataRemoved()
+        {
+            User user = await _context.Users.FindAsync("2");
+
+            bool rez = await _userRepository.RemoveUserAndUserDataAsync(user.Id);
+            await _userRepository.SaveChangesAsync();
+
+            Assert.True(rez);
+            Assert.Empty(await _context.PostReactions.Where(pr => pr.UserId == user.Id).ToListAsync());
+            Assert.Empty(await _context.AnswerUsers.Where(a => a.UserId == user.Id).ToListAsync());
+            Assert.Empty(await _context.CommentReactions.Where(cr => cr.UserId == user.Id).ToListAsync());
+        }
         protected virtual void Dispose(bool disposing)
         {
             _context.Dispose();

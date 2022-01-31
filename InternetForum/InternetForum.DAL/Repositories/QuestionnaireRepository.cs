@@ -29,7 +29,7 @@ namespace InternetForum.DAL.Repositories
         {
             Questionnaire questionnaire = await _context.Questionnaires
                 .AsNoTracking()
-                .FirstOrDefaultAsync(q=> q.Id == newQuestionnaire.Id);
+                .FirstOrDefaultAsync(q => q.Id == newQuestionnaire.Id);
             if (questionnaire == null)
                 throw new ArgumentException("did not find post with this id");
             questionnaire = newQuestionnaire;

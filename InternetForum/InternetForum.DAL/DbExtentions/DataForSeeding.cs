@@ -44,7 +44,7 @@ namespace InternetForum.DAL.DbExtentions
                     BirthDay = new DateTime(1999, 8, 11)
                 }
             };
-        public static IEnumerable<Post> GetPostsValues() => new Post[3] {
+        public static IEnumerable<Post> GetPostsValues() => new Post[5] {
                 new Post()
                 {
                     Id = "1",
@@ -72,9 +72,27 @@ namespace InternetForum.DAL.DbExtentions
                     PostTopic = PostTopic.Activities,
                     Text = "Tell about your best Autumn holidays",
                     UserId = "5"
+                },
+                new Post()
+                {
+                    Id = "4",
+                    CreatedAt = DateTime.Now.AddDays(182),
+                    Header = "Test post for deleting",
+                    PostTopic = PostTopic.Another,
+                    Text = "Test text",
+                    UserId = "4"
+                },
+                new Post()
+                {
+                    Id = "5",
+                    CreatedAt = DateTime.Now.AddDays(185),
+                    Header = "Test post for updating",
+                    PostTopic = PostTopic.Another,
+                    Text = "Test text",
+                    UserId = "2"
                 }
             };
-        public static IEnumerable<Comment> GetCommentsValues() => new Comment[5] {
+        public static IEnumerable<Comment> GetCommentsValues() => new Comment[6] {
                 new Comment()
                 {
                     Id = "1",
@@ -113,12 +131,21 @@ namespace InternetForum.DAL.DbExtentions
                 },
                 new Comment()
                 {
-                     Id = "5",
+                    Id = "5",
                     UserId = "4",
                     PostId = "2",
                     CreatedAt = DateTime.Now.AddDays(91),
                     CommentText = "My last winter holidays was the best too. It was good time",
                     CommentId = "2"
+                },
+                new Comment()
+                {
+                    Id = "6",
+                    UserId = "1",
+                    PostId = "2",
+                    CreatedAt = DateTime.Now.AddDays(91),
+                    CommentText = "My last winter holidays was the best too. It was the best time",
+                    CommentId = null
                 }
             };
         public static IEnumerable<PostReaction> GetPostReactionsValues() => new PostReaction[10] {

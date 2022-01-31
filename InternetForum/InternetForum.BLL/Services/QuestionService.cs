@@ -27,7 +27,7 @@ namespace InternetForum.BLL.Services
 
             ValidationResult rez = await _validator.ValidateAsync(entity);
             if (!rez.IsValid)
-                throw new ArgumentException("Question entity is invalid");
+                throw new InvalidOperationException("Question entity is invalid");
 
             if (string.IsNullOrEmpty(entity.Id))
                 entity.Id = Guid.NewGuid().ToString();
@@ -69,9 +69,13 @@ namespace InternetForum.BLL.Services
             if (newEntity == null)
                 throw new ArgumentNullException("entity", "Question can not be null");
 
+            QuestionDTO updatedQuestion = await GetByIdAsync(newEntity.Id);
+            if (updatedQuestion == null) 
+                throw new ArgumentException("did not find question with this id");
+
             ValidationResult rez = await _validator.ValidateAsync(newEntity);
-            if (!rez.IsValid)
-                throw new ArgumentException("Question entity is invalid");
+            if (!rez.IsValid || updatedQuestion.QuestionnaireId != newEntity.QuestionnaireId)
+                throw new InvalidOperationException($"Questionnaire entity is invalid:{string.Join(',', rez.Errors)} or tried to change questionnaire id");
 
             Question question = await _unitOfWork.QuestionRepository.UpdateAsync(_mapper.Map<Question>(newEntity));
             await _unitOfWork.SaveChangesAsync();

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace InternetForum.DAL.DomainModels
 {
-    public class BaseModel
+    public abstract class BaseModel
     {
         public BaseModel()
         {
@@ -11,6 +11,7 @@ namespace InternetForum.DAL.DomainModels
         }
         [Required]
         [MinLength(1)]
+        [Key]
         public string Id { get; set; }
     }
 }

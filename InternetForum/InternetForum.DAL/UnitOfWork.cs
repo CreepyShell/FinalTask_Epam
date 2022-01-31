@@ -9,9 +9,10 @@ namespace InternetForum.DAL
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public UnitOfWork(IPostRepository postRepository, IPostReactionRepository postReactionRepository, IUserRepository userRepository, 
-            ICommentRepository commentRepository, ICommentReactionRepository commentReactionRepository,IQuestionnaireRepository questionnaireRepository,
-            IQuestionRepository questionRepository, IAnswerRepository answerRepository, IAnswerUserRepository answerUserRepository, UserManager<AuthUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UnitOfWork(IPostRepository postRepository, IPostReactionRepository postReactionRepository, IUserRepository userRepository,
+            ICommentRepository commentRepository, ICommentReactionRepository commentReactionRepository, IQuestionnaireRepository questionnaireRepository,
+            IQuestionRepository questionRepository, IAnswerRepository answerRepository, IAnswerUserRepository answerUserRepository,
+            UserManager<AuthUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             PostRepository = postRepository;
             UserRepostory = userRepository;

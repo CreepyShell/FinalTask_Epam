@@ -12,5 +12,6 @@ namespace InternetForum.DAL.Interfaces.RepositoryInterfaces
         Task<IEnumerable<User>> GetUserWithPosts();
         Task<IEnumerable<User>> GetUserWithQuestionnaires();
         Task<IEnumerable<User>> GetUsersWithReacions();
+        Task<bool> RemoveUserAndUserDataAsync(string id);
     }
 }

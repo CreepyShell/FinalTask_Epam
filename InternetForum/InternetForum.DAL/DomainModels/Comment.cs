@@ -7,7 +7,7 @@ namespace InternetForum.DAL.DomainModels
     public class Comment : BaseModel
     {
         [Required]
-        [MaxLength(100)]
+        [MaxLength(140)]
         public string CommentText { get; set; }
         [Required]
         public string PostId { get; set; }

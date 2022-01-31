@@ -14,19 +14,23 @@ namespace InternetForum.BLL.Services
     public class UserService : BaseService, IUserService
     {
         private readonly UserValidator validations;
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        private readonly IRoleService _roleService;
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IRoleService roleService) : base(unitOfWork, mapper)
         {
             validations = new UserValidator();
+            _roleService = roleService;
         }
 
         public async Task<UserDTO> AddEntityAsync(UserDTO entity)
         {
             var rez = await validations.ValidateAsync(entity);
             if (!rez.IsValid)
-                throw new ArgumentException($"Invalid user: {string.Join(',', rez.Errors)}");
+                throw new InvalidOperationException($"Invalid user: {string.Join(',', rez.Errors)}");
 
             if (string.IsNullOrEmpty(entity.Id))
                 entity.Id = Guid.NewGuid().ToString();
+
+            await _roleService.AssignUserToRole(entity.UserName, "User");
 
             await _unitOfWork.UserRepostory.CreateAsync(_mapper.Map<User>(entity));
             await _unitOfWork.SaveChangesAsync();
@@ -35,16 +39,18 @@ namespace InternetForum.BLL.Services
 
         public async Task<bool> DeleteAsync(string id)
         {
-            bool rez = await _unitOfWork.UserRepostory.DeleteByIdAsync(id);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.UserManager.DeleteAsync(await _unitOfWork.UserManager.FindByIdAsync(id));
+            bool rez = await _unitOfWork.UserRepostory.RemoveUserAndUserDataAsync(id);
+            await _unitOfWork.UserRepostory.SaveChangesAsync();
             return rez;
         }
 
         public async Task<bool> DeleteUserByNameAsync(string username)
         {
+            await _roleService.RemoveUserFromRole(username, "User");
             User user = await _unitOfWork.UserRepostory.GetUserByUsernameAsync(username);
-
             bool rez = await _unitOfWork.UserRepostory.DeleteAsync(user);
+            await _unitOfWork.UserRepostory.SaveChangesAsync();
             return rez;
         }
 
@@ -55,7 +61,9 @@ namespace InternetForum.BLL.Services
 
         public async Task<UserDTO> GetByIdAsync(string id)
         {
-            return _mapper.Map<UserDTO>(await _unitOfWork.UserRepostory.GetByIdAsync(id));
+            if ((await _unitOfWork.UserRepostory.GetByIdAsync(id)) == null)
+                return null;
+            return _mapper.Map<UserDTO>((await _unitOfWork.UserManager.FindByIdAsync(id), await _unitOfWork.UserRepostory.GetByIdAsync(id)));
         }
 
         public async Task<IEnumerable<UserDTO>> GetMostActiveUsers(int count)
@@ -77,11 +85,23 @@ namespace InternetForum.BLL.Services
             if (newEntity == null)
                 throw new ArgumentNullException("entity", "post can not be null");
 
-            var rez = await validations.ValidateAsync(newEntity);
-            if (!rez.IsValid)
-                throw new ArgumentException("Post entity is invalid");
+            UserDTO existUser = (await GetAllAsync()).FirstOrDefault(u => u.Id == newEntity.Id);
+            if (existUser == null)
+                throw new ArgumentException("did not find user with this id");
+            existUser.Avatar = newEntity.Avatar;
+            if (newEntity.BirthDay.HasValue)
+            {
+                existUser.BirthDay = newEntity.BirthDay;
+                existUser.Age = (int)DateTime.Now.Subtract(newEntity.BirthDay.Value).TotalDays / 365;
+            }
+            existUser.Bio = newEntity.Bio;
+            existUser.FullName = newEntity.FullName;
 
-            User user = await _unitOfWork.UserRepostory.UpdateUserAsync(_mapper.Map<User>(newEntity));
+            var rez = await validations.ValidateAsync(existUser);
+            if (!rez.IsValid)
+                throw new InvalidOperationException($"User entity is invalid:{string.Join(',',rez.Errors)}");
+
+            User user = await _unitOfWork.UserRepostory.UpdateUserAsync(_mapper.Map<User>(existUser));
             await _unitOfWork.SaveChangesAsync();
             return _mapper.Map<UserDTO>(user);
         }
