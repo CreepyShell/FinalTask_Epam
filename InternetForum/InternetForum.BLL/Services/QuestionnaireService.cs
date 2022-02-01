@@ -41,7 +41,7 @@ namespace InternetForum.BLL.Services
         public async Task<bool> DeleteAsync(string id)
         {
             bool rez = await _unitOfWork.QuestionnaireRepository.DeleteByIdAsync(id);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.QuestionnaireRepository.SaveChangesAsync();
             return rez;
         }
 
@@ -62,7 +62,6 @@ namespace InternetForum.BLL.Services
 
         public async Task<IEnumerable<QuestionnaireDTO>> GetQuestionnairesWithLessQuestions(int count)
         {
-
             IEnumerable<Questionnaire> questionnaires = await _unitOfWork.QuestionnaireRepository.GetQuestionnairesWithQuestionsAsync();
             return _mapper.Map<IEnumerable<QuestionnaireDTO>>
                 (questionnaires.OrderBy(p => p.Questions.Count())
@@ -82,11 +81,15 @@ namespace InternetForum.BLL.Services
         public async Task<QuestionnaireDTO> UpdateAsync(QuestionnaireDTO newEntity)
         {
             if (newEntity == null)
-                throw new ArgumentNullException("entity", "post can not be null");
+                throw new ArgumentNullException("entity", "Questionnaire can not be null");
+
+            QuestionnaireDTO updatedQuestionnaire = (await GetAllAsync()).FirstOrDefault(q => q.Id == newEntity.Id);
+            if (updatedQuestionnaire == null)
+                throw new ArgumentException("did not find questionnaire with id");
 
             ValidationResult rez = await _validator.ValidateAsync(newEntity);
-            if (!rez.IsValid)
-                throw new InvalidOperationException("Post entity is invalid");
+            if (!rez.IsValid || newEntity.AuthorId != updatedQuestionnaire.AuthorId)
+                throw new InvalidOperationException($"Questionnaire entity is invalid:{string.Join(',', rez.Errors)} or tried to change author id");
 
             Questionnaire questionnaire = await _unitOfWork.QuestionnaireRepository.UpdateQuestionnaireAsync(_mapper.Map<Questionnaire>(newEntity));
             await _unitOfWork.SaveChangesAsync();

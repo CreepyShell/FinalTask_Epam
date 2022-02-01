@@ -31,7 +31,6 @@ namespace BLL.Tests.ServiceTests
             forumDb = UnitTestsHelper.GetForumDbContext();
             userRepository = new UserRepository(forumDb);
 
-            forumDb.Database.EnsureDeleted();
             forumDb.Database.EnsureCreated();
 
             Mock<IUserStore<AuthUser>> mockStore = new Mock<IUserStore<AuthUser>>();
@@ -117,6 +116,7 @@ namespace BLL.Tests.ServiceTests
             if (disposing)
             {
             }
+            forumDb.Database.EnsureDeleted();
             forumDb.Dispose();
         }
 

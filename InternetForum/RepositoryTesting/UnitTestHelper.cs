@@ -5,10 +5,10 @@ namespace RepositoryTesting
 {
     public static class UnitTestHelper
     {
-        public static ForumDbContext GetForumDbContext()
+        public static ForumDbContext GetForumDbContext(string database)
         {
             var options = new DbContextOptionsBuilder<ForumDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .UseInMemoryDatabase(databaseName: database)
                 .Options;
             
             return new ForumDbContext(options);

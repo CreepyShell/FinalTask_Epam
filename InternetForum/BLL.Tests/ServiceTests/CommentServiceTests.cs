@@ -30,7 +30,6 @@ namespace BLL.Tests.ServiceTests
             forumDb = UnitTestsHelper.GetForumDbContext();
             commentRepository = new CommentRepository(forumDb);
 
-            forumDb.Database.EnsureDeleted();
             forumDb.Database.EnsureCreated();
 
             mockUnitOfWork.Setup(c => c.CommentRepository).Returns(commentRepository);
@@ -130,6 +129,7 @@ namespace BLL.Tests.ServiceTests
                 {
                     
                 }
+                forumDb.Database.EnsureDeleted();
                 forumDb.Dispose();
                 disposedValue = true;
             }

@@ -20,7 +20,7 @@ namespace InternetForum.DAL.Repositories
             return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserName == username);
         }
 
-        public async Task<IEnumerable<User>> GetUsersWithReacions()
+        public async Task<IEnumerable<User>> GetUsersWithReactions()
         {
             return await _context.Users.Include(u => u.PostReactions).Include(u => u.CommentReactions).ToListAsync();
         }

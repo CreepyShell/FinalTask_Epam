@@ -4,19 +4,20 @@ using InternetForum.DAL.DomainModels;
 using InternetForum.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace RepositoryTesting
 {
-    public class BaseRepositoryTests : IDisposable
+    public class UserRepositoryTests : IDisposable
     {
         private readonly ForumDbContext _context;
         private readonly UserRepository _userRepository;
-        public BaseRepositoryTests()
+        public UserRepositoryTests()
         {
-            _context = UnitTestHelper.GetForumDbContext();
+            _context = UnitTestHelper.GetForumDbContext("user_repository");
             _context.Database.EnsureCreated();
             _userRepository = new UserRepository(_context);
         }
@@ -38,7 +39,7 @@ namespace RepositoryTesting
         {
             User user = new User() { Id = "1", UserName = "user1" };
 
-            await Assert.ThrowsAsync<ArgumentException>(() =>  _userRepository.CreateAsync(user));
+            await Assert.ThrowsAsync<ArgumentException>(() => _userRepository.CreateAsync(user));
         }
         [Fact]
         public async Task CreateEntityWithNullValue_ThanThrowsNewArgumentNullException()
@@ -64,7 +65,7 @@ namespace RepositoryTesting
         public async Task DeleteEntityById_ThanEntityDeletesFromDb()
         {
             string id = "5";
-            
+
             bool rezult = await _userRepository.DeleteByIdAsync(id);
             await _userRepository.SaveChangesAsync();
 
@@ -91,7 +92,7 @@ namespace RepositoryTesting
         {
             User user = null;
 
-           await Assert.ThrowsAsync<ArgumentNullException>(() => _userRepository.DeleteAsync(user));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _userRepository.DeleteAsync(user));
         }
         [Fact]
         public async Task DeleteEntity_WhenNotFoundId_ThanReturnFalse()
@@ -112,7 +113,7 @@ namespace RepositoryTesting
             {
                 Id = "1",
                 UserName = DataForSeeding.GetUsersValues().First().UserName,
-                Avatar ="new ava",
+                Avatar = "new ava",
                 Bio = "new bio"
             };
 
@@ -136,8 +137,53 @@ namespace RepositoryTesting
             Assert.Empty(await _context.AnswerUsers.Where(a => a.UserId == user.Id).ToListAsync());
             Assert.Empty(await _context.CommentReactions.Where(cr => cr.UserId == user.Id).ToListAsync());
         }
+
+        [Fact]
+        public async Task GetUserByUsername_ThenReturnUser()
+        {
+            string username = "mike_2002";
+
+            User user = await _userRepository.GetUserByUsernameAsync(username);
+
+            Assert.NotNull(username);
+            Assert.Equal(DataForSeeding.GetUsersValues().FirstOrDefault(u => u.UserName == username).Id, user.Id);
+        }
+
+        [Fact]
+        public async Task GetUsersWithReactions_ThenReturnUserWithNotNullReactions()
+        {
+            IEnumerable<User> users = await _userRepository.GetUsersWithReactions();
+
+            Assert.NotNull(users.First().PostReactions);
+            Assert.NotNull(users.First().CommentReactions);
+        }
+
+        [Fact]
+        public async Task GetUserWithComments_ThenReturnUserWithNotNullComments()
+        {
+            IEnumerable<User> users = await _userRepository.GetUserWithComments();
+
+            Assert.NotNull(users.First().Comments);
+        }
+
+        [Fact]
+        public async Task GetUserWithPosts_ThenReturnUserWithNotNullPosts()
+        {
+            IEnumerable<User> users = await _userRepository.GetUserWithPosts();
+
+            Assert.NotNull(users.First().Posts);
+        }
+        [Fact]
+        public async Task GetUserWithQuestionnaires_ThenReturnsUserWithNotNullQuestionnaires()
+        {
+            IEnumerable<User> users = await _userRepository.GetUserWithQuestionnaires();
+
+            Assert.NotNull(users.First().Questionnaires);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
+            _context.Database.EnsureDeleted();
             _context.Dispose();
         }
         public void Dispose()

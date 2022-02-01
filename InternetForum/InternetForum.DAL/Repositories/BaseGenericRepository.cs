@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace InternetForum.DAL.Repositories
 {
-    public class BaseGenericRepository<T> : IBaseRepository<T>
+    public abstract class BaseGenericRepository<T> : IBaseRepository<T>
         where T : BaseModel
     {
         protected ForumDbContext _context;

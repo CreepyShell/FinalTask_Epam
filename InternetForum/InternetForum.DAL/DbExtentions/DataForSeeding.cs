@@ -256,7 +256,7 @@ namespace InternetForum.DAL.DbExtentions
                     ReactedAt = DateTime.Now.AddDays(181)
                 }
             };
-        public static IEnumerable<Questionnaire> GetQuestionnairesValues() => new Questionnaire[1] {
+        public static IEnumerable<Questionnaire> GetQuestionnairesValues() => new Questionnaire[2] {
                 new Questionnaire()
                 {
                     AuthorId = "1",
@@ -264,9 +264,17 @@ namespace InternetForum.DAL.DbExtentions
                     Id = "1",
                     OpenAt = DateTime.Now,
                     Title = "Best Time Of Year"
+                },
+                new Questionnaire()
+                {
+                    AuthorId = "3",
+                    ClosedAt = DateTime.Now.AddDays(3),
+                    Id = "2",
+                    OpenAt = DateTime.Now,
+                    Title = "Test questionnaire"
                 }
             };
-        public static IEnumerable<Question> GetQuestionsValues() => new Question[3]
+        public static IEnumerable<Question> GetQuestionsValues() => new Question[4]
             {
                 new Question()
                 {
@@ -290,6 +298,14 @@ namespace InternetForum.DAL.DbExtentions
                     IsAllowedMultiple = true,
                     QuestionnaireId = "1",
                     Text = "What is your favorite activity?",
+                    IsRequired = false
+                },
+                new Question()
+                {
+                    Id = "4",
+                    IsAllowedMultiple = false,
+                    QuestionnaireId = "2",
+                    Text = "Test question",
                     IsRequired = false
                 }
             };

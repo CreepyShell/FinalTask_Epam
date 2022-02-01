@@ -7,6 +7,7 @@ using InternetForum.DAL.DomainModels;
 using InternetForum.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,9 +26,11 @@ namespace InternetForum.BLL.Services
             if (entity == null)
                 throw new ArgumentNullException("entity", "Question can not be null");
 
+            Questionnaire questionnaire = await _unitOfWork.QuestionnaireRepository.GetByIdAsync(entity.QuestionnaireId);
+
             ValidationResult rez = await _validator.ValidateAsync(entity);
-            if (!rez.IsValid)
-                throw new InvalidOperationException("Question entity is invalid");
+            if (!rez.IsValid || questionnaire == null || (questionnaire.ClosedAt.HasValue && questionnaire.ClosedAt.Value < DateTime.Now))
+                throw new InvalidOperationException($"Question entity is invalid:{string.Join(',', rez.Errors)} or questionnaire is closed");
 
             if (string.IsNullOrEmpty(entity.Id))
                 entity.Id = Guid.NewGuid().ToString();
@@ -40,7 +43,7 @@ namespace InternetForum.BLL.Services
         public async Task<bool> DeleteAsync(string id)
         {
             bool rez = await _unitOfWork.QuestionRepository.DeleteByIdAsync(id);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.QuestionRepository.SaveChangesAsync();
             return rez;
         }
 
@@ -69,7 +72,7 @@ namespace InternetForum.BLL.Services
             if (newEntity == null)
                 throw new ArgumentNullException("entity", "Question can not be null");
 
-            QuestionDTO updatedQuestion = await GetByIdAsync(newEntity.Id);
+            QuestionDTO updatedQuestion = (await GetAllAsync()).FirstOrDefault(q => q.Id == newEntity.Id);
             if (updatedQuestion == null) 
                 throw new ArgumentException("did not find question with this id");
 

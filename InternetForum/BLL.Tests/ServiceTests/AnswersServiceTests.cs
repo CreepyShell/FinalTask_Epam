@@ -31,7 +31,6 @@ namespace BLL.Tests.ServiceTests
             forumDb = UnitTestsHelper.GetForumDbContext();
             mockUnitOfWork = new Mock<IUnitOfWork>();
 
-            forumDb.Database.EnsureDeleted();
             forumDb.Database.EnsureCreated();
 
             MapperConfiguration configuration = new MapperConfiguration(conf => { conf.AddProfile<AnswerProfile>(); conf.AddProfile<UserProfile>(); });
@@ -182,6 +181,7 @@ namespace BLL.Tests.ServiceTests
                 {
 
                 }
+                forumDb.Database.EnsureDeleted();
                 forumDb.Dispose();
                 disposedValue = true;
             }

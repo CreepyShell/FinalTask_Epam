@@ -31,8 +31,9 @@ namespace BLL.Tests.ServiceTests
             forumDb = UnitTestsHelper.GetForumDbContext();
             commentReactionRepository = new CommentReactionRepository(forumDb);
             postReactionRepository = new PostReactionRepository(forumDb);
-            forumDb.Database.EnsureDeleted();
+
             forumDb.Database.EnsureCreated();
+
             mockUnitOfWork.Setup(c => c.CommentReactionRepository).Returns(commentReactionRepository);
             mockUnitOfWork.Setup(c => c.PostReactionRepository).Returns(postReactionRepository);
             reactionService = new ReactionService(mockUnitOfWork.Object, new Mapper(configuration));
@@ -173,8 +174,9 @@ namespace BLL.Tests.ServiceTests
                 
                 if (disposing)
                 {
-                    this.forumDb.Dispose();
                 }
+                forumDb.Database.EnsureDeleted();
+                this.forumDb.Dispose();
                 disposedValue = true;
             }
         }
