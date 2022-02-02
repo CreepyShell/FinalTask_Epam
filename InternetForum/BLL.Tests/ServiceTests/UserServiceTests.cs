@@ -64,6 +64,7 @@ namespace BLL.Tests.ServiceTests
         [InlineData("test", " Name")]
         [InlineData("test", "A A")]
         [InlineData("test", "AaA")]
+        [InlineData("user1984", "Full ")]
         public async Task AddInvalidUser_ThenThrowInvalidOperationException(string username, string fullname)
         {
             UserDTO user = new UserDTO() { Bio = "test user bio", FullName = fullname, UserName = username };

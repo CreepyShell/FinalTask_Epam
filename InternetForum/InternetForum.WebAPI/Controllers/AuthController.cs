@@ -1,9 +1,10 @@
 ﻿using InternetForum.BLL.Helpers;
 using InternetForum.BLL.Interfaces;
 using InternetForum.BLL.ModelsDTo.User;
+using InternetForum.WebAPI.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
@@ -12,14 +13,17 @@ namespace InternetForum.WebAPI.Controllers
     [Route("api/[controller]")]
     [AllowAnonymous]
     [ApiController]
+    [AuthExceptionFilter]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
         private readonly JwtSettings _jwtSettings;
-        public AuthController(IAuthService authService, IOptionsSnapshot<JwtSettings> snapshot)
+        private readonly ILogger<AuthController> _logger;
+        public AuthController(IAuthService authService, IOptionsSnapshot<JwtSettings> snapshot, ILogger<AuthController> logger)
         {
             _authService = authService;
             _jwtSettings = snapshot.Value;
+            _logger = logger;
         }
 
         [HttpPost]

@@ -63,6 +63,7 @@ namespace InternetForum.WebAPI
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
+
         public static void RegisterServices(this IServiceCollection services)
         {
             services.AddScoped<IAuthService, AuthService>();

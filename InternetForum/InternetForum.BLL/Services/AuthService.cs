@@ -30,7 +30,7 @@ namespace InternetForum.BLL.Services
             validations = new AuthUserValidator(false);
             var rez = await validations.ValidateAsync(logInUser);
             if (!rez.IsValid)
-                throw new UserAuthException($"Invalid Data:{string.Join(',', rez.Errors)}");
+                throw new InvalidOperationException($"Invalid Data:{string.Join(',', rez.Errors)}");
 
             AuthUser authUser;
             if (string.IsNullOrEmpty(logInUser.Email))
@@ -71,7 +71,7 @@ namespace InternetForum.BLL.Services
             validations = new AuthUserValidator(true);
             var rez = await validations.ValidateAsync(register);
             if (!rez.IsValid)
-                throw new UserAuthException($"Invalid Data:{string.Join(',', rez.Errors)}");
+                throw new InvalidOperationException($"Invalid Data:{string.Join(',', rez.Errors)}");
 
             if (await _unitOfWork.UserManager.FindByEmailAsync(register.Email) != null || await _unitOfWork.UserManager.FindByNameAsync(register.Username) != null)
                 throw new UserAuthException("failed to register: email or username is not unique");

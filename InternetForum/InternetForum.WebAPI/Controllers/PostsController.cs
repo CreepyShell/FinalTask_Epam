@@ -2,9 +2,9 @@
 using InternetForum.BLL.ModelsDTo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace InternetForum.WebAPI.Controllers
@@ -14,17 +14,17 @@ namespace InternetForum.WebAPI.Controllers
     public class PostsController : ControllerBase
     {
         private readonly IPostService _postService;
-        private readonly IRoleService _roleService;
-
-        public PostsController(IRoleService roleService, IPostService postService)
+        private readonly ILogger<PostsController> _logger;
+        public PostsController(IPostService postService, ILogger<PostsController> logger)
         {
-            _roleService = roleService;
+            _logger = logger;
             _postService = postService;
         }
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetAllPosts()
         {
+            _logger.LogInformation("someone get all posts\n");
             return Ok(await _postService.GetAllAsync());
         }
 

@@ -24,8 +24,8 @@ namespace InternetForum.BLL.Services
         public async Task<UserDTO> AddEntityAsync(UserDTO entity)
         {
             var rez = await validations.ValidateAsync(entity);
-            if (!rez.IsValid)
-                throw new InvalidOperationException($"Invalid user: {string.Join(',', rez.Errors)}");
+            if (!rez.IsValid || (await GetUserByNameAsync(entity.UserName)) != null) 
+                throw new InvalidOperationException($"Invalid user: {string.Join(',', rez.Errors)} or user with this username already exist");
 
             if (string.IsNullOrEmpty(entity.Id))
                 entity.Id = Guid.NewGuid().ToString();

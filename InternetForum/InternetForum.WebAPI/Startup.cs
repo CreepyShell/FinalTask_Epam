@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using InternetForum.BLL.Helpers;
 using InternetForum.Administration.DAL.IdentityModels;
 using System;
-using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace InternetForum.WebAPI
 {
@@ -19,6 +19,10 @@ namespace InternetForum.WebAPI
     {
         public Startup(IConfiguration configuration)
         {
+            Log.Logger = new LoggerConfiguration()
+                         .ReadFrom.Configuration(configuration)
+                         .CreateLogger();
+
             Configuration = configuration;
         }
 
@@ -26,6 +30,7 @@ namespace InternetForum.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging(conf => conf.AddSerilog(dispose: true));
             services.AddControllers();
 
             services.AddDbContext<IForumDb, ForumDbContext>(options => 
@@ -43,7 +48,8 @@ namespace InternetForum.WebAPI
                 .AddEntityFrameworkStores<UsersDbContext>()
                 .AddTokenProvider("Provider", typeof(DataProtectorTokenProvider<AuthUser>));
 
-            services.Configure<DataProtectionTokenProviderOptions>(opt => { opt.TokenLifespan = TimeSpan.FromDays(1); });
+            services.Configure<DataProtectionTokenProviderOptions>(opt => 
+                { opt.TokenLifespan = TimeSpan.FromDays(Convert.ToDouble(Configuration.GetSection("RefreshTokenExpirationDays").Value)); });
 
             JwtSettings settings = Configuration.GetSection("JwtSection").Get<JwtSettings>();
 

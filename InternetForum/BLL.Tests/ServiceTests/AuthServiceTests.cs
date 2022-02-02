@@ -62,13 +62,13 @@ namespace BLL.Tests.ServiceTests
         [InlineData("", "1234", "test@gmaisdfll.csdfom")]
         [InlineData("no", "1234", "test@gmail.com")]
         [InlineData("veryyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyylooooooooooooooongggggggggggggggggusername", "1234", "test@gmail.com")]
-        public async Task RegisterUser_WhenInvalidRegisterData_ThenThrowAuthUserException(string username, string password, string gmail)
+        public async Task RegisterUser_WhenInvalidRegisterData_ThenThrowInvalidOperationException(string username, string password, string gmail)
         {
             mockUnitOfWork = new Mock<IUnitOfWork>();
             authService = new AuthService(mockUnitOfWork.Object, new Mapper(configuration), mockTokenService.Object);
             AuthUserDTO userDTO = new AuthUserDTO() { Email = gmail, Username = username, Password = password };
 
-            await Assert.ThrowsAsync<UserAuthException>(async () => await authService.Register(userDTO, null));
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await authService.Register(userDTO, null));
         }
         [Fact]
         public async Task RegisterLogInUser_WhenNullData_ThenThrowNewArgumentNullException()
@@ -102,13 +102,13 @@ namespace BLL.Tests.ServiceTests
         [InlineData("test","pass","mail")]
         [InlineData("", "1234", "")]
         [InlineData("no", "1234", "")]
-        public async Task LogInUser_WhenInvalidRegisterData_ThenThrowAuthUserException(string username, string password, string gmail)
+        public async Task LogInUser_WhenInvalidRegisterData_ThenThrowIvalidOperationException(string username, string password, string gmail)
         {
             mockUnitOfWork = new Mock<IUnitOfWork>();
             authService = new AuthService(mockUnitOfWork.Object, new Mapper(configuration), mockTokenService.Object);
             AuthUserDTO userDTO = new AuthUserDTO() { Email = gmail, Username = username, Password = password };
 
-            await Assert.ThrowsAsync<UserAuthException>(async () => await authService.LogIn(userDTO, null));
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await authService.LogIn(userDTO, null));
         }
 
         [Theory]
