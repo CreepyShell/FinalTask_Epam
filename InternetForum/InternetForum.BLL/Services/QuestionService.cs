@@ -30,7 +30,7 @@ namespace InternetForum.BLL.Services
 
             ValidationResult rez = await _validator.ValidateAsync(entity);
             if (!rez.IsValid || questionnaire == null || (questionnaire.ClosedAt.HasValue && questionnaire.ClosedAt.Value < DateTime.Now))
-                throw new InvalidOperationException($"Question entity is invalid:{string.Join(',', rez.Errors)} or questionnaire is closed");
+                throw new InvalidOperationException($"Question entity is invalid:{string.Join(',', rez.Errors)}, questionnaire with this id did not find or questionnaire is closed");
 
             if (string.IsNullOrEmpty(entity.Id))
                 entity.Id = Guid.NewGuid().ToString();

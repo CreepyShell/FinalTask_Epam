@@ -39,19 +39,12 @@ namespace InternetForum.WebAPI.Controllers
             return Ok(await _userService.GetUserByNameAsync(username));
         }
 
-        // POST api/<UsersController>
-        [HttpPost]
-        [Authorize(Roles = "PremiumUser"), Authorize(Roles = "Administrator")]
-        public async Task<ActionResult<UserDTO>> CreateUser([FromBody] UserDTO user)
-        {
-            return await _userService.AddEntityAsync(user);
-        }
-
         [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<UserDTO>> UpdateUser([FromBody] UserDTO user)
         {
-            user.Id = this.GetUserId();
+            if (user.Id != this.GetUserId())
+                return Forbid();
             return await _userService.UpdateAsync(user);
         }
 
@@ -60,15 +53,16 @@ namespace InternetForum.WebAPI.Controllers
         public async Task<ActionResult<bool>> DeleteUserById([FromBody] UserDTO user)
         {
             if (user.Id != this.GetUserId())
-                return Unauthorized();
+                return Forbid();
             return await _userService.DeleteAsync(user.Id);
         }
-
-        [Authorize(Roles = "Administrator")]
-        [HttpPut("adminId/{username}")]
-        public async Task<ActionResult<bool>> DeleteUserById(string username)
+        [Authorize]
+        [HttpGet]
+        [Route("fromtoken")]
+        public async Task<ActionResult<UserDTO>> GetUserFromToken()
         {
-            return await _userService.DeleteUserByNameAsync(username);
+            string userId = this.GetUserId();
+            return Ok(await _userService.GetByIdAsync(userId));
         }
     }
 }

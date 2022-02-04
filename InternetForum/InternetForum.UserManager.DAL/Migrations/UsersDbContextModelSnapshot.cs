@@ -74,6 +74,9 @@ namespace InternetForum.Administration.DAL.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
+                    b.Property<byte[]>("salt")
+                        .HasColumnType("varbinary(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -92,73 +95,106 @@ namespace InternetForum.Administration.DAL.Migrations
                             Id = "1",
                             AccessFailedCount = 0,
                             CodeWords = "good_summer_hollidays",
-                            ConcurrencyStamp = "2d0265a0-184b-43bf-971e-c8d2ac1a0fa3",
+                            ConcurrencyStamp = "29a88a00-cc4e-4f50-975f-a9bfd824627f",
                             Email = "anton@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "1111",
+                            NormalizedEmail = "ANTON@GMAIL.COM",
+                            NormalizedUserName = "ANTON_1990",
+                            PasswordHash = "7bi7gJ3/LNEKOkqCvCF8T5MJWjI23GBrxYiPMTmGV1U=",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b31079ba-97eb-456d-a19b-eeab926b7843",
+                            SecurityStamp = "bc14db7c-f529-4dcb-9120-9ca6be23c181",
                             TwoFactorEnabled = false,
-                            UserName = "anton_1990"
+                            UserName = "anton_1990",
+                            salt = new byte[] { 239, 40, 24, 28, 201, 108, 9, 164, 218, 44, 230, 103, 243, 210, 40, 227, 4, 31, 245, 49, 239, 38, 228, 71, 73, 50, 162, 38, 204, 224, 12, 172 }
                         },
                         new
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6d5cb195-144a-45b7-a18c-8771c63b1ab6",
+                            ConcurrencyStamp = "23665b11-e2df-4e13-9237-7d39767e83b9",
                             Email = "dmitro_kovalcuk@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "1111",
+                            NormalizedEmail = "DMITRO_KOVALCUK@GMAIL.COM",
+                            NormalizedUserName = "DMIDRO",
+                            PasswordHash = "5FaVRUYDNlmA5fspxYnObyeP8PlfTXdDHH08ILn9XfU=",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1cb5cd70-5cc7-44f7-9cfc-a1fca7c47927",
+                            SecurityStamp = "b3806388-b109-4ef0-a6d2-1b60c45d0074",
                             TwoFactorEnabled = false,
-                            UserName = "dmidro"
+                            UserName = "dmidro",
+                            salt = new byte[] { 114, 53, 226, 149, 70, 167, 84, 79, 175, 151, 201, 46, 230, 111, 48, 5, 170, 194, 54, 112, 192, 33, 145, 121, 76, 43, 95, 99, 113, 52, 187, 6 }
                         },
                         new
                         {
                             Id = "3",
                             AccessFailedCount = 0,
                             CodeWords = "Whiski",
-                            ConcurrencyStamp = "29dca4bc-672d-45d5-8aed-edb0103fd167",
+                            ConcurrencyStamp = "133b5cb8-58b2-4d51-a53e-a3ce03f301ed",
                             Email = "My_mail84@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "1111",
+                            NormalizedEmail = "MY_MAIL84@GMAIL.COM",
+                            NormalizedUserName = "USER1984",
+                            PasswordHash = "BnGrZd3DgF/LpNAVRLy/yMEQF60jJotJgioc/k36Aaw=",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "45e18131-2e55-4488-91a7-834d7cea85c2",
+                            SecurityStamp = "f631a080-1f4d-48fc-8a8a-82e750da943a",
                             TwoFactorEnabled = false,
-                            UserName = "user1984"
+                            UserName = "user1984",
+                            salt = new byte[] { 238, 249, 69, 57, 26, 38, 36, 56, 111, 152, 200, 122, 157, 33, 7, 187, 79, 132, 66, 145, 225, 112, 22, 65, 222, 187, 208, 220, 145, 109, 237, 157 }
                         },
                         new
                         {
                             Id = "4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1f5feb18-2979-4f35-a2b2-ac5aaeee7394",
+                            ConcurrencyStamp = "c4a78659-e69c-4758-8078-555f6c701dfc",
                             Email = "GoodLuck11@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "1111",
+                            NormalizedEmail = "GOODLUCK11@GMAIL.COM",
+                            NormalizedUserName = "HAVE_A_NICE_DAY",
+                            PasswordHash = "+fw/IThmwaKuhDduV2zTNzLD/yyS+wQZZDnLZW6KQLg=",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "697fe423-eb93-43d7-93f0-066d7699f81a",
+                            SecurityStamp = "68d62387-d258-4a9e-9cb7-dfd0c7d15e76",
                             TwoFactorEnabled = false,
-                            UserName = "Have_A_Nice_Day"
+                            UserName = "Have_A_Nice_Day",
+                            salt = new byte[] { 195, 93, 49, 152, 232, 160, 32, 109, 243, 76, 18, 149, 26, 4, 139, 52, 84, 79, 198, 3, 6, 227, 166, 182, 188, 240, 113, 119, 97, 44, 48, 173 }
                         },
                         new
                         {
                             Id = "5",
                             AccessFailedCount = 0,
                             CodeWords = "Veni, vidi, vici",
-                            ConcurrencyStamp = "343b5ecd-806e-4285-81a8-01ae6be58b9b",
+                            ConcurrencyStamp = "f0efcbfd-6ab5-4a6c-8fc8-74b4663b3d09",
                             Email = "t_mike2002_11@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "1111",
+                            NormalizedEmail = "t_mike2002_11@gmail.com",
+                            NormalizedUserName = "MIKE_2002",
+                            PasswordHash = "fXBqIKok+nPPn+/PvFD6q0sdO/Hr63iULr0G+PmLwJE=",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "00fbf031-8adc-4dab-8bae-a1cef38b959f",
+                            SecurityStamp = "918a8b7b-edcf-46a0-99ea-b3a2cb783111",
                             TwoFactorEnabled = false,
-                            UserName = "mike_2002"
+                            UserName = "mike_2002",
+                            salt = new byte[] { 133, 85, 124, 102, 178, 36, 61, 50, 113, 19, 82, 239, 224, 85, 140, 225, 22, 23, 246, 82, 136, 253, 172, 216, 87, 49, 237, 170, 17, 88, 44, 123 }
+                        },
+                        new
+                        {
+                            Id = "6",
+                            AccessFailedCount = 0,
+                            CodeWords = "owner of this project",
+                            ConcurrencyStamp = "0c52977a-cb5a-4448-ba54-e070885124fd",
+                            Email = "danil.t404@gmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "danil.t404@gmail.com",
+                            NormalizedUserName = "DANIL_OWNER",
+                            PasswordHash = "D6E8Lon6PMsdI+nk2+V9rKxbEVRfWJsxvesYrt0Pl2U=",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5b483070-2b92-441e-ac98-b15be56de7c3",
+                            TwoFactorEnabled = false,
+                            UserName = "danil_owner",
+                            salt = new byte[] { 43, 150, 1, 40, 49, 238, 134, 154, 12, 128, 168, 217, 148, 47, 195, 35, 183, 162, 119, 56, 123, 155, 4, 166, 231, 121, 244, 194, 21, 104, 247, 2 }
                         });
                 });
 
@@ -326,6 +362,21 @@ namespace InternetForum.Administration.DAL.Migrations
                         {
                             UserId = "5",
                             RoleId = "2"
+                        },
+                        new
+                        {
+                            UserId = "6",
+                            RoleId = "5"
+                        },
+                        new
+                        {
+                            UserId = "6",
+                            RoleId = "1"
+                        },
+                        new
+                        {
+                            UserId = "6",
+                            RoleId = "2"
                         });
                 });
 
@@ -338,27 +389,38 @@ namespace InternetForum.Administration.DAL.Migrations
                     b.HasData(
                         new
                         {
+                            Id = "5",
+                            ConcurrencyStamp = "bc0b6a8a-2e28-423e-be34-993bb62a4c25",
+                            Name = "Owner",
+                            NormalizedName = "OWNER"
+                        },
+                        new
+                        {
                             Id = "1",
-                            ConcurrencyStamp = "b4e7af9c-2807-4a5b-affa-7c59fcf3b173",
-                            Name = "Administrator"
+                            ConcurrencyStamp = "da6e20d5-db08-4055-a7d4-198d8c84103b",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "8e9a50d2-165d-462e-ba6a-dba7334c79cb",
-                            Name = "User"
+                            ConcurrencyStamp = "51a5eb5d-a1da-4a37-9be9-f6f35a587cda",
+                            Name = "User",
+                            NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "5948b03c-d04f-493a-8ed5-24fffa93e29c",
-                            Name = "BannedUser"
+                            ConcurrencyStamp = "02bded0a-8439-4f99-aea7-c9189aed81c2",
+                            Name = "BannedUser",
+                            NormalizedName = "BANNEDUSER"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "b69776a1-c3f2-4caf-916f-f5623a74c1b6",
-                            Name = "PremiumUser"
+                            ConcurrencyStamp = "7d966810-83dd-4a66-8326-fd2a5c5dce4d",
+                            Name = "PremiumUser",
+                            NormalizedName = "PREMIUMUSER"
                         });
                 });
 

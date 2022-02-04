@@ -6,5 +6,6 @@ namespace InternetForum.Administration.DAL.IdentityModels
     public class AuthUser : IdentityUser
     {
         public string CodeWords { get; set; }
+        public byte[] salt { get; set; }
     }
 }

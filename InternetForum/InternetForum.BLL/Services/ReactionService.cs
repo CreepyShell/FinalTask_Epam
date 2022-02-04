@@ -60,6 +60,7 @@ namespace InternetForum.BLL.Services
                 return null;
             }
             commentReaction.IsLiked = !reaction.IsLike;
+            commentReaction.ReactedAt = DateTime.Now;
             await _unitOfWork.CommentReactionRepository.UpdateAsync(commentReaction);
             await _unitOfWork.CommentReactionRepository.SaveChangesAsync();
             return _mapper.Map<ReactionDTO>(commentReaction);

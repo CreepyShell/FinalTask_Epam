@@ -21,35 +21,10 @@ namespace InternetForum.BLL.Services
             _roleService = roleService;
         }
 
-        public async Task<UserDTO> AddEntityAsync(UserDTO entity)
-        {
-            var rez = await validations.ValidateAsync(entity);
-            if (!rez.IsValid || (await GetUserByNameAsync(entity.UserName)) != null) 
-                throw new InvalidOperationException($"Invalid user: {string.Join(',', rez.Errors)} or user with this username already exist");
-
-            if (string.IsNullOrEmpty(entity.Id))
-                entity.Id = Guid.NewGuid().ToString();
-
-            await _roleService.AssignUserToRole(entity.UserName, "User");
-
-            await _unitOfWork.UserRepostory.CreateAsync(_mapper.Map<User>(entity));
-            await _unitOfWork.SaveChangesAsync();
-            return _mapper.Map<UserDTO>(await _unitOfWork.UserRepostory.GetByIdAsync(entity.Id));
-        }
-
         public async Task<bool> DeleteAsync(string id)
         {
             await _unitOfWork.UserManager.DeleteAsync(await _unitOfWork.UserManager.FindByIdAsync(id));
             bool rez = await _unitOfWork.UserRepostory.RemoveUserAndUserDataAsync(id);
-            await _unitOfWork.UserRepostory.SaveChangesAsync();
-            return rez;
-        }
-
-        public async Task<bool> DeleteUserByNameAsync(string username)
-        {
-            await _roleService.RemoveUserFromRole(username, "User");
-            User user = await _unitOfWork.UserRepostory.GetUserByUsernameAsync(username);
-            bool rez = await _unitOfWork.UserRepostory.DeleteAsync(user);
             await _unitOfWork.UserRepostory.SaveChangesAsync();
             return rez;
         }

@@ -8,6 +8,7 @@ namespace InternetForum.DAL.DomainModels
     {
         public User()
         {
+            RegisteredAt = DateTime.Now;
             if (BirthDay.HasValue)
                 Age = (int)DateTime.Now.Subtract(BirthDay.Value).TotalDays / 365;
             else

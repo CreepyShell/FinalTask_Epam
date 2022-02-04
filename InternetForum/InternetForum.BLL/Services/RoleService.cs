@@ -5,6 +5,7 @@ using InternetForum.BLL.Interfaces;
 using InternetForum.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,11 +24,11 @@ namespace InternetForum.BLL.Services
 
             AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(userName);
             if (authUser == null)
-                throw new RoleException("did not find user with this username or email");
+                throw new ArgumentException("did not find user with this username or email");
 
             bool IsInRole = (await _unitOfWork.UserManager.GetRolesAsync(authUser)).Contains(role);
             if (IsInRole)
-                throw new RoleException("user already in this role");
+                return false;
 
             return (await _unitOfWork.UserManager.AddToRoleAsync(authUser, role)).Succeeded;
         }
@@ -42,20 +43,20 @@ namespace InternetForum.BLL.Services
                 throw new ArgumentNullException("did not find user with this username or email");
 
             bool IsInRole = (await _unitOfWork.UserManager.GetRolesAsync(authUser)).Contains(role);
-            if (IsInRole)
-                throw new RoleException("user already in this role");
+            if (!IsInRole)
+                return false;
 
             return (await _unitOfWork.UserManager.RemoveFromRoleAsync(authUser, role)).Succeeded;
         }
 
-        public async Task<IEnumerable<string>> GetUserRole(string username)
+        public async Task<IEnumerable<string>> GetUserRoles(string username)
         {
             AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(username);
             if (authUser == null)
                 throw new RoleException("did not find user with this username or email");
 
             return await _unitOfWork.UserManager.GetRolesAsync(authUser);
-       }
+        }
 
         public async Task<bool> IsInRole(string username, string role)
         {
@@ -64,9 +65,16 @@ namespace InternetForum.BLL.Services
 
             AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(username);
             if (authUser == null)
-                throw new ArgumentNullException("did not find user with this username or email");
+                throw new ArgumentException("did not find user with this username or email");
 
             return await _unitOfWork.UserManager.IsInRoleAsync(authUser, role);
+        }
+
+        public async Task<IEnumerable<string>> GetUsersInRole(string role)
+        {
+            if (!await _unitOfWork.RoleManager.RoleExistsAsync(role))
+                throw new RoleException("this role does not exist");
+            return (await _unitOfWork.UserManager.GetUsersInRoleAsync(role)).Select(u => u.UserName).ToArray();
         }
     }
 }

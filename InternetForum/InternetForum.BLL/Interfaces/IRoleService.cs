@@ -7,7 +7,8 @@ namespace InternetForum.BLL.Interfaces
     {
         Task<bool> AssignUserToRole(string userName, string role);
         Task<bool> RemoveUserFromRole(string userName, string role);
-        Task<IEnumerable<string>> GetUserRole(string username);
+        Task<IEnumerable<string>> GetUserRoles(string username);
         Task<bool> IsInRole(string username, string role);
+        Task<IEnumerable<string>> GetUsersInRole(string role);
     }
 }

@@ -30,6 +30,8 @@ namespace InternetForum.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             services.AddLogging(conf => conf.AddSerilog(dispose: true));
             services.AddControllers();
 
@@ -71,6 +73,14 @@ namespace InternetForum.WebAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(conf =>
+            {
+                conf.AllowAnyMethod();
+                conf.WithOrigins("http://localhost:4200");
+                conf.WithOrigins("https://web.postman.co/");
+                conf.AllowAnyHeader();
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();

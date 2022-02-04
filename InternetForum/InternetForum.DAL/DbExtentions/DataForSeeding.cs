@@ -6,7 +6,7 @@ namespace InternetForum.DAL.DbExtentions
 {
     public static class DataForSeeding
     {
-        public static IEnumerable<User> GetUsersValues() => new User[5]
+        public static IEnumerable<User> GetUsersValues() => new User[6]
             {
                 new User()
                 {
@@ -15,7 +15,8 @@ namespace InternetForum.DAL.DbExtentions
                     BirthDay = new DateTime(1990, 5, 4),
                     FirstName = "Anton",
                     LastName = "Gerashenko",
-                    Bio = "Electrical Engineer"
+                    Bio = "Electrical Engineer",
+                    Avatar = "https://zoloft100.com/wp-content/uploads/2021/10/Top-5-Benefits-of-Being-an-Electrician-UEI-College.jpg"
                 },
                 new User()
                 {
@@ -42,6 +43,13 @@ namespace InternetForum.DAL.DbExtentions
                     Id = "5",
                     UserName = "mike_2002",
                     BirthDay = new DateTime(1999, 8, 11)
+                },
+                new User()
+                {
+                    Id = "6",
+                    UserName = "danil_owner",
+                    FirstName = "Danil",
+                    BirthDay = new DateTime(2002, 1, 19)
                 }
             };
         public static IEnumerable<Post> GetPostsValues() => new Post[5] {

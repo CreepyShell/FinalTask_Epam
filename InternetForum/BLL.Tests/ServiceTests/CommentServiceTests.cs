@@ -66,7 +66,7 @@ namespace BLL.Tests.ServiceTests
                 UserId = postId
             };
 
-            await Assert.ThrowsAsync<InvalidOperationException>(async() => await commentService.CreateCommetToCommentAsync(comment, commentId));
+            await Assert.ThrowsAsync<InvalidOperationException>(async() => await commentService.CreateCommentToCommentAsync(comment, commentId));
         }
         [Fact]
         public async Task DeleteComment_CommentDeleted()

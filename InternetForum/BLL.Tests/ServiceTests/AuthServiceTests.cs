@@ -70,6 +70,7 @@ namespace BLL.Tests.ServiceTests
 
             await Assert.ThrowsAsync<InvalidOperationException>(async () => await authService.Register(userDTO, null));
         }
+
         [Fact]
         public async Task RegisterLogInUser_WhenNullData_ThenThrowNewArgumentNullException()
         {

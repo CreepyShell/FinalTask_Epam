@@ -30,23 +30,26 @@ namespace InternetForum.WebAPI.Controllers
         [Route("register")]
         public async Task<ActionResult<UserDTO>> RegisterUser([FromBody] AuthUserDTO authUser)
         {
-            return await _authService.Register(authUser, _jwtSettings);
+            UserDTO createdUser = await _authService.Register(authUser, _jwtSettings);
+            return Created($"api/users/{createdUser.Id}", createdUser);
         }
 
         [HttpPost]
         [Route("LogIn")]
         public async Task<ActionResult<UserDTO>> LogInUser([FromBody] AuthUserDTO authUser)
         {
-            return await _authService.LogIn(authUser, _jwtSettings);
+            UserDTO loginUser = await _authService.LogIn(authUser, _jwtSettings);
+            _logger.LogInformation($"{loginUser.UserName} was loggined");
+            return Ok(loginUser);
         }
 
-        [Authorize]
         [HttpPut]
         [Route("logOut")]
         public async Task<IActionResult> LogOut([FromBody] UserDTO user)
         {
             await _authService.LogOut(user);
-            return Ok("Log outed");
+            _logger.LogInformation($"{user.UserName} logged out");
+            return Ok("Logged out");
         }
     }
 }

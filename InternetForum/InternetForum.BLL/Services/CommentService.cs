@@ -39,21 +39,19 @@ namespace InternetForum.BLL.Services
 
             entity.CreatedAt = DateTime.Now;
             await _unitOfWork.CommentRepository.CreateAsync(_mapper.Map<Comment>(entity));
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.CommentRepository.SaveChangesAsync();
             return _mapper.Map<CommentDTO>(await _unitOfWork.CommentRepository.GetByIdAsync(entity.Id));
         }
 
-        public async Task<CommentDTO> CreateCommetToCommentAsync(CommentDTO comment, string commentId)
+        public async Task<CommentDTO> CreateCommentToCommentAsync(CommentDTO comment, string commentId)
         {
             if (comment == null)
                 throw new ArgumentNullException("entity", "comment can not be null");
 
             ValidationResult rez = await _validator.ValidateAsync(comment);
-            if (!rez.IsValid || string.IsNullOrEmpty(comment.CommentId))
-                throw new InvalidOperationException("Post entity is invalid");
+            if (!rez.IsValid || await CheckIsValidCommentId(commentId) || string.IsNullOrEmpty(comment.CommentId))
+                throw new InvalidOperationException($"Comment entity is invalid:{string.Join(',',rez.Errors)} or commentId is empty");
 
-            if (await CheckIsValidCommentId(commentId))
-                throw new InvalidOperationException("comment id is invalid");
 
             return await CreateCommentAsync(comment);
         }

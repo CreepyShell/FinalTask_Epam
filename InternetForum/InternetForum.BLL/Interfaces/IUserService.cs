@@ -4,9 +4,12 @@ using System.Threading.Tasks;
 
 namespace InternetForum.BLL.Interfaces
 {
-    public interface IUserService : ICrud<UserDTO>
+    public interface IUserService
     {
-        Task<bool> DeleteUserByNameAsync(string username);
+        Task<UserDTO> UpdateAsync(UserDTO newEntity);
+        Task<UserDTO> GetByIdAsync(string id);
+        Task<IEnumerable<UserDTO>> GetAllAsync();
+        Task<bool> DeleteAsync(string id);
         Task<UserDTO> GetUserByNameAsync(string username);
         Task<IEnumerable<UserDTO>> GetMostActiveUsers(int count);
     }

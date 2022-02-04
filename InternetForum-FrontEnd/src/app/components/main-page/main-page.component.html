@@ -1,0 +1,7 @@
+<mat-toolbar class="tool-bar">
+    <h1>Welcome to Internet forum!</h1>
+    <a [routerLink]="this.route"><button *ngIf="User===undefined" (click)="GoToLoginPage()">Login</button></a>
+    <a [routerLink]="this.route"><button *ngIf="User===undefined" (click)="GoToRegisterPage()">Register</button></a>
+    <a [routerLink]="this.route"><button *ngIf="User!==undefined" (click)="LogOut()">LogOut</button></a>
+</mat-toolbar>
+<router-outlet></router-outlet>

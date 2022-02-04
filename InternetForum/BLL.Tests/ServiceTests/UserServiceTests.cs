@@ -46,18 +46,6 @@ namespace BLL.Tests.ServiceTests
 
             userService = new UserService(mockUnitOfWork.Object, new Mapper(configuration), mockRoleService.Object);
         }
-        [Fact]
-        public async Task AddUser_ThenUserAddedInDb()
-        {
-            UserDTO user = new UserDTO() { Bio = "test user bio", FullName = "test ", UserName = "Test user" };
-
-            UserDTO addedUser = await userService.AddEntityAsync(user);
-
-            User userInDb = await userRepository.GetByIdAsync(addedUser.Id);
-            Assert.NotNull(userInDb);
-            Assert.Equal(user.Bio, addedUser.Bio);
-            Assert.Equal(user.Bio, userInDb.Bio);
-        }
         [Theory]
         [InlineData("","Full ")]
         [InlineData("no", "Full ")]
@@ -65,10 +53,10 @@ namespace BLL.Tests.ServiceTests
         [InlineData("test", "A A")]
         [InlineData("test", "AaA")]
         [InlineData("user1984", "Full ")]
-        public async Task AddInvalidUser_ThenThrowInvalidOperationException(string username, string fullname)
+        public async Task UpdateInvalidUser_ThenThrowInvalidOperationException(string username, string fullname)
         {
-            UserDTO user = new UserDTO() { Bio = "test user bio", FullName = fullname, UserName = username };
-            await Assert.ThrowsAsync<InvalidOperationException>(async () => await userService.AddEntityAsync(user));
+            UserDTO user = new UserDTO() { Id = "1", Bio = "test user bio", FullName = fullname, UserName = username };
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await userService.UpdateAsync(user));
         }
         [Fact]
         public async Task DeleteUserById_ThanUserDeletedInDb()
@@ -80,16 +68,7 @@ namespace BLL.Tests.ServiceTests
             Assert.True(rez);
             Assert.Null(await userService.GetByIdAsync(id));
         }
-        [Fact]
-        public async Task DeleteUserByUsername_ThanUserDeletedInDb()
-        {
-            string username = "user1984";
 
-            bool rez = await userService.DeleteUserByNameAsync(username);
-
-            Assert.True(rez);
-            Assert.Null(await userService.GetUserByNameAsync(username));
-        }
         [Fact]
         public async Task GetMostActiveUsers_ThenReturnsUsers()
         {
