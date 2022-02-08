@@ -30,6 +30,15 @@ namespace InternetForum.BLL.Services
             return token;
         }
 
+        public async Task<string> GetTokenByUsername(string username)
+        {
+            AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(username);
+            if (authUser == null)
+                throw new ArgumentException("Did not find user with this username");
+            string token = await _unitOfWork.UserManager.GetAuthenticationTokenAsync(authUser, "Provider", "RefreshToken");
+            return token;
+        }
+
         public async Task<Token> RefreshTokenAsync(string oldAccessToken, string oldRefreshToken, JwtSettings settings)
         {
             string userName = JwtHelper.GetUserNameFromAccessToken(oldAccessToken, settings);
@@ -51,9 +60,9 @@ namespace InternetForum.BLL.Services
             return await this.GenerateTokenAsync(authUser.UserName, settings);           
         }
 
-        public async Task<bool> RemoveTokenAsync(string userName)
+        public async Task<bool> RemoveTokenAsync(string username)
         {
-            AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(userName);
+            AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(username);
             if (authUser == null)
                 throw new ArgumentException("Did not find user with this username");
            var rez = await _unitOfWork.UserManager.RemoveAuthenticationTokenAsync(authUser, "Provider", "RefreshToken");

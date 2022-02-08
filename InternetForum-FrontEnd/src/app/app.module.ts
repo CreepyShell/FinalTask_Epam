@@ -15,6 +15,10 @@ import { HttpClientModule } from '@angular/common/http';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { userService } from './services/user.service';
+import { authorizedGuard, nonAuthorizedGuard } from './guards/authGuard';
+import { LoggedInErrorComponent } from './components/logged-in-error/logged-in-error.component';
+import { PostComponent } from './components/post/post.component';
+import { CommentComponent } from './components/comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +26,10 @@ import { userService } from './services/user.service';
     MainPageComponent,
     RegisterComponent,
     LoginComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    LoggedInErrorComponent,
+    PostComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +40,7 @@ import { userService } from './services/user.service';
     MatButtonToggleModule,
     FontAwesomeModule
   ],
-  providers: [httpService, authService, userService],
+  providers: [httpService, authService, userService, authorizedGuard, nonAuthorizedGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

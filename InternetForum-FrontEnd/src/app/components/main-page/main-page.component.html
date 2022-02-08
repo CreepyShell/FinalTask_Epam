@@ -1,7 +1,10 @@
 <mat-toolbar class="tool-bar">
-    <h1>Welcome to Internet forum!</h1>
-    <a [routerLink]="this.route"><button *ngIf="User===undefined" (click)="GoToLoginPage()">Login</button></a>
-    <a [routerLink]="this.route"><button *ngIf="User===undefined" (click)="GoToRegisterPage()">Register</button></a>
-    <a [routerLink]="this.route"><button *ngIf="User!==undefined" (click)="LogOut()">LogOut</button></a>
+    <span class="content">
+        <h1>Welcome to Internet forum!</h1>
+        <a [routerLink]="this.route"><button *ngIf="User===undefined" class="login-button"
+                (click)="GoToLoginPage()">Login</button></a>
+        <a [routerLink]="this.route"><button *ngIf="User===undefined" class="register-button"
+                (click)="GoToRegisterPage()">Register</button></a>
+        <a routerLink="/profile" class="go-to-user-profile" *ngIf="User!==undefined">Go to profile</a>
+    </span>
 </mat-toolbar>
-<router-outlet></router-outlet>

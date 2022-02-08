@@ -10,5 +10,6 @@ namespace InternetForum.BLL.Interfaces
         Task<Token> GenerateTokenAsync(string userName, JwtSettings jwtSettings);
         Task<Token> RefreshTokenAsync(string oldAccessToken, string oldRefreshToken, JwtSettings jwtSettings);
         Task<bool> RemoveTokenAsync(string userName);
+        Task<string> GetTokenByUsername(string username);
     }
 }

@@ -43,6 +43,7 @@ namespace BLL.Tests.ServiceTests
 
             Mock<IRoleService> mockRoleService = new Mock<IRoleService>();
             mockRoleService.Setup(mock => mock.RemoveUserFromRole(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.Run(() => true));
+            mockRoleService.Setup(mock => mock.GetUserRoles(It.IsAny<string>())).Returns(Task.Run(() =>(IEnumerable<string>) new string[] {"User" }));
 
             userService = new UserService(mockUnitOfWork.Object, new Mapper(configuration), mockRoleService.Object);
         }

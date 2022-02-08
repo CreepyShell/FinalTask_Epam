@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace InternetForum.BLL.Helpers
@@ -55,5 +56,15 @@ namespace InternetForum.BLL.Helpers
         public static bool VerifyPassword(string password, string passwordHash, string codeWords) => 
             string.Equals(HashPassword(password, Encoding.UTF8.GetBytes(codeWords)), passwordHash);
 
+        public static byte[] GenerateSalt(int salt_length = 32)
+        {
+            var salt = new byte[salt_length];
+            using (var random = new RNGCryptoServiceProvider())
+            {
+                random.GetNonZeroBytes(salt);
+            }
+
+            return salt;
+        }
     }
 }

@@ -8,6 +8,7 @@ using InternetForum.BLL.ModelsDTOValidators;
 using InternetForum.DAL.DomainModels;
 using InternetForum.DAL.Interfaces;
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -48,6 +49,8 @@ namespace InternetForum.BLL.Services
             await _unitOfWork.UserManager.RemoveAuthenticationTokenAsync(authUser, "Provider", "RefreshToken");
             UserDTO userDTO = _mapper.Map<UserDTO>((authUser, user));
             userDTO.Token = await _tokenService.GenerateTokenAsync(authUser.UserName, settings);
+            userDTO.Roles = (await _unitOfWork.UserManager.GetRolesAsync(authUser)).ToArray();
+
             return userDTO;
         }
 
@@ -57,8 +60,11 @@ namespace InternetForum.BLL.Services
                 throw new ArgumentNullException("logInUser", "logInUser is null");
 
             AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(logInUser.UserName);
-            if (authUser == null)
-                throw new ArgumentException("did not find user with this username");
+            if (authUser == null || logInUser.Token == null)
+                throw new ArgumentException("did not find user with this username or token is null");
+
+            if (await _unitOfWork.UserManager.GetAuthenticationTokenAsync(authUser, "Provider", "RefreshToken") != logInUser.Token.RefreshToken)
+                throw new InvalidOperationException("Token mismatch");
 
             await _unitOfWork.UserManager.RemoveAuthenticationTokenAsync(authUser, "Provider", logInUser.Token.RefreshToken);
         }
@@ -75,7 +81,7 @@ namespace InternetForum.BLL.Services
 
             if (await _unitOfWork.UserManager.FindByEmailAsync(register.Email) != null || await _unitOfWork.UserManager.FindByNameAsync(register.Username) != null)
                 throw new UserAuthException("failed to register: email or username is not unique");
-            string codeWord = "default";           
+            string codeWord = "default";
 
             await ValidatePassword(register.Password);
             await _unitOfWork.UserManager.CreateAsync(new AuthUser()
@@ -83,7 +89,8 @@ namespace InternetForum.BLL.Services
                 Email = register.Email,
                 PasswordHash = SecurityHelper.HashPassword(register.Password, Encoding.UTF8.GetBytes(codeWord)),
                 UserName = register.Username,
-                CodeWords = codeWord
+                CodeWords = codeWord,
+                salt = SecurityHelper.GenerateSalt()
             });
             AuthUser authUser = await _unitOfWork.UserManager.FindByEmailAsync(register.Email);
             await _unitOfWork.UserManager.AddToRoleAsync(authUser, "User");
@@ -93,6 +100,7 @@ namespace InternetForum.BLL.Services
 
             UserDTO user = _mapper.Map<UserDTO>((authUser, userModel));
             user.Token = await _tokenService.GenerateTokenAsync(authUser.UserName, jwtSettings);
+            user.Roles = new string[] { "User" };
 
             await _unitOfWork.UserRepostory.SaveChangesAsync();
             return user;
@@ -114,11 +122,26 @@ namespace InternetForum.BLL.Services
             return (await _unitOfWork.UserManager.UpdateAsync(authUser)).Succeeded;
         }
 
+        public async Task<Token> UpdatePassword(string username, string currentPassword, string newPassword, JwtSettings settings)
+        {
+            AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(username);
+            if (authUser == null)
+                throw new ArgumentException("did not find use with this username");
+            _unitOfWork.UserManager.PasswordHasher = new PasswordHasher();
+           var rez = await _unitOfWork.UserManager.ChangePasswordAsync(authUser, 
+               currentPassword,
+               newPassword);
+            if (!rez.Succeeded)
+                throw new InvalidOperationException($"Can not change password:{string.Join(',', rez.Errors.First().Description)}");
+            await _tokenService.RemoveTokenAsync(username);
+            return await _tokenService.GenerateTokenAsync(username, settings);
+        }
+
         private async Task ValidatePassword(string pass)
         {
             foreach (var item in _unitOfWork.UserManager.PasswordValidators)
                 if (!(await item.ValidateAsync(_unitOfWork.UserManager, null, pass)).Succeeded)
-                    throw new UserAuthException("Invalid password");
+                    throw new UserAuthException("Invalid password: password must contain at least 8 and have non-alphanumeric characters(digits and special symbols)");
         }
     }
 }

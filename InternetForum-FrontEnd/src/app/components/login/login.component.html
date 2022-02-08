@@ -6,23 +6,21 @@
             <mat-button-toggle value="username">Username</mat-button-toggle>
             <mat-button-toggle value="email">Email</mat-button-toggle>
         </mat-button-toggle-group><br>
-        <form class="input">
+        <div class="input">
             <input *ngIf="isUsernameChosen" placeholder="Username" type="text" id="username" name="user_name"
                 autocomplete="off"><br *ngIf="isUsernameChosen" />
             <input *ngIf="!isUsernameChosen" placeholder="Email" type="email" id="mail" name="user_mail"
                 autocomplete="off"><br *ngIf="!isUsernameChosen" />
-            <input id="pass" type="password" placeholder="Password" required minlength="4" id="pass" name="user_passs"
+            <input type="password" placeholder="Password" required minlength="4" id="pass" name="user_passs"
                 autocomplete="off"><br />
-            <div class="showpass-btn">
-                <button *ngIf="this.showpassword" class="showpass" (click)="showPassword()">
-                    <fa-icon [icon]="faShowPass"></fa-icon>
-                </button>
-                <button *ngIf="!this.showpassword" class="showpass" (click)="showPassword()">
-                    <fa-icon [icon]="faNotShowPass"></fa-icon>
-                </button>
-            </div>
-        </form>
-        <button class="login-button" (click)="login()">Login</button><br />
+            <button *ngIf="this.showpassword" class="showpass" (click)="showPassword()">
+                <fa-icon [icon]="faShowPass"></fa-icon>
+            </button>
+            <button *ngIf="!this.showpassword" class="showpass" (click)="showPassword()">
+                <fa-icon [icon]="faNotShowPass"></fa-icon>
+            </button>
+        </div>
+        <button class="login-button" (click)="login()" [disabled]="this.disableButton">Login</button><br />
         <p class="error-message" *ngIf="this.errorMessage">{{this.errorMessage}}</p>
     </div>
     <div class="another-actions">

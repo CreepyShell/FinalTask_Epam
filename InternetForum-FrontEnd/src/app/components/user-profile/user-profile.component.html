@@ -1,1 +1,50 @@
-<p>user-profile works!</p>
+<div class="all-user-page">
+    <div class="user-header">
+        <button (click)="goBack()" class="go-back">
+            <fa-icon [icon]="faArrowLeft"></fa-icon>
+        </button>
+        <button class="log-out" (click)="LogOut()">Log out</button>
+    </div>
+    <div *ngIf="this.loadUser" class="user-page">
+        <div class="user-page-header">
+            <img [src]="this.getUserAvatar()" alt="user avatar" width="50vw" height="50hw">
+            <h1>
+                {{this.User.userName}}
+            </h1>
+            <p>Registered at {{this.User.registeredAt}}</p>
+        </div>
+        <div class="user-data">
+            <p class="user-mail"> Mail: {{this.User.email}}</p>
+            <p class="user-age">Age {{this.User.age ?? "_"}}</p>
+        </div>
+        <form>
+            <label for="name">First name: {{this.divideUserName(0)}}</label>
+            <input *ngIf="this.isEdit" type="text" id="name"><br>
+            <label for="surname">Surname: {{this.divideUserName(1)}}</label>
+            <input *ngIf="this.isEdit" type="text" id="surname"><br>
+
+            <label for="birthday">Birthday: {{this.User.birthDay ?? "Not set birthday"}}</label>
+            <input *ngIf="this.isEdit" type="date" id="birthday"><br>
+
+            <label for="bio">{{this.User.bio}}</label>
+            <input type="text" *ngIf="this.isEdit" id="bio"><br>
+            <button disabled="true" *ngIf="this.isEdit">Sumbit</button>
+        </form>
+        <button (click)="edit()">Edit profile</button>
+        <button (click)="openSecuritySettings()">Open security settings</button>
+        <div class="security-settings" *ngIf="this.showSecuritySettings">
+            <div class="update-password">
+                <label for="password">Enter current password</label>
+                <input type="password" id="password"><br>
+                <label for="new-password">Enter new password</label>
+                <input type="password" id="new-password"><br>
+                <button (click)="changePassword()">Change password</button>
+            </div>
+            <div class="update-codeWord">
+                <label for="new-code-words">New code word</label>
+                <input type="text" id="new-code-words"><br>
+                <button>Change code word</button>
+            </div>
+        </div>
+    </div>
+</div>

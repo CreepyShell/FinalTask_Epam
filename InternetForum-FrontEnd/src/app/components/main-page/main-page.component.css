@@ -1,3 +1,38 @@
-.tool-bar{
-    background-color:rgb(31, 46, 37);
+.tool-bar {
+  background-color: rgb(0, 0, 0);
+  width: 100%;
+}
+
+.content{
+    width: 100%;
+    text-align: center;
+}
+
+.content h1{
+    font-size: 30px;
+    display: inline;
+}
+
+.content a{
+    display: inline;
+    float: right;
+}
+
+.register-button,
+.login-button {
+  color: rgb(45, 233, 101);
+  background: none;
+  border: 1.6px solid rgb(206, 240, 12);
+  font-size: 16px;
+  padding: 1px 15px 1px 15px;
+}
+
+.register-button{
+    margin-right: 10px;
+}
+
+.register-button:hover,
+.login-button:hover {
+  background: rgb(43, 42, 42);
+  cursor: pointer;
 }

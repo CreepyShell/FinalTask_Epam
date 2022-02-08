@@ -125,14 +125,18 @@ namespace BLL.Tests.ServiceTests
         private void SetUpUserManagerMockForLogIn(AuthUserDTO userDTO)
         {
             authUser.Email = userDTO.Email;
-            authUser.PasswordHash = SecurityHelper.HashPassword(userDTO.Password, Encoding.UTF8.GetBytes("null"));
+            authUser.PasswordHash = SecurityHelper.HashPassword(userDTO.Password, Encoding.UTF8.GetBytes("default"));
             authUser.UserName = userDTO.Username;
-            authUser.CodeWords = "null";
+            authUser.CodeWords = "default";
             AuthUsers.Add(authUser);
+
             mockUserManager.Setup(u => u.FindByNameAsync(userDTO.Username)).Returns(Task.Run(() => AuthUsers.First()));
             mockUserManager.Setup(u => u.RemoveAuthenticationTokenAsync(It.IsAny<AuthUser>(), "Provider", "RefreshToken"));
+            mockUserManager.Setup(u => u.GetRolesAsync(authUser)).Returns(Task.Run(() =>(IList<string>) new List<string>() {"User" }));
+
             mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(u => u.UserManager).Returns(mockUserManager.Object);
+
             Mock<IUserRepository> mockUserRepository = new Mock<IUserRepository>();
             mockUserRepository.Setup(ur => ur.GetUserByUsernameAsync(It.IsAny<string>())).Returns(Task.Run(() => new User() { UserName = userDTO.Username, FirstName = "test", LastName = "user" }));
             mockUnitOfWork.Setup(u => u.UserRepostory).Returns(mockUserRepository.Object);

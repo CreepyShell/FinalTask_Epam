@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { UserModel } from '../models/User/UserModel';
 
 @Injectable()
 export class httpService {
@@ -12,9 +11,9 @@ export class httpService {
   public setHttpHeader(key: string[], value: string[]): HttpHeaders {
     let headers = new HttpHeaders();
     if (key.length != value.length) return headers;
-    if (key != undefined || value != undefined) {
+    if (key || value) {
       for (let i = 0; i < key.length; i++) {
-        headers.set(key[i], value[i]);
+        headers = headers.set(key[i], value[i]);
       }
     }
     return headers;
@@ -25,8 +24,9 @@ export class httpService {
     headers: HttpHeaders,
     httpData: any
   ): Observable<HttpResponse<T>> {
-    return this.httpClient.get<HttpResponse<T>>(this.baseUrl + url, {
+    return this.httpClient.get<T>(this.baseUrl + url, {
       headers: headers,
+      observe: 'response',
       params: httpData,
     });
   }
@@ -38,7 +38,7 @@ export class httpService {
   ): Observable<HttpResponse<T>> {
     return this.httpClient.post<T>(this.baseUrl + url, httpData, {
       headers: headers,
-      observe:'response'
+      observe: 'response',
     });
   }
 
@@ -46,10 +46,10 @@ export class httpService {
     url: string,
     headers: HttpHeaders,
     httpData: any
-  ): Observable<T> {
-    return this.httpClient.put<T>(this.baseUrl + url, {
+  ): Observable<HttpResponse<T>> {
+    return this.httpClient.put<T>(this.baseUrl + url, httpData, {
       headers: headers,
-      params: httpData,
+      observe: 'response',
     });
   }
 
@@ -57,10 +57,11 @@ export class httpService {
     url: string,
     headers: HttpHeaders,
     httpData: any
-  ): Observable<T> {
+  ): Observable<HttpResponse<T>> {
     return this.httpClient.delete<T>(this.baseUrl + url, {
       headers: headers,
       params: httpData,
+      observe: 'response',
     });
   }
 }

@@ -1,15 +1,15 @@
 ﻿using InternetForum.BLL.Interfaces;
 using InternetForum.BLL.ModelsDTo.User;
+using InternetForum.WebAPI.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 
 namespace InternetForum.WebAPI.Controllers
 {
+    [UserExceptionFilter]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -49,7 +49,7 @@ namespace InternetForum.WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpPut("{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteUserById([FromBody] UserDTO user)
         {
             if (user.Id != this.GetUserId())
@@ -62,7 +62,8 @@ namespace InternetForum.WebAPI.Controllers
         public async Task<ActionResult<UserDTO>> GetUserFromToken()
         {
             string userId = this.GetUserId();
-            return Ok(await _userService.GetByIdAsync(userId));
+            UserDTO user = await _userService.GetByIdAsync(userId);
+            return Ok(user);
         }
     }
 }

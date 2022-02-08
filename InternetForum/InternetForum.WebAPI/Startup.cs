@@ -45,7 +45,8 @@ namespace InternetForum.WebAPI
             services.AddIdentity<AuthUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 4;            
+                options.Password.RequiredLength = 8;
+                options.Password.RequireUppercase = false;
             })
                 .AddEntityFrameworkStores<UsersDbContext>()
                 .AddTokenProvider("Provider", typeof(DataProtectorTokenProvider<AuthUser>));

@@ -38,7 +38,9 @@ namespace InternetForum.BLL.Services
         {
             if ((await _unitOfWork.UserRepostory.GetByIdAsync(id)) == null)
                 return null;
-            return _mapper.Map<UserDTO>((await _unitOfWork.UserManager.FindByIdAsync(id), await _unitOfWork.UserRepostory.GetByIdAsync(id)));
+            UserDTO userDTO = _mapper.Map<UserDTO>((await _unitOfWork.UserManager.FindByIdAsync(id), await _unitOfWork.UserRepostory.GetByIdAsync(id)));
+            userDTO.Roles = (await _roleService.GetUserRoles(userDTO.UserName)).ToArray();
+            return userDTO;
         }
 
         public async Task<IEnumerable<UserDTO>> GetMostActiveUsers(int count)
@@ -71,10 +73,13 @@ namespace InternetForum.BLL.Services
             }
             existUser.Bio = newEntity.Bio;
             existUser.FullName = newEntity.FullName;
+            newEntity.RegisteredAt = existUser.RegisteredAt;
+            existUser.RegisteredAt = default;
 
             var rez = await validations.ValidateAsync(existUser);
             if (!rez.IsValid)
                 throw new InvalidOperationException($"User entity is invalid:{string.Join(',',rez.Errors)}");
+            existUser.RegisteredAt = newEntity.RegisteredAt;
 
             User user = await _unitOfWork.UserRepostory.UpdateUserAsync(_mapper.Map<User>(existUser));
             await _unitOfWork.SaveChangesAsync();

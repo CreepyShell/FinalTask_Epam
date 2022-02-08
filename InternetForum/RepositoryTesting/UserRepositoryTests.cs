@@ -58,7 +58,7 @@ namespace RepositoryTesting
 
             Assert.Equal(user.Id, returnedUser.Id);
             Assert.Equal(user.UserName, returnedUser.UserName);
-            Assert.Equal(user.RegisteredAt, returnedUser.RegisteredAt);
+            Assert.NotEqual(DateTime.MinValue, returnedUser.RegisteredAt);
         }
 
         [Fact]

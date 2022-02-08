@@ -1,13 +1,8 @@
-import {
-  HttpErrorResponse,
-  HttpResponse,
-  HttpStatusCode,
-} from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
-import { catchError, map, Subject, takeUntil } from 'rxjs';
-import { UserModel } from 'src/app/models/User/UserModel';
+import { Subject, takeUntil } from 'rxjs';
 import { authService } from 'src/app/services/auth.service';
 
 @Component({
@@ -22,6 +17,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   public selectedValue: string = 'username';
   public showpassword: boolean = false;
   public errorMessage: string | undefined = undefined;
+  public disableButton: boolean = false;
   private $unsubscribe = new Subject<void>();
 
   constructor(private route: Router, private _authService: authService) {}
@@ -37,6 +33,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {}
 
   public login() {
+    this.disableButton = true;
     let username: string | null = (
       document.getElementById('username') as HTMLInputElement
     )?.value;
@@ -69,9 +66,8 @@ export class LoginComponent implements OnInit, OnDestroy {
             if (resp.status == HttpStatusCode.NotAcceptable) {
               this.errorMessage = (resp as HttpErrorResponse).error;
             }
-            setTimeout(() => {
-              this.errorMessage = undefined;
-            }, 10000);
+            setTimeout(() => (this.errorMessage = undefined), 10000);
+            setTimeout(() => (this.disableButton = false), 1000);
           }
         },
         (err) => console.log(err)
