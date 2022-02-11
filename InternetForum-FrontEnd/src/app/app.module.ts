@@ -19,6 +19,8 @@ import { authorizedGuard, nonAuthorizedGuard } from './guards/authGuard';
 import { LoggedInErrorComponent } from './components/logged-in-error/logged-in-error.component';
 import { PostComponent } from './components/post/post.component';
 import { CommentComponent } from './components/comment/comment.component';
+import { postService } from './services/post.service';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -38,9 +40,10 @@ import { CommentComponent } from './components/comment/comment.component';
     MatToolbarModule,
     HttpClientModule,
     MatButtonToggleModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatProgressSpinnerModule
   ],
-  providers: [httpService, authService, userService, authorizedGuard, nonAuthorizedGuard],
+  providers: [httpService, authService, userService, postService, authorizedGuard, nonAuthorizedGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

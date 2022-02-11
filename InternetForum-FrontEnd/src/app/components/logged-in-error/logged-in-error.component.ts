@@ -40,21 +40,22 @@ export class LoggedInErrorComponent implements OnInit, OnDestroy {
     }
   }
   public logOut() {
-    this._authService.setTokenInLocalStorage('','');
+    this._authService.setTokenInLocalStorage('', '');
     if (this.User) {
       this._authService
         .logout(this.User)
         .pipe(takeUntil(this.$unsubscribe))
-        .subscribe(
-          () => {
+        .subscribe({
+          next: () => {
             this.User = undefined;
-            this.router.navigate(['/']);
           },
-          (err) => console.log(err)
-        );
+          error: (err) => console.log(err),
+        });
     }
+    this.router.navigate(['/']);
   }
   ngOnDestroy(): void {
-    this.$unsubscribe.unsubscribe();
+    this.$unsubscribe.next();
+    this.$unsubscribe.complete();
   }
 }

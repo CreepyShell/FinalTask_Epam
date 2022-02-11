@@ -60,7 +60,7 @@ export class httpService {
   ): Observable<HttpResponse<T>> {
     return this.httpClient.delete<T>(this.baseUrl + url, {
       headers: headers,
-      params: httpData,
+      body: httpData,
       observe: 'response',
     });
   }

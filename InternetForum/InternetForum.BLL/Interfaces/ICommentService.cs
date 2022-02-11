@@ -9,5 +9,6 @@ namespace InternetForum.BLL.Interfaces
         Task<CommentDTO> CreateCommentToCommentAsync(CommentDTO comment, string commentId);
         Task<IEnumerable<CommentDTO>> GetMostPopularComments(int count);
         Task<IEnumerable<CommentDTO>> GetMostPopularCommentsByPostId(string postId, int count);
+        Task<IEnumerable<CommentDTO>> GetCommentsByUserId(string userId);
     }
 }

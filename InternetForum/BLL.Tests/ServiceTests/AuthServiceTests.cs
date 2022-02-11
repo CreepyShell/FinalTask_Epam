@@ -15,7 +15,6 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -124,8 +123,9 @@ namespace BLL.Tests.ServiceTests
         }
         private void SetUpUserManagerMockForLogIn(AuthUserDTO userDTO)
         {
+            authUser.salt = SecurityHelper.GenerateSalt();
             authUser.Email = userDTO.Email;
-            authUser.PasswordHash = SecurityHelper.HashPassword(userDTO.Password, Encoding.UTF8.GetBytes("default"));
+            authUser.PasswordHash = SecurityHelper.HashPassword(userDTO.Password, authUser.salt);
             authUser.UserName = userDTO.Username;
             authUser.CodeWords = "default";
             AuthUsers.Add(authUser);
@@ -154,7 +154,7 @@ namespace BLL.Tests.ServiceTests
             authUser.Email = userDTO.Email;
             authUser.UserName = userDTO.Username;
             authUser.PasswordHash = userDTO.Password;
-            authUser.CodeWords = "null";
+            authUser.CodeWords = "default";
             mockUserManager.Setup(u => u.CreateAsync(It.IsAny<AuthUser>())).Callback(() => { AuthUsers.Add(authUser); });
             mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(u => u.UserManager).Returns(mockUserManager.Object);

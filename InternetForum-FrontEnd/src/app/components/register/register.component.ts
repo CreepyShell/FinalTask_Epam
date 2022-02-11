@@ -20,12 +20,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
   public errorMessage: string | undefined = undefined;
   public disableButton: boolean = false;
 
+  ngOnInit(): void {}
   faNotShowPass = faEyeSlash;
   faShowPass = faEye;
   constructor(private _authService: authService, private route: Router) {}
-  ngOnDestroy(): void {
-    this.$unsubscribe.unsubscribe();
-  }
   private $unsubscribe = new Subject<void>();
   public register() {
     let authUser: AuthUserModel | undefined = this.getRegisterUser();
@@ -65,6 +63,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     let confirmPassword: string = (
       document.getElementById('confirm-pass') as HTMLInputElement
     ).value;
+
     if (!email || !password || !username) {
       this.errorMessage = 'All fields must be filled';
       setTimeout(() => {
@@ -72,6 +71,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       }, 10000);
       return undefined;
     }
+
     if (password !== confirmPassword) {
       this.errorMessage = 'Password mismatch';
       setTimeout(() => {
@@ -79,6 +79,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       }, 10000);
       return undefined;
     }
+
     return {
       email: email,
       password: password,
@@ -94,5 +95,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       el!.type = 'password';
     }
   }
-  ngOnInit(): void {}
+  ngOnDestroy(): void {
+    this.$unsubscribe.next();
+    this.$unsubscribe.complete();
+  }
 }

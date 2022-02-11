@@ -121,6 +121,19 @@ namespace BLL.Tests.ServiceTests
             Assert.Single(commentDTOs.First().ReactionIds);
         }
 
+        [Fact]
+        public async Task GetCommentsByUserId_ReturnComments()
+        {
+            string userId = "4";
+
+            IEnumerable<CommentDTO> commentDTOs = await commentService.GetCommentsByUserId(userId);
+
+            Assert.NotNull(commentDTOs);
+            Assert.Single(commentDTOs);
+            Assert.Equal(userId, commentDTOs.First().UserId);
+        }
+
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

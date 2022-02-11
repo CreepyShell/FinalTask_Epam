@@ -1,8 +1,9 @@
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse, HttpRequest, HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
 import { Subject, takeUntil } from 'rxjs';
+import { AuthUserModel } from 'src/app/models/User/AuthUserModel';
 import { authService } from 'src/app/services/auth.service';
 
 @Component({
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private $unsubscribe = new Subject<void>();
 
   constructor(private route: Router, private _authService: authService) {}
+  ngOnInit(): void {}
 
   public onValChange(val: string) {
     this.selectedValue == val;
@@ -30,10 +32,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     this.isUsernameChosen = true;
   }
-  ngOnInit(): void {}
 
   public login() {
     this.disableButton = true;
+
     let username: string | null = (
       document.getElementById('username') as HTMLInputElement
     )?.value;
@@ -42,17 +44,19 @@ export class LoginComponent implements OnInit, OnDestroy {
     )?.value;
     let password: string = (document.getElementById('pass') as HTMLInputElement)
       .value;
-    this._authService
-      .loginUser({
+
+      let authUser:AuthUserModel = {
         password: password,
         username: username,
         email: email,
-      })
+      }
+
+    this._authService
+      .loginUser(authUser)
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe(
-        (resp) => {
-          console.log(resp.status);
-          if (resp.status === HttpStatusCode.Ok) {
+      .subscribe({
+        next: (resp) => {
+          if (resp instanceof HttpResponse) {
             this.route.navigate(['/']);
           } else {
             if (resp.status == HttpStatusCode.NotFound) {
@@ -70,8 +74,8 @@ export class LoginComponent implements OnInit, OnDestroy {
             setTimeout(() => (this.disableButton = false), 1000);
           }
         },
-        (err) => console.log(err)
-      );
+        error: (err) => console.log(err),
+      });
   }
 
   public showPassword() {
@@ -84,6 +88,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy(): void {
-    this.$unsubscribe.unsubscribe();
+    this.$unsubscribe.next();
+    this.$unsubscribe.complete();
   }
 }

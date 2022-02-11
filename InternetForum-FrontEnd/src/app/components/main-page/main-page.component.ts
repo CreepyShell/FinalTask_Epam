@@ -4,13 +4,12 @@ import {
   HttpStatusCode,
 } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { pipe, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { postModel } from 'src/app/models/PostModel';
-import { Token } from 'src/app/models/User/Token';
 import { UserModel } from 'src/app/models/User/UserModel';
 import { authService } from 'src/app/services/auth.service';
-import { userService } from 'src/app/services/user.service';
+import { postService } from 'src/app/services/post.service';
 
 @Component({
   selector: 'app-main-page',
@@ -19,15 +18,17 @@ import { userService } from 'src/app/services/user.service';
 })
 export class MainPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
+    this.getAllPosts();
     this.getUserFromToken();
   }
   constructor(
-    private _authService: authService
+    private _authService: authService,
+    private _postService: postService
   ) {}
   public route: string = '';
   public Posts: postModel[] = [];
   public User: UserModel | undefined;
-  public isLoadData:boolean = false;
+  public isLoadData: boolean = false;
   private $unsubscribe = new Subject<void>();
   public GoToRegisterPage() {
     this.route = '/register';
@@ -36,6 +37,18 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.route = '/login';
   }
 
+  private getAllPosts() {
+    this._postService
+      .getAllPosts()
+      .pipe(takeUntil(this.$unsubscribe))
+      .subscribe((resp) => {
+        if(resp instanceof HttpResponse){
+          this.Posts = resp.body!;
+          return;
+        }
+        
+      });
+  }
   private getUserFromToken() {
     let accessToken: string | null = localStorage.getItem('accessToken');
     let refreshToken: string | null = localStorage.getItem('refreshToken');
@@ -43,10 +56,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
       this._authService
         .getUserFromToken()!
         .pipe(takeUntil(this.$unsubscribe))
-        .subscribe(
-          (resp) => {
-            if (!(resp instanceof HttpErrorResponse)) {
-              this.User = resp!;
+        .subscribe({
+          next: (resp) => {
+            if (resp as UserModel) {
+              this.User = resp! as UserModel;
               this.User.token = {
                 accessToken: accessToken!,
                 refreshToken: refreshToken!,
@@ -59,22 +72,24 @@ export class MainPageComponent implements OnInit, OnDestroy {
               this._authService
                 .refreshToken(refreshToken!, accessToken!)
                 .pipe(takeUntil(this.$unsubscribe))
-                .subscribe(
-                  (resp) => {
-                    if (resp instanceof HttpResponse) {
+                .subscribe({
+                  next: (resp) => {
+                    if (
+                      resp instanceof HttpResponse &&
+                      resp.status === HttpStatusCode.Ok
+                    ) {
                       this.getUserFromToken();
                     }
                   },
-                  (err) => console.log(err)
-                );
+                });
             }
           },
-          (err) => console.log(err)
-        );
+        });
     }
   }
 
   ngOnDestroy(): void {
-    this.$unsubscribe.unsubscribe();
+    this.$unsubscribe.next();
+    this.$unsubscribe.complete();
   }
 }

@@ -27,7 +27,7 @@ namespace InternetForum.BLL.MapperSettings
                 .ForMember(dest => dest.LastName, src => src.MapFrom(u => ParseFullName(u.FullName, 1)));
 
             CreateMap<User, UserDTO>()
-                .ForMember(dest => dest.FullName, src => src.MapFrom(u => u.FirstName + " " + u.FirstName));
+                .ForMember(dest => dest.FullName, src => src.MapFrom(u => u.FirstName + " " + u.LastName));
         }
         private string ParseFullName(string s, int index) => new string(s.Split(' ').ElementAtOrDefault(index));
     }

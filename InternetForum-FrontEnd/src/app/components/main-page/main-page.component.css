@@ -36,3 +36,8 @@
   background: rgb(43, 42, 42);
   cursor: pointer;
 }
+
+.main-content{
+  width: 80%;
+  float: right;
+}

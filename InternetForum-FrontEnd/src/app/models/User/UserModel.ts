@@ -12,7 +12,7 @@ export interface UserModel{
     birthDay: Date | null;  
     bio:string | null;
 
-    registeredAt:Date;
+    registeredAt:Date | undefined;
     roles:string[];
     postsIds:string[];
     token: Token;

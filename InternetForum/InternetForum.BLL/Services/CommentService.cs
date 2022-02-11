@@ -50,7 +50,7 @@ namespace InternetForum.BLL.Services
 
             ValidationResult rez = await _validator.ValidateAsync(comment);
             if (!rez.IsValid || await CheckIsValidCommentId(commentId) || string.IsNullOrEmpty(comment.CommentId))
-                throw new InvalidOperationException($"Comment entity is invalid:{string.Join(',',rez.Errors)} or commentId is empty");
+                throw new InvalidOperationException($"Comment entity is invalid:{string.Join(',', rez.Errors)} or commentId is empty");
 
 
             return await CreateCommentAsync(comment);
@@ -113,5 +113,10 @@ namespace InternetForum.BLL.Services
             return _mapper.Map<CommentDTO>(comment);
         }
         private async Task<bool> CheckIsValidCommentId(string commentId) => string.IsNullOrEmpty(commentId) || (await _unitOfWork.CommentRepository.GetByIdAsync(commentId)) != null;
+
+        public async Task<IEnumerable<CommentDTO>> GetCommentsByUserId(string userId)
+        {
+            return _mapper.Map<IEnumerable<CommentDTO>>((await _unitOfWork.CommentRepository.GetAllAsync()).Where(c => c.UserId == userId).ToArray());
+        }
     }
 }

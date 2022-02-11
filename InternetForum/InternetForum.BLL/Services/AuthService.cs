@@ -9,7 +9,6 @@ using InternetForum.DAL.DomainModels;
 using InternetForum.DAL.Interfaces;
 using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace InternetForum.BLL.Services
@@ -41,7 +40,7 @@ namespace InternetForum.BLL.Services
             if (authUser == null)
                 throw new ArgumentException("did not find user with this username or email");
 
-            if (!SecurityHelper.VerifyPassword(logInUser.Password, authUser.PasswordHash, authUser.CodeWords))
+            if (!SecurityHelper.VerifyPassword(logInUser.Password, authUser.PasswordHash,authUser.salt))
                 throw new UserAuthException("password incorrect");
 
             User user = await _unitOfWork.UserRepostory.GetUserByUsernameAsync(authUser.UserName);
@@ -81,16 +80,16 @@ namespace InternetForum.BLL.Services
 
             if (await _unitOfWork.UserManager.FindByEmailAsync(register.Email) != null || await _unitOfWork.UserManager.FindByNameAsync(register.Username) != null)
                 throw new UserAuthException("failed to register: email or username is not unique");
-            string codeWord = "default";
+            byte[] salt = SecurityHelper.GenerateSalt();
 
             await ValidatePassword(register.Password);
             await _unitOfWork.UserManager.CreateAsync(new AuthUser()
             {
                 Email = register.Email,
-                PasswordHash = SecurityHelper.HashPassword(register.Password, Encoding.UTF8.GetBytes(codeWord)),
+                PasswordHash = SecurityHelper.HashPassword(register.Password, salt),
                 UserName = register.Username,
-                CodeWords = codeWord,
-                salt = SecurityHelper.GenerateSalt()
+                CodeWords = "default",
+                salt = salt
             });
             AuthUser authUser = await _unitOfWork.UserManager.FindByEmailAsync(register.Email);
             await _unitOfWork.UserManager.AddToRoleAsync(authUser, "User");
@@ -128,9 +127,9 @@ namespace InternetForum.BLL.Services
             if (authUser == null)
                 throw new ArgumentException("did not find use with this username");
             _unitOfWork.UserManager.PasswordHasher = new PasswordHasher();
-           var rez = await _unitOfWork.UserManager.ChangePasswordAsync(authUser, 
-               currentPassword,
-               newPassword);
+            var rez = await _unitOfWork.UserManager.ChangePasswordAsync(authUser,
+                currentPassword,
+                newPassword);
             if (!rez.Succeeded)
                 throw new InvalidOperationException($"Can not change password:{string.Join(',', rez.Errors.First().Description)}");
             await _tokenService.RemoveTokenAsync(username);

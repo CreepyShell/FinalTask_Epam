@@ -31,7 +31,6 @@ namespace InternetForum.WebAPI.Controllers
         [Route("register")]
         public async Task<ActionResult<UserDTO>> RegisterUser([FromBody] AuthUserDTO authUser)
         {
-            _logger.LogInformation($"Someone with {authUser.Username} with pass {authUser.Password} and email {authUser.Email} try to register");
             UserDTO createdUser = await _authService.Register(authUser, _jwtSettings);
             _logger.LogInformation($"Someone with {authUser.Username} registered");
             return Created($"api/users/{createdUser.Id}", createdUser);
@@ -61,7 +60,6 @@ namespace InternetForum.WebAPI.Controllers
         [Route("changepass")]
         public async Task<ActionResult<Token>> UpdatePassword([FromHeader] string currentPassword, [FromHeader] string newPassword)
         {
-            _logger.LogInformation($"{currentPassword} and {newPassword}");
            Token token = await _authService.UpdatePassword(this.GetUsername(), currentPassword, newPassword, _jwtSettings);
             _logger.LogInformation("password changed");
             return Ok(token);

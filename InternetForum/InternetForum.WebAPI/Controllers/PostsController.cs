@@ -1,8 +1,10 @@
 ﻿using InternetForum.BLL.Interfaces;
 using InternetForum.BLL.ModelsDTo;
+using InternetForum.WebAPI.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +13,7 @@ namespace InternetForum.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [PostExceptionFilter]
     public class PostsController : ControllerBase
     {
         private readonly IPostService _postService;
@@ -29,14 +32,14 @@ namespace InternetForum.WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<ActionResult<PostDTO>> GetAllPostById(string id)
         {
             return Ok(await _postService.GetByIdAsync(id));
         }
 
         [HttpPut]
-        [Authorize(Roles = "User")]
+        [Authorize]
         public async Task<ActionResult<PostDTO>> UpdatePost([FromBody] PostDTO updatedPost)
         {
             return Ok(await _postService.UpdateAsync(updatedPost));
@@ -44,7 +47,7 @@ namespace InternetForum.WebAPI.Controllers
 
         [HttpDelete]
         [Route("admin/{username}/{postId}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator"), Authorize(Roles = "Owner")]
         public async Task<ActionResult<PostDTO>> DeletePostByUserName(string username, string postId)
         {
             PostDTO post = (await _postService.GetPostsByUsername(username)).FirstOrDefault(p => p.Id == postId);
@@ -54,7 +57,7 @@ namespace InternetForum.WebAPI.Controllers
         }
 
         [HttpDelete("{postId}")]
-        [Authorize(Roles = "User")]
+        [Authorize]
         public async Task<ActionResult<PostDTO>> DeleteUserPost(string postId)
         {
             string username = this.GetUsername();
@@ -70,5 +73,36 @@ namespace InternetForum.WebAPI.Controllers
         {
             return Ok(await _postService.AddEntityAsync(post));
         }
+
+        [HttpGet]
+        [Route("bydate")]
+        [Authorize(Roles = "User"), Authorize(Roles = "Administrator"), Authorize(Roles = "PremiumUser"), Authorize(Roles = "Owner")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GetPostsByDate([FromHeader] DateTime startDate, [FromHeader] DateTime endDate)
+        {
+            IEnumerable<PostDTO> posts = await _postService.GetPostsByDate(startDate, endDate);
+
+            return Ok(posts);
+        }
+
+        [HttpGet]
+        [Route("popular/{count}")]
+        [Authorize(Roles = "User"), Authorize(Roles = "Administrator"), Authorize(Roles = "PremiumUser"), Authorize(Roles = "Owner")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GetPopularPosts(int count)
+        {
+            IEnumerable<PostDTO> posts = await _postService.GetMostPopularPosts(count);
+
+            return Ok(posts);
+        }
+
+        [HttpGet]
+        [Route("discussed/{count}")]
+        [Authorize(Roles = "User"), Authorize(Roles = "Administrator"), Authorize(Roles = "PremiumUser"), Authorize(Roles = "Owner")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GetDiscussedPosts(int count)
+        {
+            IEnumerable<PostDTO> posts = await _postService.GetMostDiscussedPosts(count);
+
+            return Ok(posts);
+        }
+
     }
 }

@@ -83,7 +83,7 @@ namespace InternetForum.BLL.Services
 
             User user = await _unitOfWork.UserRepostory.UpdateUserAsync(_mapper.Map<User>(existUser));
             await _unitOfWork.SaveChangesAsync();
-            return _mapper.Map<UserDTO>(user);
+            return await GetByIdAsync(user.Id);
         }
     }
 }

@@ -1,1 +1,10 @@
-<p>post works!</p>
+<div class="header">
+    <button *ngIf="this.User">delete post</button>
+    <button *ngIf="this.User">edit post</button>
+    <div class="post-info">
+        <h4>{{this.Post!.postTopic}}</h4>
+        <h1>{{this.Post!.header}}</h1>
+        <p>{{this.Post!.text}}</p>
+    </div>
+    <button *ngIf="this.User">open comments</button>
+</div>

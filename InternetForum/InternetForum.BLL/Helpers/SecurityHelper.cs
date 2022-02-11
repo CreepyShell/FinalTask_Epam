@@ -53,8 +53,8 @@ namespace InternetForum.BLL.Helpers
             return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
         }
 
-        public static bool VerifyPassword(string password, string passwordHash, string codeWords) => 
-            string.Equals(HashPassword(password, Encoding.UTF8.GetBytes(codeWords)), passwordHash);
+        public static bool VerifyPassword(string password, string passwordHash, byte[] salt) => 
+            string.Equals(HashPassword(password, salt), passwordHash);
 
         public static byte[] GenerateSalt(int salt_length = 32)
         {

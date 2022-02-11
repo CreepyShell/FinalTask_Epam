@@ -8,3 +8,12 @@
         <a routerLink="/profile" class="go-to-user-profile" *ngIf="User!==undefined">Go to profile</a>
     </span>
 </mat-toolbar>
+<div class="main-content">
+    <button>Create discution</button>
+    <div>
+
+    </div>
+    <div *ngFor="let Post of Posts">
+        <app-post [Post]="Post" [User]="this.User"></app-post>
+    </div>
+</div>
