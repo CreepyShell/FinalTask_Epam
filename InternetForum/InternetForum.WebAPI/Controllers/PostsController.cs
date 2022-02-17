@@ -33,7 +33,7 @@ namespace InternetForum.WebAPI.Controllers
 
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<ActionResult<PostDTO>> GetAllPostById(string id)
+        public async Task<ActionResult<PostDTO>> GetPostById(string id)
         {
             return Ok(await _postService.GetByIdAsync(id));
         }
@@ -42,12 +42,13 @@ namespace InternetForum.WebAPI.Controllers
         [Authorize]
         public async Task<ActionResult<PostDTO>> UpdatePost([FromBody] PostDTO updatedPost)
         {
+            _logger.LogInformation($"{updatedPost.Header} and {updatedPost.Text}");
             return Ok(await _postService.UpdateAsync(updatedPost));
         }
 
         [HttpDelete]
         [Route("admin/{username}/{postId}")]
-        [Authorize(Roles = "Administrator"), Authorize(Roles = "Owner")]
+        [Authorize(Roles = "Administrator, Owner")]
         public async Task<ActionResult<PostDTO>> DeletePostByUserName(string username, string postId)
         {
             PostDTO post = (await _postService.GetPostsByUsername(username)).FirstOrDefault(p => p.Id == postId);
@@ -68,15 +69,16 @@ namespace InternetForum.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User, Administrator, PremiumUser, Owner")]
         public async Task<ActionResult<PostDTO>> CreatePost([FromBody] PostDTO post)
         {
+            _logger.LogInformation($"creating post:{post.PostTopic}");
             return Ok(await _postService.AddEntityAsync(post));
         }
 
         [HttpGet]
         [Route("bydate")]
-        [Authorize(Roles = "User"), Authorize(Roles = "Administrator"), Authorize(Roles = "PremiumUser"), Authorize(Roles = "Owner")]
+        [Authorize(Roles = "User, Administrator, PremiumUser, Owner")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetPostsByDate([FromHeader] DateTime startDate, [FromHeader] DateTime endDate)
         {
             IEnumerable<PostDTO> posts = await _postService.GetPostsByDate(startDate, endDate);
@@ -86,7 +88,7 @@ namespace InternetForum.WebAPI.Controllers
 
         [HttpGet]
         [Route("popular/{count}")]
-        [Authorize(Roles = "User"), Authorize(Roles = "Administrator"), Authorize(Roles = "PremiumUser"), Authorize(Roles = "Owner")]
+        [Authorize(Roles = "User, Administrator, PremiumUser, Owner")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetPopularPosts(int count)
         {
             IEnumerable<PostDTO> posts = await _postService.GetMostPopularPosts(count);
@@ -96,7 +98,7 @@ namespace InternetForum.WebAPI.Controllers
 
         [HttpGet]
         [Route("discussed/{count}")]
-        [Authorize(Roles = "User"), Authorize(Roles = "Administrator"), Authorize(Roles = "PremiumUser"), Authorize(Roles = "Owner")]
+        [Authorize(Roles = "User, Administrator, PremiumUser, Owner")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetDiscussedPosts(int count)
         {
             IEnumerable<PostDTO> posts = await _postService.GetMostDiscussedPosts(count);

@@ -75,7 +75,7 @@ namespace InternetForum.BLL.Services
 
         public async Task<IEnumerable<PostDTO>> GetPostsByUsername(string username)
         {
-            string userId = (await _unitOfWork.UserRepostory.GetUserByUsernameAsync(username)).Id;
+            string userId = (await _unitOfWork.UserRepostory.GetUserByUsernameAsync(username))?.Id;
             return _mapper.Map<IEnumerable<PostDTO>>(await _unitOfWork.PostRepository.GetPostsByUserIdAsync(userId));
         }
 
@@ -101,6 +101,7 @@ namespace InternetForum.BLL.Services
                 throw new InvalidOperationException($"Post entity is invalid:{string.Join(',', rez.Errors)} or tried to change userId");
 
             newEntity.UpdatedAt = DateTime.Now;
+            newEntity.CreatedAt = existEntity.CreatedAt;
             Post post = await _unitOfWork.PostRepository.UpdatePostAsync(_mapper.Map<Post>(newEntity));
             await _unitOfWork.SaveChangesAsync();
             return _mapper.Map<PostDTO>(post);

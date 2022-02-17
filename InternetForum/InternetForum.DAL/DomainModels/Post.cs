@@ -13,7 +13,7 @@ namespace InternetForum.DAL.DomainModels
         [MinLength(3)]
         [MaxLength(50)]
         public string Header { get; set; }
-        [MaxLength(150)]
+        [MaxLength(300)]
         public string Text { get; set; }
         public PostTopic PostTopic { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }

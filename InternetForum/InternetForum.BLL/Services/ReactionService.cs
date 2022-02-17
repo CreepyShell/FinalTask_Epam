@@ -59,7 +59,7 @@ namespace InternetForum.BLL.Services
                 await _unitOfWork.CommentReactionRepository.SaveChangesAsync();
                 return null;
             }
-            commentReaction.IsLiked = !reaction.IsLike;
+            commentReaction.IsLiked = reaction.IsLike;
             commentReaction.ReactedAt = DateTime.Now;
             await _unitOfWork.CommentReactionRepository.UpdateAsync(commentReaction);
             await _unitOfWork.CommentReactionRepository.SaveChangesAsync();
@@ -86,7 +86,8 @@ namespace InternetForum.BLL.Services
                 await _unitOfWork.PostReactionRepository.SaveChangesAsync();
                 return null;
             }
-            postReaction.IsLiked = !reaction.IsLike;
+            postReaction.IsLiked = reaction.IsLike;
+            postReaction.ReactedAt = DateTime.Now;
             await _unitOfWork.PostReactionRepository.UpdateAsync(postReaction);
             await _unitOfWork.PostReactionRepository.SaveChangesAsync();
             return _mapper.Map<ReactionDTO>(postReaction);

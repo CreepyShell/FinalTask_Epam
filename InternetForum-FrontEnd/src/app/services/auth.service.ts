@@ -130,6 +130,18 @@ export class authService {
       );
   }
 
+  public checkIsUserHaveAtLeastOneRole(user:UserModel,roles:string[]) : boolean{
+    if(!user || !roles){
+      return false;
+    }
+    for (let index = 0; index < roles.length; index++) {
+      if(user.roles.includes(roles[index])){
+        return true;
+      }
+    }
+    return false;
+  }
+
   public setTokenInLocalStorage(accessToken: string, refreshToken: string) {
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);

@@ -23,9 +23,9 @@ namespace InternetForum.BLL.Services
 
         public async Task<bool> DeleteAsync(string id)
         {
-            await _unitOfWork.UserManager.DeleteAsync(await _unitOfWork.UserManager.FindByIdAsync(id));
             bool rez = await _unitOfWork.UserRepostory.RemoveUserAndUserDataAsync(id);
             await _unitOfWork.UserRepostory.SaveChangesAsync();
+            await _unitOfWork.UserManager.DeleteAsync(await _unitOfWork.UserManager.FindByIdAsync(id));
             return rez;
         }
 
@@ -35,6 +35,11 @@ namespace InternetForum.BLL.Services
         }
 
         public async Task<UserDTO> GetByIdAsync(string id)
+        {
+            return _mapper.Map<UserDTO>(await _unitOfWork.UserRepostory.GetByIdAsync(id));
+        }
+
+        public async Task<UserDTO> GetFullUserInfoByIdAsync(string id)
         {
             if ((await _unitOfWork.UserRepostory.GetByIdAsync(id)) == null)
                 return null;
@@ -83,7 +88,7 @@ namespace InternetForum.BLL.Services
 
             User user = await _unitOfWork.UserRepostory.UpdateUserAsync(_mapper.Map<User>(existUser));
             await _unitOfWork.SaveChangesAsync();
-            return await GetByIdAsync(user.Id);
+            return await GetFullUserInfoByIdAsync(user.Id);
         }
     }
 }

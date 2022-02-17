@@ -43,7 +43,7 @@ namespace BLL.Tests.ServiceTests
             AuthUserDTO userDTO = new AuthUserDTO() { Email = "test@gmail.com", Username = "test", Password = "1234" };
             SetUpUserManagerMockForRegister(userDTO);
 
-            UserDTO user = await authService.Register(userDTO, null);
+            UserDTO user = await authService.Register(userDTO, It.IsAny<JwtSettings>());
 
             Assert.Equal(userDTO.Email, user.Email);
             Assert.Equal(AuthUsers.First(), authUser);
@@ -67,7 +67,7 @@ namespace BLL.Tests.ServiceTests
             authService = new AuthService(mockUnitOfWork.Object, new Mapper(configuration), mockTokenService.Object);
             AuthUserDTO userDTO = new AuthUserDTO() { Email = gmail, Username = username, Password = password };
 
-            await Assert.ThrowsAsync<InvalidOperationException>(async () => await authService.Register(userDTO, null));
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await authService.Register(userDTO, It.IsAny<JwtSettings>()));
         }
 
         [Fact]
@@ -77,8 +77,8 @@ namespace BLL.Tests.ServiceTests
             authService = new AuthService(mockUnitOfWork.Object, new Mapper(configuration), mockTokenService.Object);
             AuthUserDTO userDTO =null;
 
-            await Assert.ThrowsAsync<ArgumentNullException>(async () => await authService.Register(userDTO, null));
-            await Assert.ThrowsAsync<ArgumentNullException>(async () => await authService.LogIn(userDTO, null));
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await authService.Register(userDTO, It.IsAny<JwtSettings>()));
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await authService.LogIn(userDTO, It.IsAny<JwtSettings>()));
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await authService.LogOut(null));
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await authService.UpdateCodeWord(null, ""));
         }
@@ -89,7 +89,7 @@ namespace BLL.Tests.ServiceTests
             AuthUserDTO userDTO = new AuthUserDTO() { Email = "", Username = "test", Password = "1234" };
             SetUpUserManagerMockForLogIn(userDTO);
 
-            UserDTO user = await authService.LogIn(userDTO, null);
+            UserDTO user = await authService.LogIn(userDTO, It.IsAny<JwtSettings>());
 
             Assert.Equal(userDTO.Email, user.Email);
             Assert.Equal(AuthUsers.First(), authUser);
@@ -108,7 +108,7 @@ namespace BLL.Tests.ServiceTests
             authService = new AuthService(mockUnitOfWork.Object, new Mapper(configuration), mockTokenService.Object);
             AuthUserDTO userDTO = new AuthUserDTO() { Email = gmail, Username = username, Password = password };
 
-            await Assert.ThrowsAsync<InvalidOperationException>(async () => await authService.LogIn(userDTO, null));
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await authService.LogIn(userDTO, It.IsAny<JwtSettings>()));
         }
 
         [Theory]

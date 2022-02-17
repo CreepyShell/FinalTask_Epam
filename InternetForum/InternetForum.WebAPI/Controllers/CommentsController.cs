@@ -23,7 +23,7 @@ namespace InternetForum.WebAPI.Controllers
             _logger = logger;
         }
         [HttpPost]
-        [Authorize(Roles = "User"),Authorize(Roles = "Administrator"), Authorize(Roles = "PremiumUser"), Authorize(Roles = "Owner")]
+        [Authorize(Roles = "User, Administrator, PremiumUser, Owner")]
         public async Task<ActionResult<CommentDTO>> AddComment([FromBody] CommentDTO newComment)
         {
             CommentDTO comment = await _commentService.AddEntityAsync(newComment);
@@ -32,7 +32,7 @@ namespace InternetForum.WebAPI.Controllers
         }
 
         [HttpPost("{commentId}")]
-        [Authorize(Roles = "User"), Authorize(Roles = "Administrator"), Authorize(Roles = "PremiumUser"), Authorize(Roles = "Owner")]
+        [Authorize(Roles = "User, Administrator, PremiumUser, Owner")]
         public async Task<ActionResult<CommentDTO>> AddCommentToComment(string commentId, [FromBody] CommentDTO newComment)
         {
             CommentDTO comment = await _commentService.CreateCommentToCommentAsync(newComment, commentId);
@@ -40,12 +40,12 @@ namespace InternetForum.WebAPI.Controllers
             return Created($"/api/comments/{comment.Id}", comment);
         }
 
-        [HttpGet("{postId}")]
+        [HttpGet("{postId}/{count}")]
         [Authorize]
-        [Authorize(Roles = "User"), Authorize(Roles = "Administrator"), Authorize(Roles = "PremiumUser"), Authorize(Roles = "Owner")]
-        public async Task<ActionResult<IEnumerable<CommentDTO>>> GetCommentsByPostId(string postId)
+        [Authorize(Roles = "User, Administrator, PremiumUser, Owner")]
+        public async Task<ActionResult<IEnumerable<CommentDTO>>> GetCommentsByPostId(string postId, int count)
         {
-            IEnumerable<CommentDTO> comments = await _commentService.GetMostPopularCommentsByPostId(postId, 10);
+            IEnumerable<CommentDTO> comments = await _commentService.GetMostPopularCommentsByPostId(postId, count);
 
             return Ok(comments);
         }
@@ -75,7 +75,7 @@ namespace InternetForum.WebAPI.Controllers
         }
         [HttpPut]
         [Route("admin")]
-        [Authorize(Roles = "Administator"), Authorize(Roles = "Owner")]
+        [Authorize(Roles = "Administator, Owner")]
         public async Task<ActionResult<IEnumerable<CommentDTO>>> UpdateCommentByAdmin([FromBody] CommentDTO updatedComment)
         {
             CommentDTO comment = await _commentService.UpdateAsync(updatedComment);
@@ -85,7 +85,7 @@ namespace InternetForum.WebAPI.Controllers
 
         [HttpDelete]
         [Route("admin")]
-        [Authorize(Roles = "Administator"), Authorize(Roles = "Owner")]
+        [Authorize(Roles = "Administator, Owner")]
         public async Task<ActionResult<IEnumerable<CommentDTO>>> DeleteCommentByAdmin([FromBody] CommentDTO updatedComment)
         {
             CommentDTO comment = await _commentService.UpdateAsync(updatedComment);

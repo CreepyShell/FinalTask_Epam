@@ -72,7 +72,7 @@ export class userService {
   }
 
   public updateUser(user: UserModel) {
-     user.registeredAt = undefined;
+    user.registeredAt = undefined;
     return this._httpService
       .putRequest<UserModel>(
         '/api/users',
@@ -91,5 +91,13 @@ export class userService {
           return of(err as HttpErrorResponse);
         })
       );
+  }
+
+  public getUserById(userId: string) {
+    return this._httpService.getRequest<UserModel>(
+      `/api/users/userinfo/${userId}`,
+      this._httpService.setHttpHeader([], []),
+      null
+    );
   }
 }

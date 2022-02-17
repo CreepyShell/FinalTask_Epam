@@ -1,11 +1,11 @@
 export interface postModel {
-  id: string;
+  id: string | undefined;
   userId: string;
   header: string;
   text: string;
   postTopic: string;
-  commentIds: string[];
-  reactionIds: string[];
-  createdAt: Date;
-  updatedAt: Date;
+  commentIds: string[] | undefined;
+  reactionIds: string[] | undefined;
+  createdAt: Date | undefined;
+  updatedAt: Date | undefined;
 }

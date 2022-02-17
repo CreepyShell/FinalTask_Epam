@@ -83,9 +83,9 @@ namespace InternetForum.BLL.Services
 
         public async Task<bool> RemoveUserAnswer(string userId, string answerId)
         {
-            await _unitOfWork.AnswerUserRepository.RemoveUserAnswerAsync(userId, answerId);
+            bool rez = await _unitOfWork.AnswerUserRepository.RemoveUserAnswerAsync(userId, answerId);
             await _unitOfWork.AnswerUserRepository.SaveChangesAsync();
-            return true;
+            return rez;
         }
 
         public async Task<bool> SetUserAnswer(string userId, string answerId)

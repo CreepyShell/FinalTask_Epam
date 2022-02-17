@@ -17,29 +17,46 @@ namespace InternetForum.WebAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly ILogger<UsersController> _logger;
-       public UsersController(IUserService userService, ILogger<UsersController> logger)
+        public UsersController(IUserService userService, ILogger<UsersController> logger)
         {
             _userService = userService;
             _logger = logger;
         }
         [Authorize(Roles = "Administrator")]
         [HttpGet]
-        public async Task<ActionResult< IEnumerable<UserDTO>>> Get()
+        public async Task<ActionResult<IEnumerable<UserDTO>>> Get()
         {
             return Ok(await _userService.GetAllAsync());
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserDTO>> GetUserById(string id)
+        [HttpGet]
+        [Route("userinfo/{userId}")]
+        public async Task<ActionResult<UserDTO>> GetUserInfoById(string userId)
         {
-            return Ok(await _userService.GetByIdAsync(id));
+            UserDTO user = await _userService.GetByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+            return Ok(user);
         }
-        [Authorize(Roles = "User"), Authorize(Roles = "Administrator"), Authorize(Roles = "Owner")]
+
+        [Authorize(Roles = "Administrator"), Authorize(Roles = "Owner")]
+        [HttpGet("userinfo/admin/{id}")]
+        public async Task<ActionResult<UserDTO>> GetFullUserInfoById(string id)
+        {
+            UserDTO user = await _userService.GetFullUserInfoByIdAsync(id);
+            if (user == null)
+                return NotFound();
+            return Ok(user);
+        }
+
         [HttpGet]
         [Route("name/{username}")]
         public async Task<ActionResult<UserDTO>> GetUserByName(string username)
         {
-            return Ok(await _userService.GetUserByNameAsync(username));
+            UserDTO user = await _userService.GetUserByNameAsync(username);
+            if (user == null)
+                return NotFound();
+            return Ok(user);
         }
 
         [Authorize]
@@ -66,7 +83,7 @@ namespace InternetForum.WebAPI.Controllers
         public async Task<ActionResult<UserDTO>> GetUserFromToken()
         {
             string userId = this.GetUserId();
-            UserDTO user = await _userService.GetByIdAsync(userId);
+            UserDTO user = await _userService.GetFullUserInfoByIdAsync(userId);
             return Ok(user);
         }
     }

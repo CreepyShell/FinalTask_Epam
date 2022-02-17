@@ -67,7 +67,6 @@ namespace InternetForum.BLL.Services
 
             await _unitOfWork.UserManager.RemoveAuthenticationTokenAsync(authUser, "Provider", logInUser.Token.RefreshToken);
         }
-
         public async Task<UserDTO> Register(AuthUserDTO register, JwtSettings jwtSettings)
         {
             if (register == null)

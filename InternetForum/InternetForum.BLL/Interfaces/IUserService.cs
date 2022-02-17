@@ -8,6 +8,7 @@ namespace InternetForum.BLL.Interfaces
     {
         Task<UserDTO> UpdateAsync(UserDTO newEntity);
         Task<UserDTO> GetByIdAsync(string id);
+        Task<UserDTO> GetFullUserInfoByIdAsync(string id);
         Task<IEnumerable<UserDTO>> GetAllAsync();
         Task<bool> DeleteAsync(string id);
         Task<UserDTO> GetUserByNameAsync(string username);

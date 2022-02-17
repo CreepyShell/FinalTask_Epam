@@ -7,9 +7,7 @@ using InternetForum.DAL.Interfaces;
 using InternetForum.DAL.Repositories;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -83,12 +81,17 @@ namespace BLL.Tests.ServiceTests
                 IsLike = false,
                 UserId = "4",
             };
+            ReactionDTO existReaction = (await reactionService.GetCommentReactionsByUserId(reaction.UserId))
+                .FirstOrDefault(r => r.CommentId == reaction.CommentId);
 
-            await reactionService.ReactToComment(reaction);
+           ReactionDTO updatedReaction = await reactionService.ReactToComment(reaction);
 
-            ReactionDTO deletedReaction = (await reactionService.GetCommentReactionsByUserId(reaction.UserId)).FirstOrDefault(r => r.CommentId == reaction.CommentId);
-            Assert.NotNull(deletedReaction);
-            Assert.NotEqual(reaction.IsLike, deletedReaction.IsLike);
+            ReactionDTO updatedReactionInDb = (await reactionService.GetCommentReactionsByUserId(reaction.UserId)).FirstOrDefault(r => r.CommentId == reaction.CommentId);
+            Assert.NotNull(updatedReactionInDb);
+            Assert.NotEqual(existReaction.IsLike, updatedReactionInDb.IsLike);
+            Assert.Equal(updatedReactionInDb.Id, updatedReaction.Id);
+            Assert.Equal(updatedReactionInDb.IsLike, updatedReaction.IsLike);
+            Assert.NotEqual(existReaction.ReactedAt, updatedReaction.ReactedAt);
         }
 
         [Fact]
@@ -136,12 +139,16 @@ namespace BLL.Tests.ServiceTests
                 IsLike = true,
                 UserId = "2",
             };
+            ReactionDTO existReaction = (await reactionService.GetPostReactionsByUserId(reaction.UserId)).FirstOrDefault(r => r.PostId == reaction.PostId);
 
-            await reactionService.ReactToPost(reaction);
+            ReactionDTO updatedReaction = await reactionService.ReactToPost(reaction);
 
-            ReactionDTO deletedReaction = (await reactionService.GetPostReactionsByUserId(reaction.UserId)).FirstOrDefault(r => r.PostId == reaction.PostId);
-            Assert.NotNull(deletedReaction);
-            Assert.NotEqual(reaction.IsLike, deletedReaction.IsLike);
+            ReactionDTO updatedReactionInDb = (await reactionService.GetPostReactionsByUserId(reaction.UserId)).FirstOrDefault(r => r.PostId == reaction.PostId);
+            Assert.NotNull(updatedReactionInDb);
+            Assert.NotEqual(existReaction.IsLike, updatedReaction.IsLike);
+            Assert.Equal(updatedReaction.Id, updatedReactionInDb.Id);
+            Assert.Equal(updatedReaction.IsLike, updatedReactionInDb.IsLike);
+            Assert.NotEqual(existReaction.ReactedAt, updatedReaction.ReactedAt);
         }
         [Fact]
         public async Task React_WhenInvalidReaction_ThrowInvalidOperationException()

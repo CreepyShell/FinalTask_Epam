@@ -7,12 +7,12 @@ import { LoginComponent } from './components/login/login.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
 import { RegisterComponent } from './components/register/register.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
-import {  MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { httpService } from './services/http.service';
 import { authService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { userService } from './services/user.service';
 import { authorizedGuard, nonAuthorizedGuard } from './guards/authGuard';
@@ -20,7 +20,15 @@ import { LoggedInErrorComponent } from './components/logged-in-error/logged-in-e
 import { PostComponent } from './components/post/post.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { postService } from './services/post.service';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { commentService } from './services/comment.service';
+import { reactionService } from './services/reaction.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -31,7 +39,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     UserProfileComponent,
     LoggedInErrorComponent,
     PostComponent,
-    CommentComponent
+    CommentComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,9 +49,24 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     HttpClientModule,
     MatButtonToggleModule,
     FontAwesomeModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
+    MatIconModule,
+    MatBadgeModule
   ],
-  providers: [httpService, authService, userService, postService, authorizedGuard, nonAuthorizedGuard],
-  bootstrap: [AppComponent]
+  providers: [
+    httpService,
+    authService,
+    userService,
+    postService,
+    commentService,
+    reactionService,
+    authorizedGuard,
+    nonAuthorizedGuard,
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -162,6 +162,7 @@ namespace BLL.Tests.ServiceTests
             Assert.Equal(post.Header, (await mockUnitOfWork.Object.PostRepository.GetByIdAsync(createdPost.Id)).Header);
             Assert.Equal(post.Text, createdPost.Text);
             Assert.NotEqual(DateTime.MinValue, createdPost.UpdatedAt);
+            Assert.NotEqual(DateTime.MinValue, createdPost.CreatedAt);
         }
 
         protected virtual void Dispose(bool disposing)

@@ -35,7 +35,7 @@ namespace InternetForum.DAL.Repositories
             return await _context.Users.Include(u => u.Posts).ToListAsync();
         }
 
-        public  async Task<IEnumerable<User>> GetUserWithQuestionnaires()
+        public async Task<IEnumerable<User>> GetUserWithQuestionnaires()
         {
             return await _context.Users.Include(u => u.Questionnaires).ToListAsync();
         }
@@ -45,13 +45,14 @@ namespace InternetForum.DAL.Repositories
             User deletedUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
             if (deletedUser == null)
                 throw new ArgumentException("did not find user with this id");
-            if (!await DeleteAsync(deletedUser))
-                return false;
 
             _context.AnswerUsers.RemoveRange(await _context.AnswerUsers.AsNoTracking().Where(au => au.UserId == id).ToListAsync());
             _context.PostReactions.RemoveRange(await _context.PostReactions.AsNoTracking().Where(pr => pr.UserId == id).ToListAsync());
             _context.CommentReactions.RemoveRange(await _context.CommentReactions.AsNoTracking().Where(cr => cr.UserId == id).ToListAsync());
             _context.Comments.RemoveRange(await _context.Comments.AsNoTracking().Where(c => c.UserId == id).ToListAsync());
+            _context.Posts.RemoveRange(await _context.Posts.AsNoTracking().Where(p => p.UserId == id).ToArrayAsync());
+            if (!await DeleteAsync(deletedUser))
+                return false;
 
             return true;
         }

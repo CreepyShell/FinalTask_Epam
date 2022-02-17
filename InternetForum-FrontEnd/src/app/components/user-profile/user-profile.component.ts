@@ -73,7 +73,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
                 resp.status === HttpStatusCode.Ok
               ) {
                 this.ngOnInit();
-              }
+              } else this._authService.setTokenInLocalStorage('', '');
             });
         }
       });
@@ -163,7 +163,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
           if (resp instanceof HttpErrorResponse) {
             if (resp.status === HttpStatusCode.BadRequest) {
               this.resultMessage = undefined;
-              this.errorMessage = 'password incorect';
+              this.errorMessage = 'current password incorect or new is invalid';
               setTimeout(() => {
                 this.errorMessage = undefined;
                 this.disableButton = false;

@@ -47,6 +47,7 @@ namespace InternetForum.WebAPI
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
                 options.Password.RequireUppercase = false;
+                options.User.RequireUniqueEmail = true;
             })
                 .AddEntityFrameworkStores<UsersDbContext>()
                 .AddTokenProvider("Provider", typeof(DataProtectorTokenProvider<AuthUser>));

@@ -1,19 +1,40 @@
 <mat-toolbar class="tool-bar">
     <span class="content">
         <h1>Welcome to Internet forum!</h1>
-        <a [routerLink]="this.route"><button *ngIf="User===undefined" class="login-button"
+        <a [routerLink]="this.route"><button *ngIf="!this.User" class="login-button"
                 (click)="GoToLoginPage()">Login</button></a>
-        <a [routerLink]="this.route"><button *ngIf="User===undefined" class="register-button"
+        <a [routerLink]="this.route"><button *ngIf="!this.User" class="register-button"
                 (click)="GoToRegisterPage()">Register</button></a>
-        <a routerLink="/profile" class="go-to-user-profile" *ngIf="User!==undefined">Go to profile</a>
+        <a routerLink="/profile" class="go-to-user-profile" *ngIf="this.User">Go to profile</a>
     </span>
 </mat-toolbar>
 <div class="main-content">
-    <button>Create discution</button>
-    <div>
-
-    </div>
-    <div *ngFor="let Post of Posts">
-        <app-post [Post]="Post" [User]="this.User"></app-post>
+    <button class="open-create-post-button" (click)="openCreatePostContainer()">Create discussion</button>
+    <form class="create-post-form" *ngIf="this.isOpenCreatePost" (submit)="false">
+        <mat-form-field class="disc-topic" appearance="fill">
+            <mat-label>Enter discussion topic</mat-label>
+            <mat-select class="selected-value" name="post-topic" [(ngModel)]="selectedPostTopic">
+                <mat-option value="Activities">Activities</mat-option>
+                <mat-option value="Studing">Studing</mat-option>
+                <mat-option value="Peoples">Peoples</mat-option>
+                <mat-option value="Films">Films</mat-option>
+                <mat-option value="Another">Another</mat-option>
+            </mat-select>
+        </mat-form-field><br />
+        <div class="post-header-container">
+            <input placeholder="enter discussion header" id="post-header" autocomplete="off">
+        </div><br />
+        <div class="post-description-container"><textarea id="description" maxlength="300" rows="8"
+                placeholder="enter discussion description" autocomplete="off"></textarea><br />
+        </div>
+        <p class="error-message" *ngIf="this.errorCreatePostMessage">{{this.errorCreatePostMessage}}</p>
+        <button class="create-post-button" type="button" (click)="createPost()">Create</button>
+    </form>
+    <mat-spinner [diameter]="200" style="margin: auto;" *ngIf="!this.isLoadUser || !this.isLoadPosts">
+    </mat-spinner>
+    <div class="post-content" *ngIf="this.isLoadUser && this.isLoadPosts">
+        <div *ngFor="let Post of Posts">
+            <app-post [Post]="Post" (deletePostEvent)="deletePostEvent($event)" [User]="this.User"></app-post>
+        </div>
     </div>
 </div>
