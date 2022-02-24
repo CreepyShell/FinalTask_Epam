@@ -71,7 +71,7 @@ namespace BLL.Tests.ServiceTests
         [Fact]
         public async Task DeleteComment_CommentDeleted()
         {
-            string id = "2";
+            string id = "3";
 
             var rez = await commentService.DeleteAsync(id);
             Assert.True(rez);
@@ -93,6 +93,7 @@ namespace BLL.Tests.ServiceTests
 
             Assert.Equal(comment.CommentText, updatedComment.CommentText);
             Assert.Equal(comment.CommentText, (await commentRepository.GetByIdAsync(comment.Id)).CommentText);
+            Assert.NotEqual(DateTime.MinValue, comment.CreatedAt);
         }
 
         [Theory]
@@ -131,6 +132,18 @@ namespace BLL.Tests.ServiceTests
             Assert.NotNull(commentDTOs);
             Assert.Single(commentDTOs);
             Assert.Equal(userId, commentDTOs.First().UserId);
+        }
+
+        [Fact]
+        public async Task GetCommentsByPostId_ReturnsCommentsWithSamePostId()
+        {
+            string postId = "2";
+
+            IEnumerable<CommentDTO> comments = await commentService.GetCommentsByPostId(postId);
+
+            Assert.NotEmpty(comments);
+            Assert.Equal((await commentRepository.GetAllAsync()).Where(c => c.PostId == postId).Count(), comments.ToArray().Length);
+            Assert.Equal(comments.Count(), comments.TakeWhile(c => c.PostId == postId).Count());
         }
 
 

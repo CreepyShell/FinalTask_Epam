@@ -1,8 +1,8 @@
 ﻿using InternetForum.BLL.Interfaces;
 using InternetForum.BLL.ModelsDTo;
+using InternetForum.WebAPI.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,14 +10,13 @@ namespace InternetForum.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [BaseExceptionFilter]
     [Authorize(Roles = "User, Administrator, PremiumUser, Owner")]
     public class ReactionsController : ControllerBase
     {
-        private readonly ILogger<ReactionsController> _logger;
         private readonly IReactionService _reactionService;
-        public ReactionsController(IReactionService reactionService, ILogger<ReactionsController> logger)
+        public ReactionsController(IReactionService reactionService)
         {
-            _logger = logger;
             _reactionService = reactionService;
         }
 
@@ -34,7 +33,6 @@ namespace InternetForum.WebAPI.Controllers
         [Route("post")]
         public async Task<ActionResult<ReactionDTO>> ReactToPost([FromBody] ReactionDTO reaction)
         {
-            _logger.LogInformation($"{reaction.IsLike}");
             ReactionDTO newReaction = await _reactionService.ReactToPost(reaction);
 
             return Ok(newReaction);
@@ -48,8 +46,8 @@ namespace InternetForum.WebAPI.Controllers
             return Ok(reactions);
         }
 
-        [HttpGet("{commentId}")]
-        [Route("commentreactions")]
+        [HttpGet]
+        [Route("commentreactions/{commentId}")]
         public async Task<ActionResult<IEnumerable<ReactionDTO>>> GetReactionsByCommentId(string commentId)
         {
             IEnumerable<ReactionDTO> reactions = await _reactionService.GetReactionsByCommentId(commentId);

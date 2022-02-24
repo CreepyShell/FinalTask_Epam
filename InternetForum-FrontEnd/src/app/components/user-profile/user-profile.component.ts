@@ -101,10 +101,15 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this._authService
         .logout(this.User)
         .pipe(takeUntil(this.$unsubscribe))
-        .subscribe();
+        .subscribe((resp) => {
+          this._authService.setTokenInLocalStorage('', '');
+          if (resp.status === HttpStatusCode.Ok) {
+            this.router.navigate(['/']);
+            return;
+          }
+          alert('something went wrong please re-login');
+        });
     }
-    this.router.navigate(['/']);
-    this._authService.setTokenInLocalStorage('', '');
   }
 
   public changePassword() {

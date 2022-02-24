@@ -25,22 +25,34 @@
         </button>
     </div>
     <div class="post-reactions">
-        <button (click)="reactPost(true)" [disabled]="this.disabled_likes" mat-raised-button color="primary"
-            [matBadge]="this.positiveReactionsCount" matBadgePosition="after" matBadgeColor="accent">
+        <button class="like-button" [ngStyle]="this.likeStyle" (click)="reactPost(true)"
+            [disabled]="this.disabled_likes" mat-raised-button color="primary" [matBadge]="this.positiveReactionsCount"
+            matBadgePosition="after" matBadgeColor="accent">
             <mat-icon>thumb_up</mat-icon>
         </button>
-        <button (click)="reactPost(false)" [disabled]="this.disabled_likes" mat-raised-button color="primary"
+        <button class="dislike-button" [ngStyle]="this.dislikeStyle" (click)="reactPost(false)"
+            [disabled]="this.disabled_likes" mat-raised-button color="primary"
             [matBadge]="this.reactionCount - this.positiveReactionsCount" matBadgePosition="after"
             matBadgeColor="accent">
             <mat-icon>thumb_down</mat-icon>
         </button>
     </div>
-    <button mat-raised-button color="primary" [matBadge]="this.comments.length" matBadgePosition="after"
-        matBadgeColor="accent" (click)="openComments()">open comments
+    <button class="open-comments" mat-raised-button color="primary" [matBadge]="this.comments.length"
+        matBadgePosition="after" matBadgeColor="accent" (click)="openComments()">open comments
     </button>
     <div *ngIf="this.isOpenComments" class="comment-container">
         <div *ngFor="let comment of comments">
-            <app-comment [User]="this.User!" [Comment]="comment"></app-comment>
+            <app-comment (deleteCommentEvent)="this.deleteCommentEvent($event)" [User]="this.User!" [Comment]="comment"></app-comment>
+        </div>
+        <button (click)="openSingleCommentContainer()" class="create-comment">
+            <mat-icon style="font-size: 2rem;" color="warn">add</mat-icon>
+        </button><br />
+        <div *ngIf="this.isOpenSingleCommentContainer">
+            <textarea maxlength="140" class="comment-text" [id]="'comment' + this.Post!.id"
+                placeholder="enter comment text" autocomplete="off" rows="4"></textarea><br />
+            <button class="send-comment" (click)="addSingleComment()">
+                <mat-icon style="font-size: 2rem;" color="accent">send</mat-icon>
+            </button>
         </div>
     </div>
 </div>

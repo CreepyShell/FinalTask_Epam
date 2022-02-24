@@ -61,7 +61,7 @@ namespace InternetForum.WebAPI.Controllers
         public async Task<ActionResult<Token>> UpdatePassword([FromHeader] string currentPassword, [FromHeader] string newPassword)
         {
            Token token = await _authService.UpdatePassword(this.GetUsername(), currentPassword, newPassword, _jwtSettings);
-            _logger.LogInformation("password changed");
+            _logger.LogInformation($"{this.GetUsername()} changed password");
             return Ok(token);
         }
 

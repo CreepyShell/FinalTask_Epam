@@ -124,7 +124,6 @@ export class authService {
           return resp;
         }),
         catchError((err) => {
-          console.log(err);
           return of( err as HttpErrorResponse);
         })
       );

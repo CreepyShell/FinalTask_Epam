@@ -42,6 +42,17 @@ export class PostComponent implements OnInit, OnDestroy {
   public reactionCount = 0;
   public positiveReactionsCount = 0;
   public disabled_likes = false;
+  public isOpenSingleCommentContainer = false;
+
+  private whiteColor = 'rgb(140, 140, 140)';
+  private dislikeColor = '#FF8066';
+  private likeColor = '#4FFBDF';
+  public likeStyle: { [klass: string]: any } | null = {
+    color: this.whiteColor,
+  };
+  public dislikeStyle: { [klass: string]: any } | null = {
+    color: this.whiteColor,
+  };
 
   private $unsubscribe = new Subject<void>();
 
@@ -200,7 +211,6 @@ export class PostComponent implements OnInit, OnDestroy {
     cachedPost!.text = newDescription!;
     cachedPost!.createdAt = undefined;
     cachedPost!.updatedAt = undefined;
-    console.log(this.Post);
 
     this._postService
       .updatePost(cachedPost!)
@@ -244,6 +254,14 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   public reactPost(isLike: boolean) {
+    if (!this.User) {
+      this._snackBar.open(
+        'Plese authorize to react and see other post reactions',
+        undefined,
+        { duration: 7000 }
+      );
+      return;
+    }
     if (
       this._authService.checkIsUserHaveAtLeastOneRole(this.User!, [
         'BannedUser',
@@ -282,12 +300,23 @@ export class PostComponent implements OnInit, OnDestroy {
             if (!existReaction) {
               this.postReactions.push(resp.body);
               this.reactionCount++;
-              if (resp.body.isLike) this.positiveReactionsCount++;
+              if (resp.body.isLike) {
+                this.positiveReactionsCount++;
+                this.likeStyle = { color: this.likeColor };
+              } else this.dislikeStyle = { color: this.dislikeColor };
               return;
             }
             existReaction.isLike = !existReaction.isLike;
-            if (existReaction.isLike) this.positiveReactionsCount++;
-            else this.positiveReactionsCount--;
+
+            if (existReaction.isLike) {
+              this.positiveReactionsCount++;
+              this.dislikeStyle = { color: this.whiteColor };
+              this.likeStyle = { color: this.likeColor };
+            } else {
+              this.positiveReactionsCount--;
+              this.dislikeStyle = { color: this.dislikeColor };
+              this.likeStyle = { color: this.whiteColor };
+            }
             return;
           }
           let deletedReaction = this.postReactions.find(
@@ -298,7 +327,10 @@ export class PostComponent implements OnInit, OnDestroy {
 
           this.postReactions.splice(index, 1);
           this.reactionCount--;
-          if (deletedReaction!.isLike) this.positiveReactionsCount--;
+          if (deletedReaction!.isLike) {
+            this.likeStyle = { color: this.whiteColor };
+            this.positiveReactionsCount--;
+          } else this.dislikeStyle = { color: this.whiteColor };
         },
         error: (err) => {
           if (
@@ -332,19 +364,95 @@ export class PostComponent implements OnInit, OnDestroy {
 
   public openComments() {
     if (!this.User) {
-      this._snackBar.open('Please authorize to read comments');
+      this._snackBar.open('Please authorize to read comments', undefined, {
+        duration: 7000,
+      });
       return;
     }
     if (
-      this._authService.checkIsUserHaveAtLeastOneRole(this.User, [
-        'BannedUser',
-      ])
+      this._authService.checkIsUserHaveAtLeastOneRole(this.User, ['BannedUser'])
     ) {
-      this._snackBar.open('You can not read comments because you was banned');
+      this._snackBar.open(
+        'You can not read comments because you was banned',
+        undefined,
+        {
+          duration: 6000,
+        }
+      );
       return;
     }
 
     this.isOpenComments = !this.isOpenComments;
+  }
+
+  public addSingleComment() {
+    let commentText = (
+      document.getElementById(`comment${this.Post!.id}`) as HTMLInputElement
+    ).value;
+    if (!commentText || commentText.length < 2) {
+      return;
+    }
+
+    let newComment: commentModel = {
+      id: undefined,
+      postId: this.Post!.id!,
+      userId: this.User!.id,
+      createdAt: undefined,
+      commentText: commentText,
+      commentId: undefined,
+    };
+
+    this._commentService
+      .AddCommentToPost(newComment)
+      .pipe(takeUntil(this.$unsubscribe))
+      .subscribe({
+        next: (resp) => {
+          if (
+            resp instanceof HttpResponse &&
+            resp.status === HttpStatusCode.Created
+          ) {
+            this.comments.push(resp.body!);
+            this.isOpenSingleCommentContainer = false;
+            return;
+          }
+          if (
+            resp instanceof HttpErrorResponse &&
+            resp.status === HttpStatusCode.Unauthorized
+          ) {
+            this._authService
+              .refreshToken(
+                this._authService.getRefreshTokenFromLocalStorage()!,
+                this._authService.getAccessTokenFromLocalStorage()!
+              )
+              .pipe(takeUntil(this.$unsubscribe))
+              .subscribe((resp) => {
+                if (
+                  resp instanceof HttpResponse &&
+                  resp.status === HttpStatusCode.Ok
+                ) {
+                  this.User!.token = resp.body!;
+                  this.addSingleComment();
+                  return;
+                }
+                this._snackBar.open(
+                  'You token is invalid, please re-login',
+                  undefined,
+                  {
+                    duration: 7000,
+                  }
+                );
+              });
+          }
+        },
+      });
+  }
+
+  public openSingleCommentContainer() {
+    this.isOpenSingleCommentContainer = !this.isOpenSingleCommentContainer;
+  }
+
+  public deleteCommentEvent(commentId:string){
+    this.comments = this.comments.filter((c) => c.id !== commentId);
   }
 
   private getPostReactions() {
@@ -359,6 +467,14 @@ export class PostComponent implements OnInit, OnDestroy {
             this.positiveReactionsCount = resp.body!.filter(
               (r) => r.isLike
             ).length;
+            let existReaction = this.postReactions.find(
+              (pr) => pr.userId === this.User!.id
+            );
+            if (existReaction) {
+              if (existReaction.isLike)
+                this.likeStyle = { color: this.likeColor };
+              else this.dislikeStyle = { color: this.dislikeColor };
+            }
           },
           error: (err) => {
             console.log(err);

@@ -13,7 +13,7 @@ namespace InternetForum.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [PostExceptionFilter]
+    [BaseExceptionFilter]
     public class PostsController : ControllerBase
     {
         private readonly IPostService _postService;

@@ -1,10 +1,9 @@
 ﻿using InternetForum.BLL.Interfaces;
 using InternetForum.BLL.ModelsDTo;
+using InternetForum.WebAPI.Filters;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +12,7 @@ namespace InternetForum.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [BaseExceptionFilter]
     public class CommentsController : ControllerBase
     {
         private readonly ICommentService _commentService;
@@ -45,14 +45,14 @@ namespace InternetForum.WebAPI.Controllers
         [Authorize(Roles = "User, Administrator, PremiumUser, Owner")]
         public async Task<ActionResult<IEnumerable<CommentDTO>>> GetCommentsByPostId(string postId, int count)
         {
-            IEnumerable<CommentDTO> comments = await _commentService.GetMostPopularCommentsByPostId(postId, count);
+            IEnumerable<CommentDTO> comments = (await _commentService.GetCommentsByPostId(postId)).Take(count).ToArray();
 
             return Ok(comments);
         }
 
         [HttpPut]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<CommentDTO>>> UpdateComment([FromBody] CommentDTO updatedComment)
+        public async Task<ActionResult<CommentDTO>> UpdateComment([FromBody] CommentDTO updatedComment)
         {
             if (updatedComment.UserId != this.GetUserId())
                 return Forbid();
@@ -64,33 +64,31 @@ namespace InternetForum.WebAPI.Controllers
 
         [HttpDelete]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<CommentDTO>>> DeleteComment([FromBody] CommentDTO updatedComment)
+        public async Task<IActionResult> DeleteComment([FromBody] CommentDTO deletedComment)
         {
-            if (updatedComment.UserId != this.GetUserId())
+            if (deletedComment.UserId != this.GetUserId())
                 return Forbid();
 
-            CommentDTO comment = await _commentService.UpdateAsync(updatedComment);
+            bool rez = await _commentService.DeleteAsync(deletedComment.Id);
+            if (!rez)
+                return NotFound();
 
-            return Ok(comment);
-        }
-        [HttpPut]
-        [Route("admin")]
-        [Authorize(Roles = "Administator, Owner")]
-        public async Task<ActionResult<IEnumerable<CommentDTO>>> UpdateCommentByAdmin([FromBody] CommentDTO updatedComment)
-        {
-            CommentDTO comment = await _commentService.UpdateAsync(updatedComment);
-
-            return Ok(comment);
+            return Ok();
         }
 
         [HttpDelete]
-        [Route("admin")]
+        [Route("admin/{userId}")]
         [Authorize(Roles = "Administator, Owner")]
-        public async Task<ActionResult<IEnumerable<CommentDTO>>> DeleteCommentByAdmin([FromBody] CommentDTO updatedComment)
+        public async Task<IActionResult> DeleteCommentByAdmin(string userId, [FromBody] CommentDTO deletedComments)
         {
-            CommentDTO comment = await _commentService.UpdateAsync(updatedComment);
+            CommentDTO comment = (await _commentService.GetCommentsByUserId(userId)).FirstOrDefault(c => c.Id == deletedComments.Id);
 
-            return Ok(comment);
+            if (comment == null)
+                return BadRequest("This user do not have comment with given id"); 
+
+            bool rez = await _commentService.DeleteAsync(deletedComments.Id);
+
+            return Ok(rez);
         }
     }
 }

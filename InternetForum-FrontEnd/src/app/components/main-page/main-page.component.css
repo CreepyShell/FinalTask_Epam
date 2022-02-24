@@ -38,6 +38,13 @@
   padding: 1px 1rem 1px 1rem;
 }
 
+.login-button[disabled="true"],
+.register-button[disabled="true"] {
+  cursor: default;
+  color: rgb(24, 116, 52);
+  border: 1.6px solid rgb(101, 117, 7);
+}
+
 .register-button {
   margin-right: 0.6rem;
 }
@@ -120,7 +127,7 @@
   border-bottom: 1px solid green;
   width: 20rem;
   font-size: small;
-  color:whitesmoke;
+  color: whitesmoke;
 }
 
 #post-header:hover {
@@ -146,7 +153,8 @@
   resize: none;
   border: 1px solid wheat;
   background: rgb(39, 39, 39);
-  color:whitesmoke;
+  color: whitesmoke;
+  padding: 0.5rem;
 }
 
 #description:hover {
@@ -159,11 +167,11 @@
   color: aliceblue;
 }
 
-.error-message{
-  color:red;
+.error-message {
+  color: red;
   display: block;
   text-align: center;
-  margin-top:-1rem;
+  margin-top: -0.6rem;
   font-size: smaller;
 }
 

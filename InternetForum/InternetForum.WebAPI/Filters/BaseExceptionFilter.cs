@@ -5,7 +5,7 @@ using System;
 
 namespace InternetForum.WebAPI.Filters
 {
-    public class PostExceptionFilter : Attribute, IExceptionFilter
+    public class BaseExceptionFilter : Attribute, IExceptionFilter
     {
         public void OnException(ExceptionContext context)
         {

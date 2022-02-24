@@ -39,10 +39,11 @@ namespace InternetForum.WebAPI.Controllers
             return Ok(user);
         }
 
-        [Authorize(Roles = "Administrator"), Authorize(Roles = "Owner")]
+        [Authorize(Roles = "Administrator, Owner")]
         [HttpGet("userinfo/admin/{id}")]
         public async Task<ActionResult<UserDTO>> GetFullUserInfoById(string id)
         {
+            _logger.LogInformation($"admin with id {this.GetUserId()} tried to get full user with id {id} information");
             UserDTO user = await _userService.GetFullUserInfoByIdAsync(id);
             if (user == null)
                 return NotFound();
@@ -63,19 +64,23 @@ namespace InternetForum.WebAPI.Controllers
         [HttpPut]
         public async Task<ActionResult<UserDTO>> UpdateUser([FromBody] UserDTO user)
         {
-            _logger.LogInformation($"try to update:{user.FullName} {user.Email} {user.FullName}");
+            _logger.LogInformation($"try to update: {user.Email}");
             if (user.Id != this.GetUserId())
                 return Forbid();
             return Ok(await _userService.UpdateAsync(user));
         }
 
         [Authorize]
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<ActionResult<bool>> DeleteUserById([FromBody] UserDTO user)
         {
+            _logger.LogInformation($"Try to delete user with id {user.Id}");
             if (user.Id != this.GetUserId())
                 return Forbid();
-            return Ok(await _userService.DeleteAsync(user.Id));
+            bool rez = await _userService.DeleteAsync(user.Id);
+            if (rez)
+                _logger.LogInformation($"User with username {user.UserName} and id {user.Id} successfully deleted");
+            return Ok(rez);
         }
         [Authorize]
         [HttpGet]
@@ -84,6 +89,9 @@ namespace InternetForum.WebAPI.Controllers
         {
             string userId = this.GetUserId();
             UserDTO user = await _userService.GetFullUserInfoByIdAsync(userId);
+            if (user == null)
+                return NotFound();
+            _logger.LogInformation($"{user.UserName} return from token");
             return Ok(user);
         }
     }

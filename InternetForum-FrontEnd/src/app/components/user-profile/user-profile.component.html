@@ -7,7 +7,7 @@
     </div>
     <mat-spinner [diameter]="180" *ngIf="!this.loadUser">
     </mat-spinner>
-    <div *ngIf="this.loadUser" class="user-page">
+    <div *ngIf="this.loadUser && this.User" class="user-page">
         <div class="user-page-header">
             <img [src]="this.User?.avatar" id="user-img" onerror="this.src='/assets/pictures/user_profile.png'" width="50vw" height="50hw">
             <h1>

@@ -108,6 +108,7 @@ namespace InternetForum.BLL.Services
             if (!rez.IsValid)
                 throw new InvalidOperationException($"Post entity is invalid:{string.Join(',', rez.Errors)}");
 
+            newEntity.CreatedAt = existComment.CreatedAt;
             Comment comment = await _unitOfWork.CommentRepository.UpdatePostAsync(_mapper.Map<Comment>(newEntity));
             await _unitOfWork.SaveChangesAsync();
             return _mapper.Map<CommentDTO>(comment);
@@ -117,6 +118,11 @@ namespace InternetForum.BLL.Services
         public async Task<IEnumerable<CommentDTO>> GetCommentsByUserId(string userId)
         {
             return _mapper.Map<IEnumerable<CommentDTO>>((await _unitOfWork.CommentRepository.GetAllAsync()).Where(c => c.UserId == userId).ToArray());
+        }
+
+        public async Task<IEnumerable<CommentDTO>> GetCommentsByPostId(string postId)
+        {
+            return _mapper.Map<IEnumerable<CommentDTO>>((await _unitOfWork.CommentRepository.GetAllAsync()).Where(c => c.PostId == postId).ToArray());
         }
     }
 }

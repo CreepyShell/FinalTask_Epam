@@ -55,7 +55,7 @@ export class userService {
   public deleteUser(user: UserModel) {
     return this._httpService
       .deleteRequest<boolean>(
-        `/api/users/${user.id}`,
+        '/api/users',
         this._httpService.setHttpHeader(
           ['Authorization'],
           [`Bearer ${this._authService.getAccessTokenFromLocalStorage()}`]

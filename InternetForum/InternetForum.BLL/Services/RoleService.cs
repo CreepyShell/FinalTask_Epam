@@ -6,7 +6,6 @@ using InternetForum.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace InternetForum.BLL.Services
@@ -40,7 +39,7 @@ namespace InternetForum.BLL.Services
 
             AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(userName);
             if (authUser == null)
-                throw new ArgumentNullException("did not find user with this username or email");
+                throw new ArgumentException("did not find user with this username or email");
 
             bool IsInRole = (await _unitOfWork.UserManager.GetRolesAsync(authUser)).Contains(role);
             if (!IsInRole)
@@ -53,7 +52,7 @@ namespace InternetForum.BLL.Services
         {
             AuthUser authUser = await _unitOfWork.UserManager.FindByNameAsync(username);
             if (authUser == null)
-                throw new RoleException("did not find user with this username or email");
+                throw new ArgumentException("did not find user with this username or email");
 
             return await _unitOfWork.UserManager.GetRolesAsync(authUser);
         }

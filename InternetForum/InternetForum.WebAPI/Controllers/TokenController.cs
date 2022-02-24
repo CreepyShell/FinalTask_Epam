@@ -44,6 +44,7 @@ namespace InternetForum.WebAPI.Controllers
         public async Task<ActionResult<Token>> GetNewToken()
         {
             string userName = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+            _logger.LogInformation($"{userName} generated new token");
             return await _tokenService.GenerateTokenAsync(userName, _jwtSettings);
         }
     }
