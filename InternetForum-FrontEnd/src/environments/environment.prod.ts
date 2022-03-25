@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  serverUrl:""
+  serverUrl: "https://internetforumwebapi20220310152100.azurewebsites.net"
 };

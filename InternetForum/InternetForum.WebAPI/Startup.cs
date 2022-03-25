@@ -80,6 +80,7 @@ namespace InternetForum.WebAPI
             {
                 conf.AllowAnyMethod();
                 conf.WithOrigins("http://localhost:4200");
+                conf.WithOrigins("https://poseidno228.github.io");
                 conf.WithOrigins("https://web.postman.co/");
                 conf.AllowAnyHeader();
             });
