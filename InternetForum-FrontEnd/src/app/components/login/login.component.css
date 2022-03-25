@@ -2,7 +2,8 @@
   float: left;
   margin: auto;
   width: 100%;
-  height:100%;
+  height: 100%;
+  min-height: 8rem;
   background-image: url("/assets/pictures/login_photo.jpg");
   text-align: center;
   display: inline-table;
@@ -30,7 +31,7 @@
     rgba(219, 223, 27, 1) 100%
   );
   width: 25rem;
-  height:13rem;
+  height: 13rem;
   margin: auto;
   border-image-slice: 1;
   padding: 2rem;
@@ -50,7 +51,7 @@ mat-button-toggle {
   display: flex;
   color: rgb(158, 158, 158);
   background: none;
-  font-size:1.2rem;
+  font-size: 1.2rem;
 }
 
 .mat-button-toggle-checked {
@@ -76,14 +77,14 @@ input:focus {
 }
 
 .login-button {
-  margin-top:1rem;
+  margin-top: 1rem;
   padding: 0.3rem;
   width: 5rem;
   height: auto;
   background: none;
   color: white;
   border: 0.1rem solid greenyellow;
-  font-size:1.1rem;
+  font-size: 1.1rem;
 }
 
 .login-button:hover {
@@ -93,14 +94,14 @@ input:focus {
 }
 
 .login-button :disabled,
-.login-button[disabled]{
+.login-button[disabled] {
   border: 0.1rem solid rgb(78, 78, 78);
   cursor: default;
 }
 
 .another-actions {
   color: white;
-  font-size:1rem;
+  font-size: 1rem;
 }
 .another-actions a {
   text-decoration: none;
@@ -123,19 +124,19 @@ input:focus {
   background: none;
   border: none;
   color: rgb(143, 185, 197);
-  font-size:1.2rem;
+  font-size: 1.2rem;
   margin-top: -2.5rem;
-  margin-right: 2rem;
+  margin-right: 0.5rem;
   float: right;
 }
 
-.showpass :hover {
+.showpass:hover {
   cursor: pointer;
   color: rgb(96, 121, 128);
 }
 
-.error-message{
-  color:red;
-  font-size:xx-small;
+.error-message {
+  color: red;
+  font-size: xx-small;
   height: 0.5vw;
 }

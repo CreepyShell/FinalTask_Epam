@@ -59,6 +59,7 @@
   display: table;
   color: whitesmoke;
   background-image: url("/assets/pictures/main_page_photo.jpg");
+  min-width: 60rem;
   width: 100%;
   min-height: 100%;
 }
